@@ -66,6 +66,174 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-js基础知识系列（四）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/07/js基础知识系列（四）/" class="article-date">
+  <time datetime="2020-05-06T22:21:54.000Z" itemprop="datePublished">2020-05-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/07/js基础知识系列（四）/">js基础知识系列（四）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h3 id="创建自符串"><a href="#创建自符串" class="headerlink" title="创建自符串"></a>创建自符串</h3><ul>
+<li>构造函数创建 <code>new String(&#39;t&#39;)</code></li>
+<li>字面量创建 <code>&quot;t&quot;</code></li>
+<li>使用函数转化为字符串 <code>String(&quot;t&quot;)</code></li>
+</ul>
+<h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> t1 = <span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">"t"</span>)</span><br><span class="line"><span class="keyword">const</span> t2 = <span class="built_in">String</span>(<span class="string">"t"</span>)</span><br><span class="line"><span class="keyword">const</span> t3 = <span class="string">"t"</span></span><br><span class="line"></span><br><span class="line">t1 === t2 <span class="comment">// false</span></span><br><span class="line">t1 === t3 <span class="comment">// false</span></span><br><span class="line">t3 === t2 <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typeof</span> t1 <span class="comment">// "object"</span></span><br><span class="line"><span class="keyword">typeof</span> t2 <span class="comment">// "string"</span></span><br><span class="line"><span class="keyword">typeof</span> t3 <span class="comment">// "string"</span></span><br></pre></td></tr></table></figure>
+<p>上述代码可以看出 <code>new String(&#39;t&#39;)</code> 创建的是一个引用类型-对象，而 <code>&quot;t&quot;</code> 和 <code>String(&quot;t&quot;)</code> 是一个基本类型-字符串，但是都具有字符串具有的属性</p>
+<h3 id="字符串方法"><a href="#字符串方法" class="headerlink" title="字符串方法"></a>字符串方法</h3><ul>
+<li><code>charAt(n)</code> 返回字符串中第 <code>n + 1</code> 个单字符，若字符不存在则返回空字符串</li>
+<li><code>charCodeAt(n)</code> 返回字符串中第 <code>n + 1</code> 个单字符编码，若字符不存在则返回 <code>NaN</code></li>
+<li><code>concat(str)</code> 拼接字符串，类似与 <code>+</code> 号，但 <code>+</code> 存在类型转化问题，<code>concat(str)</code> 调用时必须为字符串拼接其它类型，函数中其它类型会被强制转化为字符串</li>
+<li><code>indexOf(str, n)</code> 从第 n 位由左向右查找字符串，找到返回 <code>index</code>，没有找到返回 <code>-1</code></li>
+<li><code>lastIndexOf(str, n)</code> 从第 n 位由右向左查找字符串，找到返回 <code>index</code>，没有找到返回 <code>-1</code></li>
+<li><code>trim()</code> 去除字符串两边的空格</li>
+<li><code>toLowerCase()</code> 和 <code>toLocaleLowerCase()</code> 字符串转化为小写，建议使用 <code>toLocaleLowerCase()</code> ，在某些语种下表现不一致</li>
+<li><code>toUpperCase()</code> 和 <code>toLocaleUpperCase()</code> 字符串转化为大写，建议使用 <code>toLocaleUpperCase()</code> ，在某些语种下表现不一致</li>
+<li><code>str1.localeCompare(str2)</code>，str1 排在 str2 之前返回负数，相同位置返回 0，之后返回正数，比较是拿 str1 字符串中的字符与 str2 的字符逐位相减</li>
+<li><code>fromCharCode(num1,num2,...numn)</code> 字符编码转化为字符串</li>
+</ul>
+<h4 id="slice、substr、substring-异同，以字符串-quot-123456-quot-为例"><a href="#slice、substr、substring-异同，以字符串-quot-123456-quot-为例" class="headerlink" title="slice、substr、substring 异同，以字符串 &quot;123456&quot; 为例"></a><code>slice</code>、<code>substr</code>、<code>substring</code> 异同，以字符串 <code>&quot;123456&quot;</code> 为例</h4><h5 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h5><p>都是对字符串进行切割且不改变原有字符串，都接收一到两个参数，没有参数时都返回整个字符串</p>
+<h5 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h5><ul>
+<li><code>slice</code> 参数为（起始位置，结束位置）</li>
+<li><code>substr</code> 参数为（起始位置，长度）</li>
+<li><code>substring</code> 参数为（起始位置，结束位置）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"123456"</span>.slice(<span class="number">3</span>) <span class="comment">// "456"</span></span><br><span class="line"><span class="string">"123456"</span>.substr(<span class="number">3</span>) <span class="comment">// "456"</span></span><br><span class="line"><span class="string">"123456"</span>.substring(<span class="number">3</span>) <span class="comment">// "456"</span></span><br><span class="line"></span><br><span class="line"><span class="string">"123456"</span>.slice(<span class="number">9</span>) <span class="comment">// ""</span></span><br><span class="line"><span class="string">"123456"</span>.substr(<span class="number">9</span>) <span class="comment">// ""</span></span><br><span class="line"><span class="string">"123456"</span>.substring(<span class="number">9</span>) <span class="comment">// ""</span></span><br><span class="line"></span><br><span class="line"><span class="string">"123456"</span>.slice(<span class="number">-2</span>) <span class="comment">// "56" 小于 0 从字符串长度 + 该值的位置开始计算</span></span><br><span class="line"><span class="string">"123456"</span>.substr(<span class="number">-2</span>) <span class="comment">// "123456" 小于 0 从字符串起始位置开始计算</span></span><br><span class="line"><span class="string">"123456"</span>.substring(<span class="number">-2</span>) <span class="comment">// "56" 小于 0 从字符串长度 + 该值的位置开始计算</span></span><br><span class="line"></span><br><span class="line"><span class="string">"123456"</span>.slice(<span class="number">2</span>,<span class="number">2</span>) <span class="comment">// "" （起始位置，结束位置）</span></span><br><span class="line"><span class="string">"123456"</span>.substr(<span class="number">2</span>,<span class="number">2</span>) <span class="comment">// "34" （起始位置，长度）</span></span><br><span class="line"><span class="string">"123456"</span>.substring(<span class="number">2</span>,<span class="number">2</span>) <span class="comment">// "" （起始位置，结束位置）</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">"123456"</span>.slice(<span class="number">2</span>,<span class="number">1</span>) <span class="comment">// "" （起始位置，结束位置）</span></span><br><span class="line"><span class="string">"123456"</span>.substr(<span class="number">2</span>,<span class="number">1</span>) <span class="comment">// "3" （起始位置，长度）</span></span><br><span class="line"><span class="string">"123456"</span>.substring(<span class="number">2</span>,<span class="number">1</span>) <span class="comment">// "2" （起始位置，结束位置），把参数中较小的值作为起始位置</span></span><br><span class="line"></span><br><span class="line"><span class="string">"123456"</span>.slice(<span class="number">2</span>,<span class="number">-7</span>) <span class="comment">// "345" （起始位置，结束位置），小于0的值按照 N * len + n 的方式计算位置</span></span><br><span class="line"><span class="string">"123456"</span>.substr(<span class="number">2</span>,<span class="number">-7</span>) <span class="comment">// "" （起始位置，长度）</span></span><br><span class="line"><span class="string">"123456"</span>.substring(<span class="number">2</span>,<span class="number">-7</span>) <span class="comment">// "12" （起始位置，结束位置），把参数中较小的值作为起始位置且当起始位置小于0时按照0计算</span></span><br></pre></td></tr></table></figure>
+<h4 id="字符串的匹配"><a href="#字符串的匹配" class="headerlink" title="字符串的匹配"></a>字符串的匹配</h4><ul>
+<li><code>match(regexp)</code> 方法，类似于正则的 <code>exec</code> 方法，返回一个数组</li>
+<li><code>search(regexp)</code> 返回第一个匹配项的索引，未匹配到返回 <code>-1</code></li>
+<li><code>replace(regexp, replaceStr)</code> 替换字符串</li>
+<li><code>split(regexp)</code> 分割字符串，返回数组</li>
+</ul>
+<h5 id="replace-regexp-replaceStr-正则替换字符串"><a href="#replace-regexp-replaceStr-正则替换字符串" class="headerlink" title="replace(regexp, replaceStr) 正则替换字符串"></a><code>replace(regexp, replaceStr)</code> 正则替换字符串</h5><ul>
+<li><code>replaceStr</code> 可以使用的特殊字符串</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>字符序列</th>
+<th>替换文本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$$</code></td>
+<td>\$</td>
+</tr>
+<tr>
+<td><code>$&amp;</code></td>
+<td>匹配整个模式的字符串</td>
+</tr>
+<tr>
+<td><code>$&#39;</code></td>
+<td>匹配的子字符串之前的字符串</td>
+</tr>
+<tr>
+<td>\$`</td>
+<td>匹配的子字符串之后的字符串</td>
+</tr>
+<tr>
+<td><code>$n</code></td>
+<td>匹配第 n 个捕获组的子字符串， n 范围 0 ~ 9</td>
+</tr>
+<tr>
+<td><code>$nn</code></td>
+<td>匹配第 nn 个捕获组的子字符串，nn 范围 01 ~ 99</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><code>replaceStr</code> 为函数，类似于 <code>function(match,pos,originalText)</code>，参数分别表示匹配项、匹配的位置、原始字符串</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">htmlEscape</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> text.replace(<span class="regexp">/[&lt;&gt;"&amp;]/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">match, pos, originalText</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">switch</span>(match) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"&lt;"</span>: <span class="keyword">return</span> <span class="string">"&amp;lt;"</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"&gt;"</span>: <span class="keyword">return</span> <span class="string">"&amp;gt;"</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"&amp;"</span>: <span class="keyword">return</span> <span class="string">"&amp;amp;"</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"\""</span>: <span class="keyword">return</span> <span class="string">"&amp;quot;"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">htmlEscape(<span class="string">"&lt;h1 class=\"test\"&gt;test&lt;/h1&gt;"</span>) <span class="comment">// &amp;lt;h1 class=&amp;quot;test&amp;quot;&amp;gt;test&amp;lt;/h1&amp;gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/07/js基础知识系列（四）/" data-id="ckmhtn3sz001esgs6a07kd9b2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-typedoc源码阅读系列（二）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/27/typedoc源码阅读系列（二）/" class="article-date">
+  <time datetime="2020-04-26T21:15:13.000Z" itemprop="datePublished">2020-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/27/typedoc源码阅读系列（二）/">typedoc源码阅读系列（二）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ChildableComponent-对象"><a href="#ChildableComponent-对象" class="headerlink" title="ChildableComponent 对象"></a>ChildableComponent 对象</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 含有子组件的组件.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @template O 组件的所有者</span></span><br><span class="line"><span class="comment"> * @template C 包含的子组件</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">abstract</span> <span class="keyword">class</span> ChildableComponent&lt;</span><br><span class="line">  O <span class="keyword">extends</span> ComponentHost,</span><br><span class="line">  C <span class="keyword">extends</span> Component</span><br><span class="line">&gt; <span class="keyword">extends</span> AbstractComponent&lt;O&gt; &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   *子组件对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> _componentChildren?: &#123; [name: <span class="built_in">string</span>]: C &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 默认组件</span></span><br><span class="line">  <span class="keyword">private</span> _defaultComponents?: &#123; [name: <span class="built_in">string</span>]: ComponentClass&lt;C&gt; &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 创建新的组件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">owner: O | <span class="keyword">typeof</span> DUMMY_APPLICATION_OWNER</span>) &#123;</span><br><span class="line">    <span class="keyword">super</span>(owner);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 遍历默认组件加入当前组件中作为子组件使用</span></span><br><span class="line">    _.entries(<span class="keyword">this</span>._defaultComponents || &#123;&#125;).forEach(<span class="function">(<span class="params">[name, component]</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.addComponent(name, component);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 通过名称获取子组件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  getComponent(name: <span class="built_in">string</span>): C | <span class="literal">undefined</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">this</span>._componentChildren || &#123;&#125;)[name];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取全部子组件</span></span><br><span class="line">  getComponents(): C[] &#123;</span><br><span class="line">    <span class="keyword">return</span> _.values(<span class="keyword">this</span>._componentChildren);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 是否存在该组件</span></span><br><span class="line">  hasComponent(name: <span class="built_in">string</span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> !!(<span class="keyword">this</span>._componentChildren || &#123;&#125;)[name];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 新增组件，存在就返回已经存在的组件，不存在则添加，同时触发新增组件事件</span></span><br><span class="line">  addComponent&lt;T <span class="keyword">extends</span> C&gt;(</span><br><span class="line">    name: <span class="built_in">string</span>,</span><br><span class="line">    componentClass: T | ComponentClass&lt;T, O&gt;</span><br><span class="line">  ): T &#123;</span><br><span class="line">    <span class="comment">// 1. 组件存在就直接返回</span></span><br><span class="line">    <span class="comment">// 2. 组件未实例化则实例化，绑定到当前 this，已经实例化则直接保存</span></span><br><span class="line">    <span class="comment">// 3. 触发组件添加事件</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  removeComponent(name: <span class="built_in">string</span>): C | <span class="literal">undefined</span> &#123;</span><br><span class="line">    <span class="comment">// 1. 获取组件</span></span><br><span class="line">    <span class="comment">// 2. 停止组件的事件监听</span></span><br><span class="line">    <span class="comment">// 3. 从对象中删除组件</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  removeAllComponents() &#123;</span><br><span class="line">    <span class="comment">// 1. 遍历组件，停止事件监听</span></span><br><span class="line">    <span class="comment">// 2. 组件对象清空</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面的代码中可以看出此对象实现了 <code>getComponent</code>、<code>getComponents</code>、<code>hasComponent</code>、<code>addComponent</code>、<code>removeComponent</code>、<code>removeAllComponents</code>方法，结合上一篇分析的 <code>Application</code> 对象看，<code>Application</code>调用的关于组件<code>Component</code>都在此对象中定义好了。此对象实现组件注册、查找、删除功能，按照<code>KEY =&gt; Component</code> 存放在对象中，便于快速查找和调用</p>
+<h2 id="AbstractComponent-对象"><a href="#AbstractComponent-对象" class="headerlink" title="AbstractComponent 对象"></a>AbstractComponent 对象</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Component base class.  Has an owner (unless it's the application root component),</span></span><br><span class="line"><span class="comment"> * can dispatch events to its children, and has access to the root Application component.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @template O type of component's owner.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">abstract</span> <span class="keyword">class</span> AbstractComponent&lt;O <span class="keyword">extends</span> ComponentHost&gt;</span><br><span class="line">  <span class="keyword">extends</span> EventDispatcher</span><br><span class="line">  <span class="keyword">implements</span> ComponentHost &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 所属对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> _componentOwner: O | <span class="keyword">typeof</span> DUMMY_APPLICATION_OWNER;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 组件名称 @Component 装饰器设置.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">public</span> componentName!: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 参数列表</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> _componentOptions?: DeclarationOption[];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">owner: O | <span class="keyword">typeof</span> DUMMY_APPLICATION_OWNER</span>) &#123;</span><br><span class="line">    <span class="keyword">super</span>();</span><br><span class="line">    <span class="keyword">this</span>._componentOwner = owner;</span><br><span class="line">    <span class="keyword">this</span>.initialize();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 初始化</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">protected</span> initialize() &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 事件冒泡</span></span><br><span class="line">  <span class="keyword">protected</span> bubble(name: Event | EventMap | <span class="built_in">string</span>, ...args: <span class="built_in">any</span>[]) &#123;</span><br><span class="line">    <span class="keyword">super</span>.trigger(name, ...args);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (</span><br><span class="line">      <span class="keyword">this</span>.owner <span class="keyword">instanceof</span> AbstractComponent &amp;&amp;</span><br><span class="line">      <span class="keyword">this</span>._componentOwner !== DUMMY_APPLICATION_OWNER</span><br><span class="line">    ) &#123;</span><br><span class="line">      <span class="keyword">this</span>.owner.bubble(name, ...args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 返回组件的所有参数生声明</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  getOptionDeclarations(): DeclarationOption[] &#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">this</span>._componentOptions || []).slice();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 返回根应用和组件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">get</span> application(): Application &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._componentOwner === DUMMY_APPLICATION_OWNER</span><br><span class="line">      ? ((<span class="keyword">this</span> <span class="keyword">as</span> <span class="built_in">any</span>) <span class="keyword">as</span> Application)</span><br><span class="line">      : <span class="keyword">this</span>._componentOwner.application;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 组件所有者</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">get</span> owner(): O &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._componentOwner === DUMMY_APPLICATION_OWNER</span><br><span class="line">      ? (<span class="keyword">this</span> <span class="keyword">as</span> <span class="built_in">any</span>)</span><br><span class="line">      : <span class="keyword">this</span>._componentOwner;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此对象保存了组件的参数、所属对象、组件名称，定义了事件冒泡的方式，定义了一个空的 <code>initialize</code> 方法，避免继承的对象没有实现此方法抛出异常</p>
+<h2 id="EventDispatcher-对象"><a href="#EventDispatcher-对象" class="headerlink" title="EventDispatcher 对象"></a>EventDispatcher 对象</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 事件对象</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * You may bind a callback to an event with `on` or remove with `off`;</span></span><br><span class="line"><span class="comment"> * `trigger`-ing an event fires all callbacks in succession.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> EventDispatcher &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 注册的事件处理对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> _events?: EventHandlers;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Map of all objects this instance is listening to.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> _listeningTo?: EventListeners;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Map of all objects that are listening to this instance.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> _listeners?: EventListeners;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 唯一性 id</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">get</span> _listenId(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._savedListenId || (<span class="keyword">this</span>._savedListenId = _.uniqueId(<span class="string">"l"</span>));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">private</span> _savedListenId?: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 绑定事件回调，类型为 all 时绑定所有事件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  on(</span><br><span class="line">    nameOrMap: EventMap | <span class="built_in">string</span>,</span><br><span class="line">    callback: EventCallback,</span><br><span class="line">    context?: <span class="built_in">any</span>,</span><br><span class="line">    priority?: <span class="built_in">number</span></span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="keyword">this</span>.internalOn(nameOrMap, callback, context, priority);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Guard the `listening` argument from the public API.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> internalOn(</span><br><span class="line">    name: EventMap | <span class="built_in">string</span>,</span><br><span class="line">    callback: EventCallback | <span class="literal">undefined</span>,</span><br><span class="line">    context?: <span class="built_in">any</span>,</span><br><span class="line">    priority: <span class="built_in">number</span> = <span class="number">0</span>,</span><br><span class="line">    listening?: EventListener</span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="keyword">this</span>._events = eventsApi(</span><br><span class="line">      onApi,</span><br><span class="line">      <span class="keyword">this</span>._events || &lt;EventHandlers&gt;&#123;&#125;,</span><br><span class="line">      name,</span><br><span class="line">      callback,</span><br><span class="line">      &#123;</span><br><span class="line">        context: context,</span><br><span class="line">        ctx: <span class="keyword">this</span>,</span><br><span class="line">        listening: listening,</span><br><span class="line">        priority: priority,</span><br><span class="line">      &#125;</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (listening) &#123;</span><br><span class="line">      <span class="keyword">const</span> listeners = <span class="keyword">this</span>._listeners || (<span class="keyword">this</span>._listeners = &#123;&#125;);</span><br><span class="line">      listeners[listening.id] = listening;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 只绑定一次事件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"></span><br><span class="line">  once(</span><br><span class="line">    name: EventMap | <span class="built_in">string</span>,</span><br><span class="line">    callback?: EventCallback,</span><br><span class="line">    context?: <span class="built_in">any</span>,</span><br><span class="line">    priority?: <span class="built_in">number</span></span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="comment">// Map the event into a `&#123;event: once&#125;` object.</span></span><br><span class="line">    <span class="keyword">const</span> events = eventsApi(</span><br><span class="line">      onceMap,</span><br><span class="line">      &lt;EventMap&gt;&#123;&#125;,</span><br><span class="line">      name,</span><br><span class="line">      callback,</span><br><span class="line">      _.bind(<span class="keyword">this</span>.off, <span class="keyword">this</span>)</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.on(events, <span class="built_in">void</span> <span class="number">0</span>, context, priority);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 移除事件回调</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  off(name?: EventMap | <span class="built_in">string</span>, callback?: EventCallback, context?: <span class="built_in">any</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>._events) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>._events = eventsApi(offApi, <span class="keyword">this</span>._events, name, callback, &#123;</span><br><span class="line">      context: context,</span><br><span class="line">      listeners: <span class="keyword">this</span>._listeners,</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 监听其它对象的事件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  listenTo(</span><br><span class="line">    obj: EventDispatcher,</span><br><span class="line">    name: EventMap | <span class="built_in">string</span>,</span><br><span class="line">    callback?: EventCallback,</span><br><span class="line">    priority?: <span class="built_in">number</span></span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!obj) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> id = obj._listenId;</span><br><span class="line">    <span class="keyword">const</span> listeningTo = <span class="keyword">this</span>._listeningTo || (<span class="keyword">this</span>._listeningTo = &#123;&#125;);</span><br><span class="line">    <span class="keyword">let</span> listening = listeningTo[id];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// This object is not listening to any other events on `obj` yet.</span></span><br><span class="line">    <span class="comment">// Setup the necessary references to track the listening callbacks.</span></span><br><span class="line">    <span class="keyword">if</span> (!listening) &#123;</span><br><span class="line">      <span class="keyword">const</span> thisId = <span class="keyword">this</span>._listenId;</span><br><span class="line">      listening = listeningTo[id] = &#123;</span><br><span class="line">        obj: obj,</span><br><span class="line">        objId: id,</span><br><span class="line">        id: thisId,</span><br><span class="line">        listeningTo: listeningTo,</span><br><span class="line">        count: <span class="number">0</span>,</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Bind callbacks on obj, and keep track of them on listening.</span></span><br><span class="line">    obj.internalOn(name, callback, <span class="keyword">this</span>, priority, listening);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 监听其它对象事件一次</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  listenToOnce(</span><br><span class="line">    obj: EventDispatcher,</span><br><span class="line">    name: EventMap | <span class="built_in">string</span>,</span><br><span class="line">    callback?: EventCallback,</span><br><span class="line">    priority?: <span class="built_in">number</span></span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="comment">// Map the event into a `&#123;event: once&#125;` object.</span></span><br><span class="line">    <span class="keyword">const</span> events = eventsApi(</span><br><span class="line">      onceMap,</span><br><span class="line">      &lt;EventMap&gt;&#123;&#125;,</span><br><span class="line">      name,</span><br><span class="line">      callback,</span><br><span class="line">      _.bind(<span class="keyword">this</span>.stopListening, <span class="keyword">this</span>, obj)</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.listenTo(obj, events, <span class="built_in">void</span> <span class="number">0</span>, priority);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 停止监听事件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  stopListening(</span><br><span class="line">    obj?: EventDispatcher,</span><br><span class="line">    name?: EventMap | <span class="built_in">string</span>,</span><br><span class="line">    callback?: EventCallback</span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="keyword">const</span> listeningTo = <span class="keyword">this</span>._listeningTo;</span><br><span class="line">    <span class="keyword">if</span> (!listeningTo) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> ids = obj ? [obj._listenId] : _.keys(listeningTo);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; ids.length; i++) &#123;</span><br><span class="line">      <span class="keyword">const</span> listening = listeningTo[ids[i]];</span><br><span class="line"></span><br><span class="line">      <span class="comment">// If listening doesn't exist, this object is not currently</span></span><br><span class="line">      <span class="comment">// listening to obj. Break out early.</span></span><br><span class="line">      <span class="keyword">if</span> (!listening) &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      listening.obj.off(name, callback, <span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (_.isEmpty(listeningTo)) &#123;</span><br><span class="line">      <span class="keyword">this</span>._listeningTo = <span class="built_in">void</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 触发事件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  trigger(name: Event | EventMap | <span class="built_in">string</span>, ...args: <span class="built_in">any</span>[]) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>._events) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (name <span class="keyword">instanceof</span> Event) &#123;</span><br><span class="line">      triggerApi(</span><br><span class="line">        <span class="keyword">this</span>._events,</span><br><span class="line">        name.name,</span><br><span class="line">        <span class="built_in">void</span> <span class="number">0</span>,</span><br><span class="line">        [name],</span><br><span class="line">        (events: EventHandler[], args: <span class="built_in">any</span>[]) =&gt; &#123;</span><br><span class="line">          <span class="keyword">let</span> ev: EventHandler,</span><br><span class="line">            i = <span class="number">-1</span>,</span><br><span class="line">            l = events.length;</span><br><span class="line">          <span class="keyword">while</span> (++i &lt; l) &#123;</span><br><span class="line">            <span class="keyword">if</span> (name.isPropagationStopped) &#123;</span><br><span class="line">              <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            ev = events[i];</span><br><span class="line">            ev.callback.apply(ev.ctx, args);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      );</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      eventsApi(triggerApi, <span class="keyword">this</span>._events, name, <span class="built_in">void</span> <span class="number">0</span>, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>定义了事件对象，监听一次、监听、取消监听、分发事件方法</p>
+<ul>
+<li><code>_listenId</code> 产生唯一性 id ，便于快速查找对应的对应的事件处理方法</li>
+<li><code>trigger</code> 触发事件，触发一个或多个事件</li>
+<li><code>listenToOnce</code> 监听事件一次</li>
+<li><code>stopListening</code> 停止监听事件，使用 <code>id</code> 快速定位事件处理函数</li>
+<li><code>listenTo</code> 多次监听事件</li>
+<li><code>off</code> 移除监听事件</li>
+<li><code>once</code> 绑定一个只会触发一次的事件</li>
+<li><code>internalOn</code> 派发事件对象</li>
+<li><code>on</code> 监听事件</li>
+</ul>
+<h2 id="待完成"><a href="#待完成" class="headerlink" title="待完成"></a>待完成</h2><p>整理实例化的 <code>Application</code> 具有的所有属性</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/04/27/typedoc源码阅读系列（二）/" data-id="ckmhtn3tj002lsgs69qg62vaz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-typedoc源码阅读系列（一）" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/04/20/typedoc源码阅读系列（一）/" class="article-date">
@@ -122,7 +290,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/20/typedoc源码阅读系列（一）/" data-id="cklow8ayp002njts6x9mt3ais" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/20/typedoc源码阅读系列（一）/" data-id="ckmhtn3ti002jsgs6it4hsc7z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -182,7 +350,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/15/gulp打包/" data-id="cklow8aur000ijts6o5wk1fv7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/15/gulp打包/" data-id="ckmhtn3sp000qsgs6gw97qjh8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -282,7 +450,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/10/iOS模拟器/" data-id="cklow8awn000vjts6od9r8gg9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/10/iOS模拟器/" data-id="ckmhtn3sq000ssgs6figtq61s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
@@ -356,7 +524,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/09/用Hexo搭建静态博客/" data-id="cklow8ayx0031jts6dpsgj9hi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/09/用Hexo搭建静态博客/" data-id="ckmhtn3tx0039sgs6dleojinc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">其它</a></li></ul>
@@ -420,7 +588,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/06/npm包/" data-id="cklow8axz001zjts6sekbije8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/06/npm包/" data-id="ckmhtn3t9001zsgs6o46x7avh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -471,7 +639,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/13/React学习系列（三）/" data-id="cklow8atu0005jts62pli9a3a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/13/React学习系列（三）/" data-id="ckmhtn3s70005sgs65onyxlsa" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -525,7 +693,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/12/js基础知识系列（三）/" data-id="cklow8axe0016jts6wuusg9um" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/12/js基础知识系列（三）/" data-id="ckmhtn3st0010sgs6j4uyy1dr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -576,7 +744,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/07/React学习系列（二）/" data-id="cklow8au30006jts6ae99zrem" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/07/React学习系列（二）/" data-id="ckmhtn3uk0047sgs64qhqqnd0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -626,7 +794,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/05/React学习系列（一）/" data-id="cklow8atd0000jts6ocdvxcse" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/05/React学习系列（一）/" data-id="ckmhtn3rz0004sgs6mr559443" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -718,7 +886,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/29/js基础知识系列（二）/" data-id="cklow8axi001ajts66jkkdgts" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/29/js基础知识系列（二）/" data-id="ckmhtn3sv0017sgs689qyedzy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -905,7 +1073,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/21/js基础知识系列（一）/" data-id="cklow8ax1000zjts6rizp5v58" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/21/js基础知识系列（一）/" data-id="ckmhtn3sr000vsgs6f0pdu88k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -972,7 +1140,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/20/日志记录和日志分割/" data-id="cklow8azd003pjts6qyfksyq9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/20/日志记录和日志分割/" data-id="ckmhtn3tr002wsgs65nmhkq58" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -1040,7 +1208,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/09/06/react-webpack项目中的babel配置/" data-id="cklow8ay80026jts6pglcb54g" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/09/06/react-webpack项目中的babel配置/" data-id="ckmhtn3tb0024sgs68isihv9u" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1417,7 +1585,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/13/js学习（三）/" data-id="cklow8axs001kjts6d0fi6hc2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/13/js学习（三）/" data-id="ckmhtn3t3001msgs6bixolgsa" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1492,7 +1660,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/08/设计模式/" data-id="cklow8az7003ejts6wlxql8fi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/08/设计模式/" data-id="ckmhtn3u0003isgs68tknr56m" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
@@ -1551,7 +1719,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/05/js学习（二）/" data-id="cklow8axu001ojts6s7zx4nor" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/05/js学习（二）/" data-id="ckmhtn3t2001jsgs6mo2zpe85" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1624,7 +1792,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/29/react16新生命周期/" data-id="cklow8ayb0029jts6vp95rsze" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/29/react16新生命周期/" data-id="ckmhtn3te002csgs688ekieg1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1710,7 +1878,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/29/js和react学习（一）/" data-id="cklow8ax20011jts69uwy5cdt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/29/js和react学习（一）/" data-id="ckmhtn3sn000nsgs6uf0qy4qj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1768,7 +1936,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/22/react中配置eslint和flow/" data-id="cklow8ayc002bjts6f17cxqbu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/22/react中配置eslint和flow/" data-id="ckmhtn3th002hsgs6ajyurwzw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1807,7 +1975,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/17/html的一些知识/" data-id="cklow8aww000wjts6uje87jze" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/17/html的一些知识/" data-id="ckmhtn3sl000isgs6tnc9mkv4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTML/">HTML</a></li></ul>
@@ -1847,7 +2015,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/13/js中的概念/" data-id="cklow8awz000yjts6ka5y3ku6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/13/js中的概念/" data-id="ckmhtn3sm000lsgs625sqc2e4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1893,7 +2061,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/12/js继承/" data-id="cklow8axx001ujts6sgtl6w9z" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/12/js继承/" data-id="ckmhtn3t4001osgs6z23g4noi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1946,7 +2114,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/21/deploy与github帐户关联/" data-id="cklow8au9000bjts666tf56cx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/21/deploy与github帐户关联/" data-id="ckmhtn3sg000dsgs60kn0flyg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/source/">资源</a></li></ul>
@@ -2044,7 +2212,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/16/npm和webpack搭建react开发环境/" data-id="cklow8ay40024jts6pvccmcgo" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/16/npm和webpack搭建react开发环境/" data-id="ckmhtn3tc0027sgs6c8tylw47" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -2105,7 +2273,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/25/JavaScript的使用建议/" data-id="cklow8atn0002jts6x78pu81o" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/25/JavaScript的使用建议/" data-id="ckmhtn3rw0002sgs6wq6kj8i0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -2159,7 +2327,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/23/js学习（一）/" data-id="cklow8axq001ijts6vnt5o0m0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/23/js学习（一）/" data-id="ckmhtn3t1001hsgs67v0981ac" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -2265,7 +2433,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/03/19/运算符重载/" data-id="cklow8aza003jjts6keq04lba" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/03/19/运算符重载/" data-id="ckmhtn3u5003osgs6iflm82wl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c-language/">C/C++语言</a></li></ul>
@@ -2326,126 +2494,10 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/29/memcpy函数的实现/" data-id="cklow8axw001sjts6y6k6sti2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/11/29/memcpy函数的实现/" data-id="ckmhtn3t5001qsgs6utpi8iqs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c-language/">C/C++语言</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-strcpy的实现" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/29/strcpy的实现/" class="article-date">
-  <time datetime="2016-11-28T22:12:57.000Z" itemprop="datePublished">2016-11-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/29/strcpy的实现/">strcpy的实现</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="不考虑内存重叠"><a href="#不考虑内存重叠" class="headerlink" title="不考虑内存重叠"></a>不考虑内存重叠</h2><pre><code>char * strcpy(char *dest,const char *src)
-{
-    char *ret;
-    if(dest==NULL || src==NULL)//检查是否为空指针
-        return NULL;
-    while((*dest++=*src++)!=&apos;\0&apos;);//复制字符串中的内容
-    return ret;
-}
-</code></pre><h2 id="考虑内存重叠"><a href="#考虑内存重叠" class="headerlink" title="考虑内存重叠"></a>考虑内存重叠</h2><pre><code>char *strcpy(char *dest,const char *src)
-{
-    char *ret=dest;
-    if(dest==NULL || src==NULL)//检查是否为空指针
-        return NULL;
-    memcpy(dest,src,strlen(src)+1);//调用memcpy函数避免内存重复的情况
-    return ret;
-}
-</code></pre><h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><ul>
-<li>const修饰源字符串避免对源字符串的修改</li>
-<li>检查指针的有效性避免非法操作</li>
-<li>返回目标字符串的首地址确保字符串的线性</li>
-<li>使用<code>(*dest++=*src++)!=&#39;\0&#39;</code>确保字符串的末尾有结束符</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/29/strcpy的实现/" data-id="cklow8ayf002gjts668dakn2y" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c-language/">C/C++语言</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-TCP链接的建立与释放" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/28/TCP链接的建立与释放/" class="article-date">
-  <time datetime="2016-11-27T16:07:50.000Z" itemprop="datePublished">2016-11-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/28/TCP链接的建立与释放/">TCP链接的建立与释放</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="TCP链接的建立（三次握手）"><a href="#TCP链接的建立（三次握手）" class="headerlink" title="TCP链接的建立（三次握手）"></a>TCP链接的建立（三次握手）</h2><p>假设主机A运行的是TCP客户端程序，而主机B运行的是TCP服务器端程序。最初两端的TCP链接都处于CLOSED状态。</p>
-<p><img src="/images/tcp_open.png" alt="TCP链接建立完整示意图"></p>
-<ul>
-<li>B的TCP服务器进程先创建传输控制快TCB，准备接受客户进程的链接请求。然后处于LISTEN（收听）状态，等待客户的链接请求。如有，作出响应。</li>
-<li>A的TCP客户进程也是首先创建传输控制块TCB，然后向B发出链接请求报文段，这时首部中的同步位SYN=1，同时选择一个初始序列号seq=x。TCP客户端进入SYN-SENT（同步已发送）状态。</li>
-<li>B收到链接请求报文段后，如果同意建立链接，则向A发送确认。在确认报文段中应把SYN位和ACK位都置为1,确认号为ack=x+1，同时选择一个初始序列号seq=y。TCP服务端处于SYN-RCVD（同步收到）状态。</li>
-<li>TCP客户端收到B的确认后，还要向B给出确认。确认报文段的ACK置1,确认号ack=y+1，而自己的序号为seq=x+1。这时，TCP链接已经建立，A进入ESTABLISHED（已建立链接）状态。</li>
-<li>当B收到A的确认后，也进入ESTABLISHED状态。</li>
-</ul>
-<h5 id="注：TCP规定，SYN报文段（即SYN-1的报文段）不能携带数据，但是要消耗掉一个序号；ACK报文段可以携带数据，如果不携带数据则不消耗序号。"><a href="#注：TCP规定，SYN报文段（即SYN-1的报文段）不能携带数据，但是要消耗掉一个序号；ACK报文段可以携带数据，如果不携带数据则不消耗序号。" class="headerlink" title="注：TCP规定，SYN报文段（即SYN=1的报文段）不能携带数据，但是要消耗掉一个序号；ACK报文段可以携带数据，如果不携带数据则不消耗序号。"></a>注：TCP规定，SYN报文段（即SYN=1的报文段）不能携带数据，但是要消耗掉一个序号；ACK报文段可以携带数据，如果不携带数据则不消耗序号。</h5><h2 id="TCP链接的释放（四次挥手）"><a href="#TCP链接的释放（四次挥手）" class="headerlink" title="TCP链接的释放（四次挥手）"></a>TCP链接的释放（四次挥手）</h2><p>数据传输结束后，传输双方都有可能释放链接。现在A和B都处于ESTABLISHED的状态。</p>
-<p><img src="/images/tcp_close.png" alt="TCP链接释放完整示意图"></p>
-<ul>
-<li>A的应用进程先向其TCP链接发出链接释放报文段，并停止再发送数据，主动关闭TCP链接。A把链接释放报文段首部的终止控制位FIN置1,其序号seq=u，它等于前面已传送过的数据的最后一个字节的序号加1。A处于FIN-WAIT-1（终止等待1）状态，等待B的确认。</li>
-<li>B收到链接释放报文段后即发出确认，确认号是ack=u+1，自己序号为v，等于前面已经传送的最后一个字节的序号加1.B进入CLOSE-WAIT（关闭等待）状态。TCP服务器进程这时应该通知高层应用进程，因而从A到B这个方向的链接就释放了，这时的TCP链接处于半关闭状态。</li>
-<li>A收到来自B的确认后，就进入FIN-WAIT-2（终止等待2）状态，等待B发出的链接释放报文段。</li>
-<li>若B已经没有要向A发送的数据，其应用就通知TCP释放链接。这时B发出的链接释放报文段必须使FIN=1。现假定B的序号w（在半关闭状态B可能又发送了一些数据）。B还必须重复上次已发送过的确认号ack=u+1。B进入LAST-ACK（最后确认）状态，等待A的确认。</li>
-<li>A在收到B的链接释放报文后，必须对此发出确认。在确认报文中把ACK置1,确认号ack=w+1，而自己的序号为seq=u+1。然后进入到TIME-WAIT（时间等待）状态，等待2ms后进入到CLOSED状态。</li>
-</ul>
-<h6 id="注：TCP规定，FIN报文段即使不携带数据也要消耗一个序号。"><a href="#注：TCP规定，FIN报文段即使不携带数据也要消耗一个序号。" class="headerlink" title="注：TCP规定，FIN报文段即使不携带数据也要消耗一个序号。"></a>注：TCP规定，FIN报文段即使不携带数据也要消耗一个序号。</h6>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/28/TCP链接的建立与释放/" data-id="cklow8au70009jts6yvmu66pb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
 
     </footer>
   </div>
@@ -2470,7 +2522,7 @@ branch: master
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/antd/">antd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/antd/">antd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -2489,7 +2541,7 @@ branch: master
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -2502,6 +2554,14 @@ branch: master
       <ul>
         
           <li>
+            <a href="/2021/03/03/commonjs/">commonjs</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/02/浏览器基础/">浏览器基础</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/28/简单代码热更新/">简单代码热更新</a>
           </li>
         
@@ -2511,14 +2571,6 @@ branch: master
         
           <li>
             <a href="/2021/01/17/跨页面通信/">跨页面通信</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/06/nodejs中实现websocket服务/">nodejs中实现websocket服务</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/23/记一次项目打包优化/">记一次项目打包优化</a>
           </li>
         
       </ul>

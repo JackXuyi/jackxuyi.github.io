@@ -66,6 +66,122 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-strcpy的实现" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/29/strcpy的实现/" class="article-date">
+  <time datetime="2016-11-28T22:12:57.000Z" itemprop="datePublished">2016-11-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/29/strcpy的实现/">strcpy的实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="不考虑内存重叠"><a href="#不考虑内存重叠" class="headerlink" title="不考虑内存重叠"></a>不考虑内存重叠</h2><pre><code>char * strcpy(char *dest,const char *src)
+{
+    char *ret;
+    if(dest==NULL || src==NULL)//检查是否为空指针
+        return NULL;
+    while((*dest++=*src++)!=&apos;\0&apos;);//复制字符串中的内容
+    return ret;
+}
+</code></pre><h2 id="考虑内存重叠"><a href="#考虑内存重叠" class="headerlink" title="考虑内存重叠"></a>考虑内存重叠</h2><pre><code>char *strcpy(char *dest,const char *src)
+{
+    char *ret=dest;
+    if(dest==NULL || src==NULL)//检查是否为空指针
+        return NULL;
+    memcpy(dest,src,strlen(src)+1);//调用memcpy函数避免内存重复的情况
+    return ret;
+}
+</code></pre><h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><ul>
+<li>const修饰源字符串避免对源字符串的修改</li>
+<li>检查指针的有效性避免非法操作</li>
+<li>返回目标字符串的首地址确保字符串的线性</li>
+<li>使用<code>(*dest++=*src++)!=&#39;\0&#39;</code>确保字符串的末尾有结束符</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/29/strcpy的实现/" data-id="ckmhtn3tf002esgs6vaazvujp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c-language/">C/C++语言</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TCP链接的建立与释放" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/28/TCP链接的建立与释放/" class="article-date">
+  <time datetime="2016-11-27T16:07:50.000Z" itemprop="datePublished">2016-11-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/28/TCP链接的建立与释放/">TCP链接的建立与释放</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="TCP链接的建立（三次握手）"><a href="#TCP链接的建立（三次握手）" class="headerlink" title="TCP链接的建立（三次握手）"></a>TCP链接的建立（三次握手）</h2><p>假设主机A运行的是TCP客户端程序，而主机B运行的是TCP服务器端程序。最初两端的TCP链接都处于CLOSED状态。</p>
+<p><img src="/images/tcp_open.png" alt="TCP链接建立完整示意图"></p>
+<ul>
+<li>B的TCP服务器进程先创建传输控制快TCB，准备接受客户进程的链接请求。然后处于LISTEN（收听）状态，等待客户的链接请求。如有，作出响应。</li>
+<li>A的TCP客户进程也是首先创建传输控制块TCB，然后向B发出链接请求报文段，这时首部中的同步位SYN=1，同时选择一个初始序列号seq=x。TCP客户端进入SYN-SENT（同步已发送）状态。</li>
+<li>B收到链接请求报文段后，如果同意建立链接，则向A发送确认。在确认报文段中应把SYN位和ACK位都置为1,确认号为ack=x+1，同时选择一个初始序列号seq=y。TCP服务端处于SYN-RCVD（同步收到）状态。</li>
+<li>TCP客户端收到B的确认后，还要向B给出确认。确认报文段的ACK置1,确认号ack=y+1，而自己的序号为seq=x+1。这时，TCP链接已经建立，A进入ESTABLISHED（已建立链接）状态。</li>
+<li>当B收到A的确认后，也进入ESTABLISHED状态。</li>
+</ul>
+<h5 id="注：TCP规定，SYN报文段（即SYN-1的报文段）不能携带数据，但是要消耗掉一个序号；ACK报文段可以携带数据，如果不携带数据则不消耗序号。"><a href="#注：TCP规定，SYN报文段（即SYN-1的报文段）不能携带数据，但是要消耗掉一个序号；ACK报文段可以携带数据，如果不携带数据则不消耗序号。" class="headerlink" title="注：TCP规定，SYN报文段（即SYN=1的报文段）不能携带数据，但是要消耗掉一个序号；ACK报文段可以携带数据，如果不携带数据则不消耗序号。"></a>注：TCP规定，SYN报文段（即SYN=1的报文段）不能携带数据，但是要消耗掉一个序号；ACK报文段可以携带数据，如果不携带数据则不消耗序号。</h5><h2 id="TCP链接的释放（四次挥手）"><a href="#TCP链接的释放（四次挥手）" class="headerlink" title="TCP链接的释放（四次挥手）"></a>TCP链接的释放（四次挥手）</h2><p>数据传输结束后，传输双方都有可能释放链接。现在A和B都处于ESTABLISHED的状态。</p>
+<p><img src="/images/tcp_close.png" alt="TCP链接释放完整示意图"></p>
+<ul>
+<li>A的应用进程先向其TCP链接发出链接释放报文段，并停止再发送数据，主动关闭TCP链接。A把链接释放报文段首部的终止控制位FIN置1,其序号seq=u，它等于前面已传送过的数据的最后一个字节的序号加1。A处于FIN-WAIT-1（终止等待1）状态，等待B的确认。</li>
+<li>B收到链接释放报文段后即发出确认，确认号是ack=u+1，自己序号为v，等于前面已经传送的最后一个字节的序号加1.B进入CLOSE-WAIT（关闭等待）状态。TCP服务器进程这时应该通知高层应用进程，因而从A到B这个方向的链接就释放了，这时的TCP链接处于半关闭状态。</li>
+<li>A收到来自B的确认后，就进入FIN-WAIT-2（终止等待2）状态，等待B发出的链接释放报文段。</li>
+<li>若B已经没有要向A发送的数据，其应用就通知TCP释放链接。这时B发出的链接释放报文段必须使FIN=1。现假定B的序号w（在半关闭状态B可能又发送了一些数据）。B还必须重复上次已发送过的确认号ack=u+1。B进入LAST-ACK（最后确认）状态，等待A的确认。</li>
+<li>A在收到B的链接释放报文后，必须对此发出确认。在确认报文中把ACK置1,确认号ack=w+1，而自己的序号为seq=u+1。然后进入到TIME-WAIT（时间等待）状态，等待2ms后进入到CLOSED状态。</li>
+</ul>
+<h6 id="注：TCP规定，FIN报文段即使不携带数据也要消耗一个序号。"><a href="#注：TCP规定，FIN报文段即使不携带数据也要消耗一个序号。" class="headerlink" title="注：TCP规定，FIN报文段即使不携带数据也要消耗一个序号。"></a>注：TCP规定，FIN报文段即使不携带数据也要消耗一个序号。</h6>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/28/TCP链接的建立与释放/" data-id="ckmhtn3s90006sgs6q4jo4sas" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-资源" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/11/05/资源/" class="article-date">
@@ -96,7 +212,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/05/资源/" data-id="cklow8az8003gjts6odu7cmaq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/11/05/资源/" data-id="ckmhtn3u4003msgs68lbo9vna" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/source/">资源</a></li></ul>
@@ -124,7 +240,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/antd/">antd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/antd/">antd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -143,7 +259,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -156,6 +272,14 @@
       <ul>
         
           <li>
+            <a href="/2021/03/03/commonjs/">commonjs</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/02/浏览器基础/">浏览器基础</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/28/简单代码热更新/">简单代码热更新</a>
           </li>
         
@@ -165,14 +289,6 @@
         
           <li>
             <a href="/2021/01/17/跨页面通信/">跨页面通信</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/06/nodejs中实现websocket服务/">nodejs中实现websocket服务</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/23/记一次项目打包优化/">记一次项目打包优化</a>
           </li>
         
       </ul>

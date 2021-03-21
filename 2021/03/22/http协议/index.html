@@ -3,20 +3,20 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>日志记录和日志分割 | 奔跑的蜗牛</title>
+  <title>http协议 | 奔跑的蜗牛</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="pm2介绍生产环境的node管理工具 pm2日志 pm2默认输出日志路径   12错误日志：  /home/username/.pm2/logs/普通日志：  /home/username/.pm2/logs/  存在问题  无法对日志文件进行切割 清理日志文件需要手动触发    pm2-logrotate日志管理安装pm2-logrotatepm2 install pm2-logrotate p">
-<meta name="keywords" content="node">
+  <meta name="description" content="HTTP 1.1发布于 1999 年，默认使用文本格式传输数据 长链接默认包含 Connection: keep-alive 头，可以让客户端和服务端在一段时间内可以复用这个链接，无需再次建立链接。链接复用发生在应用层，且复用是串行的 协议扩展切换支持在请求头部域消息中包含 Upgrade 头并让客户端通过头部标识令服务器知道它能够支持其它备用通信协议的一种机制，服务器根据客户端请求的其它协议进行">
+<meta name="keywords" content="计算机网络">
 <meta property="og:type" content="article">
-<meta property="og:title" content="日志记录和日志分割">
-<meta property="og:url" content="http://yoursite.com/2019/05/20/日志记录和日志分割/index.html">
+<meta property="og:title" content="http协议">
+<meta property="og:url" content="http://yoursite.com/2021/03/22/http协议/index.html">
 <meta property="og:site_name" content="奔跑的蜗牛">
-<meta property="og:description" content="pm2介绍生产环境的node管理工具 pm2日志 pm2默认输出日志路径   12错误日志：  /home/username/.pm2/logs/普通日志：  /home/username/.pm2/logs/  存在问题  无法对日志文件进行切割 清理日志文件需要手动触发    pm2-logrotate日志管理安装pm2-logrotatepm2 install pm2-logrotate p">
+<meta property="og:description" content="HTTP 1.1发布于 1999 年，默认使用文本格式传输数据 长链接默认包含 Connection: keep-alive 头，可以让客户端和服务端在一段时间内可以复用这个链接，无需再次建立链接。链接复用发生在应用层，且复用是串行的 协议扩展切换支持在请求头部域消息中包含 Upgrade 头并让客户端通过头部标识令服务器知道它能够支持其它备用通信协议的一种机制，服务器根据客户端请求的其它协议进行">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:updated_time" content="2020-04-09T14:58:42.411Z">
+<meta property="og:updated_time" content="2021-03-21T13:30:20.863Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="日志记录和日志分割">
-<meta name="twitter:description" content="pm2介绍生产环境的node管理工具 pm2日志 pm2默认输出日志路径   12错误日志：  /home/username/.pm2/logs/普通日志：  /home/username/.pm2/logs/  存在问题  无法对日志文件进行切割 清理日志文件需要手动触发    pm2-logrotate日志管理安装pm2-logrotatepm2 install pm2-logrotate p">
+<meta name="twitter:title" content="http协议">
+<meta name="twitter:description" content="HTTP 1.1发布于 1999 年，默认使用文本格式传输数据 长链接默认包含 Connection: keep-alive 头，可以让客户端和服务端在一段时间内可以复用这个链接，无需再次建立链接。链接复用发生在应用层，且复用是串行的 协议扩展切换支持在请求头部域消息中包含 Upgrade 头并让客户端通过头部标识令服务器知道它能够支持其它备用通信协议的一种机制，服务器根据客户端请求的其它协议进行">
   
   
     <link rel="icon" href="0001.jpg#/favicon.png">
@@ -65,10 +65,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="pm2-日志记录和日志分割" class="article article-type-pm2" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-http协议" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/05/20/日志记录和日志分割/" class="article-date">
-  <time datetime="2019-05-19T16:12:12.000Z" itemprop="datePublished">2019-05-19</time>
+    <a href="/2021/03/22/http协议/" class="article-date">
+  <time datetime="2021-03-21T16:41:21.000Z" itemprop="datePublished">2021-03-21</time>
 </a>
     
   </div>
@@ -79,7 +79,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      日志记录和日志分割
+      http协议
     </h1>
   
 
@@ -87,43 +87,31 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="pm2介绍"><a href="#pm2介绍" class="headerlink" title="pm2介绍"></a>pm2介绍</h1><p>生产环境的node管理工具</p>
-<h1 id="pm2日志"><a href="#pm2日志" class="headerlink" title="pm2日志"></a>pm2日志</h1><ul>
-<li><p>pm2默认输出日志路径</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">错误日志：  /home/username/.pm2/logs/</span><br><span class="line">普通日志：  /home/username/.pm2/logs/</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>存在问题</p>
-<ul>
-<li>无法对日志文件进行切割</li>
-<li>清理日志文件需要手动触发</li>
+        <h3 id="HTTP-1-1"><a href="#HTTP-1-1" class="headerlink" title="HTTP 1.1"></a>HTTP 1.1</h3><p>发布于 1999 年，默认使用文本格式传输数据</p>
+<h4 id="长链接"><a href="#长链接" class="headerlink" title="长链接"></a>长链接</h4><p>默认包含 <code>Connection: keep-alive</code> 头，可以让客户端和服务端在一段时间内可以复用这个链接，无需再次建立链接。链接复用发生在应用层，且复用是串行的</p>
+<h4 id="协议扩展切换"><a href="#协议扩展切换" class="headerlink" title="协议扩展切换"></a>协议扩展切换</h4><p>支持在请求头部域消息中包含 <code>Upgrade</code> 头并让客户端通过头部标识令服务器知道它能够支持其它备用通信协议的一种机制，服务器根据客户端请求的其它协议进行切换，切换后使用备用协议与客户端进行通信</p>
+<h4 id="缓存控制"><a href="#缓存控制" class="headerlink" title="缓存控制"></a>缓存控制</h4><p>新增 <code>Cache-Control</code> 字段，支持 <code>max-age</code> 用来表示相对过期时间；服务器也可以通过 <code>Etag</code> 和 <code>Last-Modified</code> 来判断是否从浏览器中加载文件，此时缓存的控制和判断将决定响应状态码是 200 还是 304。参考<a href="/2020/08/31/浏览器缓存/">浏览器缓存</a>章节</p>
+<h4 id="部分内容传输优化"><a href="#部分内容传输优化" class="headerlink" title="部分内容传输优化"></a>部分内容传输优化</h4><p>引入了 <code>range</code> 头域支持超文本文件的部分传输。如允许请求一个文件的起始位置和偏移长度来进行文件内容的部分传输</p>
+<h4 id="Host-头处理"><a href="#Host-头处理" class="headerlink" title="Host 头处理"></a>Host 头处理</h4><p>请求消息和响应消息都支持 <code>Host</code> 头域，且请求消息中如果没有 <code>Host</code> 头域会报告一个错误（<code>400 Bad Request</code>）</p>
+<h4 id="错误通知的管理"><a href="#错误通知的管理" class="headerlink" title="错误通知的管理"></a>错误通知的管理</h4><p>新增了 <code>24</code> 个错误状态响应码，如 <code>409（Conflict）</code>表示请求的资源与资源的当前状态发生冲突；<code>410（Gone）</code>表示服务器上的某个资源被永久性的删除。</p>
+<h3 id="HTTP-2-0"><a href="#HTTP-2-0" class="headerlink" title="HTTP 2.0"></a>HTTP 2.0</h3><ul>
+<li>采用完全的二进制格式来传输数据，其在网络中以帧的形式传播，多个帧在网络中形成了帧的传输网络流，即流式传播的。</li>
+<li>使用 <code>TCP</code> 复用的方式来降低网络请求链接的建立和关闭的开销，多个请求可以通过一个链接来进行并发完成。复用发生在传输层，是帧的多路复用，不同文件的传输可以在一个 <code>TCP</code> 连接中一起同时进行流式传播</li>
+<li>支持传输流的优先级和流量控制机制</li>
+<li>支持服务端推送</li>
 </ul>
-</li>
-</ul>
-<h1 id="pm2-logrotate日志管理"><a href="#pm2-logrotate日志管理" class="headerlink" title="pm2-logrotate日志管理"></a><code>pm2-logrotate</code>日志管理</h1><h2 id="安装pm2-logrotate"><a href="#安装pm2-logrotate" class="headerlink" title="安装pm2-logrotate"></a>安装<code>pm2-logrotate</code></h2><p><code>pm2 install pm2-logrotate</code></p>
-<h2 id="pm2-logrotate参数配置"><a href="#pm2-logrotate参数配置" class="headerlink" title="pm2-logrotate参数配置"></a><code>pm2-logrotate</code>参数配置</h2><ul>
-<li>max_size (Defaults to 10M): 单个日志文件的最大值，例如：10G, 10M, 10K</li>
-<li>retain (Defaults to 30 file logs): 可以存储的最大日志文件数量, 例如为7时，表示可以保存7个最新的日志文件加当前使用的日志文件</li>
-<li>compress (Defaults to false): 压缩存储的历史日志文件，不包括当前使用的日志文件</li>
-<li>dateFormat (Defaults to YYYY-MM-DD_HH-mm-ss) : 日志文件名称格式</li>
-<li>rotateModule (Defaults to true) : Rotate the log of pm2’s module like other apps</li>
-<li>workerInterval (Defaults to 30 in secs) : 调用检查日志文件大小任务的定时器时间间隔，默认值为30秒，最小值为1秒</li>
-<li>rotateInterval (Defaults to 0 0 <em> </em> * everyday at midnight): This cron is used to a force rotate when executed. We are using node-schedule to schedule cron, so all valid cron for node-schedule is valid cron for this option. Cron style :</li>
-<li><p>TZ (Defaults to system time): This is the standard tz database timezone used to offset the log file saved. For instance, a value of Etc/GMT-1, with an hourly log, will save a file at hour 14 GMT with hour 13 GMT-1 in the log name.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">*    *    *    *    *    *</span><br><span class="line">┬    ┬    ┬    ┬    ┬    ┬</span><br><span class="line">│    │    │    │    │    |</span><br><span class="line">│    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)</span><br><span class="line">│    │    │    │    └───── month (1 - 12)</span><br><span class="line">│    │    │    └────────── day of month (1 - 31)</span><br><span class="line">│    │    └─────────────── hour (0 - 23)</span><br><span class="line">│    └──────────────────── minute (0 - 59)</span><br><span class="line">└───────────────────────── second (0 - 59, OPTIONAL)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ul>
-<li><a href="http://pm2.keymetrics.io/" target="_blank" rel="noopener">pm2官方文档</a></li>
-<li><a href="https://github.com/keymetrics/pm2-logrotate" target="_blank" rel="noopener">pm2-logrotate官方文档</a></li>
+<h4 id="SPDY-协议"><a href="#SPDY-协议" class="headerlink" title="SPDY 协议"></a><code>SPDY</code> 协议</h4><p>使用 <code>SSL</code> 传输协议，支持多路复用和服务端推送技术，压缩 <code>HTTP</code> 头部以减少传输大小</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://www.jianshu.com/p/be29d679cbff" target="_blank" rel="noopener">HTTP1.0、HTTP1.1 和 HTTP2.0 的区别</a></li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/20/日志记录和日志分割/" data-id="ckmj77c8u002tb4s6i5ma0t1y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/22/http协议/" data-id="ckmj77c7t000jb4s6juwellw0" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
 
     </footer>
   </div>
@@ -131,19 +119,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/07/21/js基础知识系列（一）/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          js基础知识系列（一）
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/09/06/react-webpack项目中的babel配置/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/03/03/commonjs/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">react+webpack项目中的babel配置</div>
+      <div class="article-nav-title">commonjs</div>
     </a>
   
 </nav>

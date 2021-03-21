@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-03-20T15:40:03.902Z</updated>
+  <updated>2021-03-21T13:30:20.863Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>http协议</title>
+    <link href="http://yoursite.com/2021/03/22/http%E5%8D%8F%E8%AE%AE/"/>
+    <id>http://yoursite.com/2021/03/22/http协议/</id>
+    <published>2021-03-21T16:41:21.000Z</published>
+    <updated>2021-03-21T13:30:20.863Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="HTTP-1-1"><a href="#HTTP-1-1" class="headerlink" title="HTTP 1.1"></a>HTTP 1.1</h3><p>发布于 1999 年，默认使用文本格式传输数据</p><h4 id="长链接"><a href="#长链接" class="headerlink" title="长链接"></a>长链接</h4><p>默认包含 <code>Connection: keep-alive</code> 头，可以让客户端和服务端在一段时间内可以复用这个链接，无需再次建立链接。链接复用发生在应用层，且复用是串行的</p><h4 id="协议扩展切换"><a href="#协议扩展切换" class="headerlink" title="协议扩展切换"></a>协议扩展切换</h4><p>支持在请求头部域消息中包含 <code>Upgrade</code> 头并让客户端通过头部标识令服务器知道它能够支持其它备用通信协议的一种机制，服务器根据客户端请求的其它协议进行切换，切换后使用备用协议与客户端进行通信</p><h4 id="缓存控制"><a href="#缓存控制" class="headerlink" title="缓存控制"></a>缓存控制</h4><p>新增 <code>Cache-Control</code> 字段，支持 <code>max-age</code> 用来表示相对过期时间；服务器也可以通过 <code>Etag</code> 和 <code>Last-Modified</code> 来判断是否从浏览器中加载文件，此时缓存的控制和判断将决定响应状态码是 200 还是 304。参考<a href="/2020/08/31/浏览器缓存/">浏览器缓存</a>章节</p><h4 id="部分内容传输优化"><a href="#部分内容传输优化" class="headerlink" title="部分内容传输优化"></a>部分内容传输优化</h4><p>引入了 <code>range</code> 头域支持超文本文件的部分传输。如允许请求一个文件的起始位置和偏移长度来进行文件内容的部分传输</p><h4 id="Host-头处理"><a href="#Host-头处理" class="headerlink" title="Host 头处理"></a>Host 头处理</h4><p>请求消息和响应消息都支持 <code>Host</code> 头域，且请求消息中如果没有 <code>Host</code> 头域会报告一个错误（<code>400 Bad Request</code>）</p><h4 id="错误通知的管理"><a href="#错误通知的管理" class="headerlink" title="错误通知的管理"></a>错误通知的管理</h4><p>新增了 <code>24</code> 个错误状态响应码，如 <code>409（Conflict）</code>表示请求的资源与资源的当前状态发生冲突；<code>410（Gone）</code>表示服务器上的某个资源被永久性的删除。</p><h3 id="HTTP-2-0"><a href="#HTTP-2-0" class="headerlink" title="HTTP 2.0"></a>HTTP 2.0</h3><ul><li>采用完全的二进制格式来传输数据，其在网络中以帧的形式传播，多个帧在网络中形成了帧的传输网络流，即流式传播的。</li><li>使用 <code>TCP</code> 复用的方式来降低网络请求链接的建立和关闭的开销，多个请求可以通过一个链接来进行并发完成。复用发生在传输层，是帧的多路复用，不同文件的传输可以在一个 <code>TCP</code> 连接中一起同时进行流式传播</li><li>支持传输流的优先级和流量控制机制</li><li>支持服务端推送</li></ul><h4 id="SPDY-协议"><a href="#SPDY-协议" class="headerlink" title="SPDY 协议"></a><code>SPDY</code> 协议</h4><p>使用 <code>SSL</code> 传输协议，支持多路复用和服务端推送技术，压缩 <code>HTTP</code> 头部以减少传输大小</p><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul><li><a href="https://www.jianshu.com/p/be29d679cbff" target="_blank" rel="noopener">HTTP1.0、HTTP1.1 和 HTTP2.0 的区别</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;HTTP-1-1&quot;&gt;&lt;a href=&quot;#HTTP-1-1&quot; class=&quot;headerlink&quot; title=&quot;HTTP 1.1&quot;&gt;&lt;/a&gt;HTTP 1.1&lt;/h3&gt;&lt;p&gt;发布于 1999 年，默认使用文本格式传输数据&lt;/p&gt;
+&lt;h4 id=&quot;长链接&quot;&gt;&lt;a hr
+      
+    
+    </summary>
+    
+    
+      <category term="计算机网络" scheme="http://yoursite.com/tags/network/"/>
+    
+  </entry>
   
   <entry>
     <title>commonjs</title>
@@ -323,9 +347,9 @@
     </summary>
     
     
-      <category term="node" scheme="http://yoursite.com/tags/node/"/>
-    
       <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
+    
+      <category term="node" scheme="http://yoursite.com/tags/node/"/>
     
       <category term="express" scheme="http://yoursite.com/tags/express/"/>
     
@@ -474,30 +498,6 @@
     
     
       <category term="node" scheme="http://yoursite.com/tags/node/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>react16中生命周期hooks</title>
-    <link href="http://yoursite.com/2020/08/03/react16%E4%B8%AD%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9Fhooks/"/>
-    <id>http://yoursite.com/2020/08/03/react16中生命周期hooks/</id>
-    <published>2020-08-02T22:14:27.000Z</published>
-    <updated>2020-09-13T14:19:41.463Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>react hooks 推出有段时间了，函数式组件越来越多，当函数式组件中需要使用声明周期钩子时就需要自己封装出一些生命周期函数</p><h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>在函数式组件中如类组件中一样使用生命周期钩子</p><h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><ul><li><a href="https://zh-hans.reactjs.org/docs/hooks-effect.html" target="_blank" rel="noopener">Effect Hook</a> 在组件挂载、更新、卸载时都会执行的生命周期钩子</li><li><a href="https://zh-hans.reactjs.org/docs/hooks-reference.html#useref" target="_blank" rel="noopener">useRef</a> 返回一个在组件的整个生命周期内保持不变的 ref 对象</li></ul><h4 id="didMount"><a href="#didMount" class="headerlink" title="didMount"></a>didMount</h4><p>利用 <code>Effect Hook</code> 依赖不变不会再次执行的特性，依赖传入空数组即可实现挂载时执行一次的特性</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> useMount = <span class="function">(<span class="params">cb</span>) =&gt;</span> &#123;</span><br><span class="line">  useEffect(cb, [])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="update"><a href="#update" class="headerlink" title="update"></a>update</h4><p>利用 <code>useRef</code> 对象在组件的整个生命周期内保持不变的特性，在组件初始化时初始化 ref 对象，判断 ref 对象的状态决定是否执行回调</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> useUpdate = <span class="function">(<span class="params">cb, deps</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> ref = useRef(<span class="number">0</span>)</span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (ref.current) &#123;</span><br><span class="line">      cb()</span><br><span class="line">    &#125;</span><br><span class="line">    ref.current = ref.current + <span class="number">1</span></span><br><span class="line">  &#125;, deps)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="Unmout"><a href="#Unmout" class="headerlink" title="Unmout"></a>Unmout</h4><p>利用 <code>Effect Hook</code> 返回值在组件卸载时执行的特性，在组件初始化时把回调作为其返回值，即可实现卸载执行的特性</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> useUnmout = <span class="function">(<span class="params">cb</span>) =&gt;</span> &#123;</span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> cb</span><br><span class="line">  &#125;, [])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul><li><a href="https://github.com/JackXuyi/web-exercise/blob/master/react/src/page/hooks.js" target="_blank" rel="noopener">生命周期 hooks 源码参考</a></li><li><a href="https://zh-hans.reactjs.org/docs/hooks-intro.html" target="_blank" rel="noopener">react hooks</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h3&gt;&lt;p&gt;react hooks 推出有段时间了，函数式组件越来越多，当函数式组件中需要使用声明周期钩子时就需要自己封装出一些生命周期函数&lt;/p&gt;
-&lt;
-      
-    
-    </summary>
-    
-    
-      <category term="react" scheme="http://yoursite.com/tags/react/"/>
     
   </entry>
   

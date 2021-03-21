@@ -66,6 +66,61 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-http协议" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/22/http协议/" class="article-date">
+  <time datetime="2021-03-21T16:41:21.000Z" itemprop="datePublished">2021-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/22/http协议/">http协议</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="HTTP-1-1"><a href="#HTTP-1-1" class="headerlink" title="HTTP 1.1"></a>HTTP 1.1</h3><p>发布于 1999 年，默认使用文本格式传输数据</p>
+<h4 id="长链接"><a href="#长链接" class="headerlink" title="长链接"></a>长链接</h4><p>默认包含 <code>Connection: keep-alive</code> 头，可以让客户端和服务端在一段时间内可以复用这个链接，无需再次建立链接。链接复用发生在应用层，且复用是串行的</p>
+<h4 id="协议扩展切换"><a href="#协议扩展切换" class="headerlink" title="协议扩展切换"></a>协议扩展切换</h4><p>支持在请求头部域消息中包含 <code>Upgrade</code> 头并让客户端通过头部标识令服务器知道它能够支持其它备用通信协议的一种机制，服务器根据客户端请求的其它协议进行切换，切换后使用备用协议与客户端进行通信</p>
+<h4 id="缓存控制"><a href="#缓存控制" class="headerlink" title="缓存控制"></a>缓存控制</h4><p>新增 <code>Cache-Control</code> 字段，支持 <code>max-age</code> 用来表示相对过期时间；服务器也可以通过 <code>Etag</code> 和 <code>Last-Modified</code> 来判断是否从浏览器中加载文件，此时缓存的控制和判断将决定响应状态码是 200 还是 304。参考<a href="/2020/08/31/浏览器缓存/">浏览器缓存</a>章节</p>
+<h4 id="部分内容传输优化"><a href="#部分内容传输优化" class="headerlink" title="部分内容传输优化"></a>部分内容传输优化</h4><p>引入了 <code>range</code> 头域支持超文本文件的部分传输。如允许请求一个文件的起始位置和偏移长度来进行文件内容的部分传输</p>
+<h4 id="Host-头处理"><a href="#Host-头处理" class="headerlink" title="Host 头处理"></a>Host 头处理</h4><p>请求消息和响应消息都支持 <code>Host</code> 头域，且请求消息中如果没有 <code>Host</code> 头域会报告一个错误（<code>400 Bad Request</code>）</p>
+<h4 id="错误通知的管理"><a href="#错误通知的管理" class="headerlink" title="错误通知的管理"></a>错误通知的管理</h4><p>新增了 <code>24</code> 个错误状态响应码，如 <code>409（Conflict）</code>表示请求的资源与资源的当前状态发生冲突；<code>410（Gone）</code>表示服务器上的某个资源被永久性的删除。</p>
+<h3 id="HTTP-2-0"><a href="#HTTP-2-0" class="headerlink" title="HTTP 2.0"></a>HTTP 2.0</h3><ul>
+<li>采用完全的二进制格式来传输数据，其在网络中以帧的形式传播，多个帧在网络中形成了帧的传输网络流，即流式传播的。</li>
+<li>使用 <code>TCP</code> 复用的方式来降低网络请求链接的建立和关闭的开销，多个请求可以通过一个链接来进行并发完成。复用发生在传输层，是帧的多路复用，不同文件的传输可以在一个 <code>TCP</code> 连接中一起同时进行流式传播</li>
+<li>支持传输流的优先级和流量控制机制</li>
+<li>支持服务端推送</li>
+</ul>
+<h4 id="SPDY-协议"><a href="#SPDY-协议" class="headerlink" title="SPDY 协议"></a><code>SPDY</code> 协议</h4><p>使用 <code>SSL</code> 传输协议，支持多路复用和服务端推送技术，压缩 <code>HTTP</code> 头部以减少传输大小</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://www.jianshu.com/p/be29d679cbff" target="_blank" rel="noopener">HTTP1.0、HTTP1.1 和 HTTP2.0 的区别</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/22/http协议/" data-id="ckmj77c7t000jb4s6juwellw0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-commonjs" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/03/03/commonjs/" class="article-date">
@@ -140,7 +195,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/03/commonjs/" data-id="ckmhtn3se000asgs6ljwbdqfq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/03/commonjs/" data-id="ckmj77c9k004bb4s60ovp4rwu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -205,7 +260,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/02/浏览器基础/" data-id="ckmhtn3ts002zsgs6gvxl9rrd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/02/浏览器基础/" data-id="ckmj77c8w002yb4s6wmhpe0l1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -296,7 +351,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/28/简单代码热更新/" data-id="ckmhtn3ty003esgs6yxyyytzv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/02/28/简单代码热更新/" data-id="ckmj77c900038b4s6un2uoko2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -360,7 +415,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/01/24/粘贴图片/" data-id="ckmhtn3u2003ksgs6z7clozku" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/01/24/粘贴图片/" data-id="ckmj77c97003kb4s6s9kjmj47" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -437,7 +492,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/01/17/跨页面通信/" data-id="ckmhtn3u6003qsgs62h25gu08" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/01/17/跨页面通信/" data-id="ckmj77c9b003sb4s6vmtb3a4n" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -507,7 +562,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/01/06/nodejs中实现websocket服务/" data-id="ckmhtn3ta0022sgs6w7hic9dk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/01/06/nodejs中实现websocket服务/" data-id="ckmj77c8h001zb4s6zlbxijz4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -595,7 +650,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/12/23/记一次项目打包优化/" data-id="ckmhtn3tz003gsgs6c2l0s76p" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/12/23/记一次项目打包优化/" data-id="ckmj77c91003ab4s6b0uoxw62" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">其它</a></li></ul>
@@ -656,7 +711,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/12/14/ts之type、interface和class区别/" data-id="ckmhtn3tk002nsgs6oetoiydv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/12/14/ts之type、interface和class区别/" data-id="ckmj77c8p002hb4s62gugobe7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeScript/">TypeScript</a></li></ul>
@@ -744,7 +799,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/11/22/for-in和for-of的区别/" data-id="ckmhtn3si000esgs624c22anf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/11/22/for-in和for-of的区别/" data-id="ckmj77c9l004db4s6xxfyn8d8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -795,7 +850,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/10/19/异步任务按顺序分组执行/" data-id="ckmhtn3tn002psgs63br3b9ka" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/10/19/异步任务按顺序分组执行/" data-id="ckmj77c8r002ob4s6xrkdxa21" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -838,7 +893,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/23/三数之和/" data-id="ckmhtn3tq002usgs6xi74qb7a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/09/23/三数之和/" data-id="ckmj77c8q002mb4s6ew3fxqsa" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -885,7 +940,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/21/antd中遇到的问题（一）/" data-id="ckmhtn3sc0009sgs6ooy9j890" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/09/21/antd中遇到的问题（一）/" data-id="ckmj77c7m0009b4s6nj5x9jqe" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/antd/">antd</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -931,7 +986,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/14/mysql数据库操作（二）/" data-id="ckmhtn3t8001xsgs6ur9n2xck" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/09/14/mysql数据库操作（二）/" data-id="ckmj77c8g001ub4s6kzdmokj6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeORM/">TypeORM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -986,7 +1041,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/14/mysql数据库操作（一）/" data-id="ckmhtn3t7001vsgs65wpgr5sj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/09/14/mysql数据库操作（一）/" data-id="ckmj77c8e001qb4s6fjal529a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
@@ -1069,7 +1124,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/31/浏览器缓存/" data-id="ckmhtn3tv0034sgs6gqv1fxm1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/31/浏览器缓存/" data-id="ckmj77c8v002vb4s6z68bvnw9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1124,7 +1179,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/30/babel编译过程/" data-id="ckmhtn3sj000gsgs6eq077b2q" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/30/babel编译过程/" data-id="ckmj77c7q000eb4s62msgui96" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1184,7 +1239,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/27/ES6模块与CommonJS模块/" data-id="ckmhtn3rr0000sgs6bq5o96l1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/27/ES6模块与CommonJS模块/" data-id="ckmj77c7e0002b4s6h4wa5phg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1229,7 +1284,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/17/除自身以外数组的乘积/" data-id="ckmhtn3u8003usgs645u14rjk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/17/除自身以外数组的乘积/" data-id="ckmj77c9c003ub4s65wox2p4k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -1294,7 +1349,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/05/检测项目中的包版本变化/" data-id="ckmhtn3tt0031sgs6kbfucwxk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/05/检测项目中的包版本变化/" data-id="ckmj77c8t002qb4s67xh6frv1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -1348,7 +1403,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/03/react16中生命周期hooks/" data-id="ckmhtn3td0029sgs6xfbj3986" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/03/react16中生命周期hooks/" data-id="ckmj77c8l0027b4s6uuy8sh5y" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -1392,7 +1447,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/27/排列/" data-id="ckmhtn3to002ssgs6ul5r58b5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/27/排列/" data-id="ckmj77c8z0035b4s6w6lsvvff" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -1457,7 +1512,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/25/项目脚手架/" data-id="ckmhtn3u8003ssgs6ics5eg55" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/25/项目脚手架/" data-id="ckmj77c9d003wb4s6gj615ten" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1543,7 +1598,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/25/滚动加载更多/" data-id="ckmhtn3tv0036sgs66r1penpg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/25/滚动加载更多/" data-id="ckmj77c8x0030b4s6np7gr3ib" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1609,7 +1664,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/13/mac下查询端口占用并杀掉node进程/" data-id="ckmhtn3t6001ssgs6hcpso09w" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/13/mac下查询端口占用并杀掉node进程/" data-id="ckmj77c8f001sb4s6pg6bp77l" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -1699,7 +1754,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/05/用ts搭建express项目/" data-id="ckmhtn3tx003bsgs6lp2d8gsj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/05/用ts搭建express项目/" data-id="ckmj77c96003ib4s6tqeo1nyv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -1917,7 +1972,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/29/js基础知识系列（九）/" data-id="ckmhtn3su0012sgs692ohkph3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/29/js基础知识系列（九）/" data-id="ckmj77c820010b4s6u48en31q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -2050,7 +2105,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/08/js基础知识系列（八）/" data-id="ckmhtn3sy001csgs63l86e5ht" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/08/js基础知识系列（八）/" data-id="ckmj77c850017b4s6bygmapl8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -2116,7 +2171,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/01/js基础知识系列（七）/" data-id="ckmhtn3ss000xsgs6nalbqszg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/01/js基础知识系列（七）/" data-id="ckmj77c7z000vb4s6tmermxpm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -2224,265 +2279,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/01/js基础知识系列（六）/" data-id="ckmhtn3sw0019sgs624q60suk" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-js基础知识系列（五）" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/05/24/js基础知识系列（五）/" class="article-date">
-  <time datetime="2020-05-24T15:30:20.000Z" itemprop="datePublished">2020-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/24/js基础知识系列（五）/">js基础知识系列（五）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="单体内置对象"><a href="#单体内置对象" class="headerlink" title="单体内置对象"></a>单体内置对象</h1><h2 id="Global-对象"><a href="#Global-对象" class="headerlink" title="Global 对象"></a>Global 对象</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>不属于任何对象的属性或方法</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><ul>
-<li><code>isNaN</code></li>
-<li><code>isFinite</code></li>
-<li><code>paresInt</code></li>
-<li><code>paresFloat</code></li>
-</ul>
-<h4 id="URI-编-解码方法"><a href="#URI-编-解码方法" class="headerlink" title="URI 编 / 解码方法"></a>URI 编 / 解码方法</h4><ul>
-<li>encodeURI 对整个 URI 进行编码，URI 本身的特殊字符不做处理</li>
-<li>encodeURIComponent 只对 URI 中的部分字符做编码</li>
-<li>decodeURI 对整个 URI 进行解码，URI 本身的特殊字符不做处理</li>
-<li>decodeURIComponent 只对 URI 中的部分字符做解码</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> uri = <span class="string">"https://www.baidu.com/illegal index.html#test"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">encodeURI</span>(uri) <span class="comment">// https://www.baidu.com/illegal%20index.html#test</span></span><br><span class="line"><span class="built_in">encodeURIComponent</span>(uri) <span class="comment">// https%3A%2F%2Fwww.baidu.com%2Fillegal%20index.html%23test</span></span><br><span class="line"><span class="built_in">decodeURI</span>(<span class="built_in">encodeURIComponent</span>(uri)) <span class="comment">// https%3A%2F%2Fwww.baidu.com%2Fillegal index.html%23test</span></span><br><span class="line"><span class="built_in">decodeURIComponent</span>(<span class="built_in">encodeURIComponent</span>(uri)) <span class="comment">// https://www.baidu.com/illegal index.html#test</span></span><br></pre></td></tr></table></figure>
-<h4 id="eval-方法"><a href="#eval-方法" class="headerlink" title="eval 方法"></a>eval 方法</h4><p>eval 方法执行的代码包含本次调用的执行环境的一部分即被执行代码与当前代码有相同的作用域，相当于把代码执行结果插入当前位置，但是创建的函数或变量不会被提升</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 被执行代码与当前代码有相同的作用域</span></span><br><span class="line"><span class="keyword">const</span> test = &#123;</span><br><span class="line">    t: <span class="number">1</span>,</span><br><span class="line">    test()&#123;</span><br><span class="line">        <span class="built_in">eval</span>(<span class="string">"console.log(this)"</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    test1()&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test.test1() <span class="comment">// &#123;t: 1, test: ƒ, test1: ƒ&#125;</span></span><br><span class="line">test.test2() <span class="comment">// &#123;t: 1, test: ƒ, test1: ƒ&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建的函数或变量不会被提升</span></span><br><span class="line">test() <span class="comment">// test</span></span><br><span class="line">test1() <span class="comment">// Uncaught ReferenceError: test1 is not defined</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"test"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">eval</span>(<span class="string">"function test1()&#123;console.log('test1')&#125;"</span>)</span><br><span class="line">test1() <span class="comment">// test1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 严格模式下无法访问 eval 中创建的变量或函数</span></span><br><span class="line"><span class="meta">'use strict'</span></span><br><span class="line"><span class="built_in">eval</span>(<span class="string">"function test2()&#123;console.log('test1')&#125;"</span>)</span><br><span class="line">test2() <span class="comment">// Uncaught ReferenceError: test2 is not defined</span></span><br></pre></td></tr></table></figure>
-<h5 id="严格模式下无法访问-eval-中创建的变量或函数"><a href="#严格模式下无法访问-eval-中创建的变量或函数" class="headerlink" title="严格模式下无法访问 eval 中创建的变量或函数"></a>严格模式下无法访问 eval 中创建的变量或函数</h5><h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><table>
-<thead>
-<tr>
-<th style="text-align:left">属性</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">undefined</td>
-<td style="text-align:left">特殊值</td>
-</tr>
-<tr>
-<td style="text-align:left">NaN</td>
-<td style="text-align:left">特殊值</td>
-</tr>
-<tr>
-<td style="text-align:left">Infinity</td>
-<td style="text-align:left">特殊值</td>
-</tr>
-<tr>
-<td style="text-align:left">Object</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">Array</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">Function</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">Boolean</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">String</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">Number</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">Date</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">RegExp</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">Error</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">EvalError</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">RageError</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">ReferenceError</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">SyntaxError</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">TypeError</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-<tr>
-<td style="text-align:left">URIError</td>
-<td style="text-align:left">构造函数</td>
-</tr>
-</tbody>
-</table>
-<h3 id="window-对象"><a href="#window-对象" class="headerlink" title="window 对象"></a>window 对象</h3><p>web 浏览器把 Global 对象作为 window 的一部分来实现</p>
-<h4 id="通用获取-Global-对象"><a href="#通用获取-Global-对象" class="headerlink" title="通用获取 Global 对象"></a>通用获取 Global 对象</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> global = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;)(); <span class="comment">// 函数表达式</span></span><br></pre></td></tr></table></figure>
-<h2 id="Math-对象"><a href="#Math-对象" class="headerlink" title="Math 对象"></a>Math 对象</h2><h3 id="属性-1"><a href="#属性-1" class="headerlink" title="属性"></a>属性</h3><table>
-<thead>
-<tr>
-<th style="text-align:left">属性</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Math.E</td>
-<td style="text-align:left">自然对数的底数，即常量 e 的值</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.LN10</td>
-<td style="text-align:left">10 的自然对数</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.LOG2E</td>
-<td style="text-align:left">2 的自然对数</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.LOG10E</td>
-<td style="text-align:left">以 2 为底 e 的对数</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.PI</td>
-<td style="text-align:left">圆周率</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.SQRT1_2</td>
-<td style="text-align:left">1/2 的平方根（即 2 的平方根的倒数）</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.SQRT2</td>
-<td style="text-align:left">2 的平方根</td>
-</tr>
-</tbody>
-</table>
-<h3 id="方法-1"><a href="#方法-1" class="headerlink" title="方法"></a>方法</h3><table>
-<thead>
-<tr>
-<th style="text-align:left">方法</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Math.min</td>
-<td style="text-align:left">最小值</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.max</td>
-<td style="text-align:left">最大值</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.ceil</td>
-<td style="text-align:left">向上取整</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.floor</td>
-<td style="text-align:left">向下取整</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.round</td>
-<td style="text-align:left">四舍五入</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.random</td>
-<td style="text-align:left">0 到 1 随机数</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.abs</td>
-<td style="text-align:left">绝对值</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.exp</td>
-<td style="text-align:left">Math.E 的次幂</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.log</td>
-<td style="text-align:left">自然对数</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.pow</td>
-<td style="text-align:left">次幂</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.sqrt</td>
-<td style="text-align:left">平方根</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.acos</td>
-<td style="text-align:left">反余弦</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.asin</td>
-<td style="text-align:left">反正弦</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.atan</td>
-<td style="text-align:left">反余切</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.atan2(y / x)</td>
-<td style="text-align:left">y/x 的反正切</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.cos</td>
-<td style="text-align:left">余弦</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.sin</td>
-<td style="text-align:left">正弦</td>
-</tr>
-<tr>
-<td style="text-align:left">Math.tan</td>
-<td style="text-align:left">正切</td>
-</tr>
-</tbody>
-</table>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/24/js基础知识系列（五）/" data-id="ckmhtn3su0014sgs64oqm79b3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/01/js基础知识系列（六）/" data-id="ckmj77c860019b4s65gij3fye" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -2510,7 +2307,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/antd/">antd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/antd/">antd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -2520,7 +2317,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/c-language/" style="font-size: 13.33px;">C/C++语言</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/TypeORM/" style="font-size: 10px;">TypeORM</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/mysql/" style="font-size: 11.67px;">mysql</a> <a href="/tags/node/" style="font-size: 18.33px;">node</a> <a href="/tags/other/" style="font-size: 11.67px;">other</a> <a href="/tags/react/" style="font-size: 16.67px;">react</a> <a href="/tags/other/" style="font-size: 11.67px;">其它</a> <a href="/tags/solution/" style="font-size: 15px;">算法</a> <a href="/tags/network/" style="font-size: 10px;">计算机网络</a> <a href="/tags/source/" style="font-size: 11.67px;">资源</a>
+      <a href="/tags/c-language/" style="font-size: 13.33px;">C/C++语言</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/TypeORM/" style="font-size: 10px;">TypeORM</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/mysql/" style="font-size: 11.67px;">mysql</a> <a href="/tags/node/" style="font-size: 18.33px;">node</a> <a href="/tags/other/" style="font-size: 11.67px;">other</a> <a href="/tags/react/" style="font-size: 16.67px;">react</a> <a href="/tags/other/" style="font-size: 11.67px;">其它</a> <a href="/tags/solution/" style="font-size: 15px;">算法</a> <a href="/tags/network/" style="font-size: 11.67px;">计算机网络</a> <a href="/tags/source/" style="font-size: 11.67px;">资源</a>
     </div>
   </div>
 
@@ -2529,7 +2326,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -2540,6 +2337,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/03/22/http协议/">http协议</a>
+          </li>
         
           <li>
             <a href="/2021/03/03/commonjs/">commonjs</a>
@@ -2555,10 +2356,6 @@
         
           <li>
             <a href="/2021/01/24/粘贴图片/">粘贴图片</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/17/跨页面通信/">跨页面通信</a>
           </li>
         
       </ul>

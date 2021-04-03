@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-04-03T11:52:30.390Z</updated>
+  <updated>2021-04-03T12:03:25.486Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://yoursite.com/2021/04/02/%E5%AE%9E%E6%97%B6%E5%8D%8F%E8%AE%AE/"/>
     <id>http://yoursite.com/2021/04/02/实时协议/</id>
     <published>2021-04-01T23:38:14.000Z</published>
-    <updated>2021-04-03T11:52:30.390Z</updated>
+    <updated>2021-04-03T12:03:25.486Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="websocket"><a href="#websocket" class="headerlink" title="websocket"></a>websocket</h3><p><code>WebSocket</code> 是一种在单个 <code>TCP</code> 连接上进行全双工通信的协议，允许服务端主动向客户端推送数据。在 <code>WebSocket API</code> 中，浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。</p><h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p><a href="/2021/01/06/nodejs中实现websocket服务/">nodejs 中实现 websocket 服务</a></p><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul><li>较少的控制开销。在连接创建后，服务器和客户端之间交换数据时，用于协议控制的数据包头部相对较小。在不包含扩展的情况下，对于服务器到客户端的内容，此头部大小只有 2 至 10 字节（和数据包长度有关）；对于客户端到服务器的内容，此头部还需要加上额外的 4 字节的掩码。相对于 HTTP 请求每次都要携带完整的头部，此项开销显著减少了。</li><li>更强的实时性。由于协议是全双工的，所以服务器可以随时主动给客户端下发数据。相对于 HTTP 请求需要等待客户端发起请求服务端才能响应，延迟明显更少；即使是和 Comet 等类似的长轮询比较，其也能在短时间内更多次地传递数据。</li><li>保持连接状态。与 HTTP 不同的是，Websocket 需要先创建连接，这就使得其成为一种有状态的协议，之后通信时可以省略部分状态信息。而 HTTP 请求可能需要在每个请求都携带状态信息（如身份认证等）。</li><li>更好的二进制支持。Websocket 定义了二进制帧，相对 HTTP，可以更轻松地处理二进制内容。</li><li>可以支持扩展。Websocket 定义了扩展，用户可以扩展协议、实现部分自定义的子协议。如部分浏览器支持压缩等。</li><li>更好的压缩效果。相对于 HTTP 压缩，Websocket 在适当的扩展支持下，可以沿用之前内容的上下文，在传递类似的数据时，可以显著地提高压缩率。</li></ul><h3 id="长轮询"><a href="#长轮询" class="headerlink" title="长轮询"></a>长轮询</h3><p><code>HTTP</code> 请求设置一个较长的超时等待时间，网络请求可以维持一个较长的时间来等待返回结果，如果在等待的时间内有结果会立即返回结果，如果没有结果就会超时自动断开链接，等待下一次请求。</p><p><img src="/images/long-poll.png" alt="长轮询流程"></p><h3 id="短轮询"><a href="#短轮询" class="headerlink" title="短轮询"></a>短轮询</h3><p>每隔一段时间定时向服务端发起一次请求拉取数据。</p><p><img src="/images/poll.png" alt="短轮询流程"></p><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul><li><a href="https://baike.baidu.com/item/WebSocket/1953845?fr=aladdin" target="_blank" rel="noopener">WebSocket</a></li></ul>]]></content>
+    <content type="html"><![CDATA[<h3 id="websocket"><a href="#websocket" class="headerlink" title="websocket"></a>websocket</h3><p><code>WebSocket</code> 是一种在单个 <code>TCP</code> 连接上进行全双工通信的协议，允许服务端主动向客户端推送数据。在 <code>WebSocket API</code> 中，浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。</p><h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p><a href="/2021/01/06/nodejs中实现websocket服务/">nodejs 中实现 websocket 服务</a></p><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul><li>较少的控制开销。在连接创建后，服务器和客户端之间交换数据时，用于协议控制的数据包头部相对较小。在不包含扩展的情况下，对于服务器到客户端的内容，此头部大小只有 2 至 10 字节（和数据包长度有关）；对于客户端到服务器的内容，此头部还需要加上额外的 4 字节的掩码。相对于 HTTP 请求每次都要携带完整的头部，此项开销显著减少了。</li><li>更强的实时性。由于协议是全双工的，所以服务器可以随时主动给客户端下发数据。相对于 HTTP 请求需要等待客户端发起请求服务端才能响应，延迟明显更少；即使是和 Comet 等类似的长轮询比较，其也能在短时间内更多次地传递数据。</li><li>保持连接状态。与 HTTP 不同的是，Websocket 需要先创建连接，这就使得其成为一种有状态的协议，之后通信时可以省略部分状态信息。而 HTTP 请求可能需要在每个请求都携带状态信息（如身份认证等）。</li><li>更好的二进制支持。Websocket 定义了二进制帧，相对 HTTP，可以更轻松地处理二进制内容。</li><li>可以支持扩展。Websocket 定义了扩展，用户可以扩展协议、实现部分自定义的子协议。如部分浏览器支持压缩等。</li><li>更好的压缩效果。相对于 HTTP 压缩，Websocket 在适当的扩展支持下，可以沿用之前内容的上下文，在传递类似的数据时，可以显著地提高压缩率。</li></ul><h3 id="长轮询"><a href="#长轮询" class="headerlink" title="长轮询"></a>长轮询</h3><p><code>HTTP</code> 请求设置一个较长的超时等待时间，网络请求可以维持一个较长的时间来等待返回结果，如果在等待的时间内有结果会立即返回结果，如果没有结果就会超时自动断开链接，等待下一次请求。</p><p><img src="/images/long-poll.svg" alt="长轮询流程"></p><h3 id="短轮询"><a href="#短轮询" class="headerlink" title="短轮询"></a>短轮询</h3><p>每隔一段时间定时向服务端发起一次请求拉取数据。</p><p><img src="/images/poll.svg" alt="短轮询流程"></p><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul><li><a href="https://baike.baidu.com/item/WebSocket/1953845?fr=aladdin" target="_blank" rel="noopener">WebSocket</a></li></ul>]]></content>
     
     <summary type="html">
     
@@ -35,9 +35,9 @@
     </summary>
     
     
-      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
-    
       <category term="计算机网络" scheme="http://yoursite.com/tags/network/"/>
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
     
       <category term="node" scheme="http://yoursite.com/tags/node/"/>
     
@@ -48,9 +48,9 @@
     <link href="http://yoursite.com/2021/03/28/HTTPS/"/>
     <id>http://yoursite.com/2021/03/28/HTTPS/</id>
     <published>2021-03-27T20:13:54.000Z</published>
-    <updated>2021-04-03T11:52:30.389Z</updated>
+    <updated>2021-04-03T12:00:59.354Z</updated>
     
-    <content type="html"><![CDATA[<p><code>HTTPS</code> 协议是通过加入 <code>SSL</code> 层来加密 <code>HTTP</code> 数据进行安全通信的</p><h3 id="HTTPS-建立链接的过程"><a href="#HTTPS-建立链接的过程" class="headerlink" title="HTTPS 建立链接的过程"></a><code>HTTPS</code> 建立链接的过程</h3><ol><li>客户端发起请求，携带客户端支持加密算法，同时携带随机串 1</li><li>服务端收到请求后与自己支持的加密算法进行比对，从双方都支持的加密算法中选择一个返回，同时返回域名相关的公钥和证书签名信息（包括证书时间、日期、颁发机构）及随机串 2</li><li>客户端收到响应后验证证书的合法性和公钥的正确性（通过请求证书颁发机构来验证证书的合法性）</li><li>证书验证通过后，利用公钥加密一个随机字符串作为后续传输数据的密钥，同时加入利用公钥加密随机串 1 和随机串 2 组成的握手信息，然后发送给服务端</li><li>服务端获取到信息后利用私钥进行解密得到客户端生成的随机字符串把它作为后续传输的密钥，利用密钥对传输的随机串 1 和随机串 2 进行加密，然后返回</li><li>客户端利用上述生成的随机串对返回的信息进行解密，然后验证其合法性，后续传输就是堆成加密传输</li></ol><p><img src="/images/https.png" alt="HTTPS 获取密钥过程"></p><h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul><li><a href="https://www.jianshu.com/p/33d0f8631f90" target="_blank" rel="noopener">https 建立连接过程</a></li><li><a href="https://blog.csdn.net/xiaoming100001/article/details/81109617" target="_blank" rel="noopener">HTTP 和 HTTPS 协议，看一篇就够了</a></li></ul>]]></content>
+    <content type="html"><![CDATA[<p><code>HTTPS</code> 协议是通过加入 <code>SSL</code> 层来加密 <code>HTTP</code> 数据进行安全通信的</p><h3 id="HTTPS-建立链接的过程"><a href="#HTTPS-建立链接的过程" class="headerlink" title="HTTPS 建立链接的过程"></a><code>HTTPS</code> 建立链接的过程</h3><ol><li>客户端发起请求，携带客户端支持加密算法，同时携带随机串 1</li><li>服务端收到请求后与自己支持的加密算法进行比对，从双方都支持的加密算法中选择一个返回，同时返回域名相关的公钥和证书签名信息（包括证书时间、日期、颁发机构）及随机串 2</li><li>客户端收到响应后验证证书的合法性和公钥的正确性（通过请求证书颁发机构来验证证书的合法性）</li><li>证书验证通过后，利用公钥加密一个随机字符串作为后续传输数据的密钥，同时加入利用公钥加密随机串 1 和随机串 2 组成的握手信息，然后发送给服务端</li><li>服务端获取到信息后利用私钥进行解密得到客户端生成的随机字符串把它作为后续传输的密钥，利用密钥对传输的随机串 1 和随机串 2 进行加密，然后返回</li><li>客户端利用上述生成的随机串对返回的信息进行解密，然后验证其合法性，后续传输就是堆成加密传输</li></ol><p><img src="/images/https.svg" alt="HTTPS 获取密钥过程"></p><h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul><li><a href="https://www.jianshu.com/p/33d0f8631f90" target="_blank" rel="noopener">https 建立连接过程</a></li><li><a href="https://blog.csdn.net/xiaoming100001/article/details/81109617" target="_blank" rel="noopener">HTTP 和 HTTPS 协议，看一篇就够了</a></li></ul>]]></content>
     
     <summary type="html">
     
@@ -86,9 +86,9 @@
     </summary>
     
     
-      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
-    
       <category term="计算机网络" scheme="http://yoursite.com/tags/network/"/>
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
     
   </entry>
   
@@ -257,9 +257,9 @@
     </summary>
     
     
-      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
-    
       <category term="计算机网络" scheme="http://yoursite.com/tags/network/"/>
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
     
       <category term="node" scheme="http://yoursite.com/tags/node/"/>
     

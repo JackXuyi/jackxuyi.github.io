@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-04-03T12:03:25.486Z</updated>
+  <updated>2021-04-04T15:05:16.564Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>用Hexo搭建静态博客</title>
+    <link href="http://yoursite.com/2021/04/04/%E7%94%A8Hexo%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/"/>
+    <id>http://yoursite.com/2021/04/04/用Hexo搭建静态博客/</id>
+    <published>2021-04-04T15:05:16.564Z</published>
+    <updated>2021-04-04T15:05:16.564Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><ul><li>Git 安装及使用：<a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="noopener">廖雪峰的网站</a></li><li>Node.js 的安装：<a href="http://www.runoob.com/nodejs/nodejs-install-setup.html" target="_blank" rel="noopener">Node.js 安装配置</a></li><li>Hexo 的安装及使用：<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="noopener">Hexo 文档</a></li><li>yilia 主题的安装配置：<a href="https://github.com/litten/hexo-theme-yilia" target="_blank" rel="noopener">yilia 简介、安装、配置</a></li></ul><h2 id="hexo-环境配置"><a href="#hexo-环境配置" class="headerlink" title="hexo 环境配置"></a>hexo 环境配置</h2><ul><li>创建文件夹 blog 作为项目文件夹</li><li>初始化项目文件夹</li></ul><ul><li><p>指定文件夹初始化</p><pre><code>hexo init blog</code></pre></li><li><p>或者，进入文件夹再初始化</p><pre><code>cd bloghexo init</code></pre></li></ul><ul><li><p>安装插件 deployer</p><pre><code>npm install hexo-deployer-git --save</code></pre></li><li><p>修改根目录下的 _config.yml 文件</p><pre><code>deploy:type: gitrepo: git@github.com:JackXuyi/JackXuyi.github.io.gitbranch: master</code></pre></li><li><p>配置域名：在 source 目录下添加 CNAME 文件，并在文件里写入你的域名</p><pre><code>xuyi-emb.win</code></pre></li></ul><h2 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h2><ul><li>源代码和发布的网站的存储位置不在同一个地方，使用不同分支保存数据，具体解释见 <a href="http://www.zhihu.com/question/21193762" target="_blank" rel="noopener">使用 hexo，如果换了电脑怎么更新博客？</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;环境准备&quot;&gt;&lt;a href=&quot;#环境准备&quot; class=&quot;headerlink&quot; title=&quot;环境准备&quot;&gt;&lt;/a&gt;环境准备&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Git 安装及使用：&lt;a href=&quot;http://www.liaoxuefeng.com/wiki/00137
+      
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="node" scheme="http://yoursite.com/tags/node/"/>
+    
+      <category term="other" scheme="http://yoursite.com/tags/other/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>与native交互</title>
+    <link href="http://yoursite.com/2021/04/04/%E4%B8%8Enative%E4%BA%A4%E4%BA%92/"/>
+    <id>http://yoursite.com/2021/04/04/与native交互/</id>
+    <published>2021-04-03T20:06:35.000Z</published>
+    <updated>2021-04-11T14:00:00.366Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="Hybird-App"><a href="#Hybird-App" class="headerlink" title="Hybird App"></a><code>Hybird App</code></h3><p>在 <code>Native App</code> 引用基础上结合了 <code>Web App</code> 应用所形成的模式，一般通过 <code>webview</code> 的模式引入</p><h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul><li>系统资源较少，包括 <code>CPU</code> 、内存、网卡、网络链接等。</li><li>支持更新的浏览器特性，不用考虑 <code>IE</code> 的兼容性问题</li><li>可以实现离线应用，通过新的浏览器特性或 <code>Native</code> 的文件读取机制进行文件级的文件缓存和离线更新</li><li>不同机型设备的兼容问题</li><li>可以调用客户端 <code>Native</code> 的能力，例如摄像头、定位、传感器、本地文件访问等。</li></ul><h3 id="Web-到-Native-的协议调用"><a href="#Web-到-Native-的协议调用" class="headerlink" title="Web 到 Native 的协议调用"></a><code>Web</code> 到 <code>Native</code> 的协议调用</h3><h4 id="通过-URI-请求"><a href="#通过-URI-请求" class="headerlink" title="通过 URI 请求"></a>通过 <code>URI</code> 请求</h4><p>在系统中注册一个 <code>Schema</code> 协议的 <code>URI</code> ，这个 <code>URI</code> 可以在系统的任意地方调起一段原生方法或一个原生的界面</p><p><img src="/images/webtonative.svg" alt="`web` 通过 `URI` 请求 `Native` 流程"></p><h4 id="通过-addJavascriptInterface-注入方法到页面中调用"><a href="#通过-addJavascriptInterface-注入方法到页面中调用" class="headerlink" title="通过 addJavascriptInterface 注入方法到页面中调用"></a>通过 <code>addJavascriptInterface</code> 注入方法到页面中调用</h4><p>通过 <code>addJavascriptInterface</code> 方法向页面中注入一个全局对象以供调用</p><h4 id="注入对象"><a href="#注入对象" class="headerlink" title="注入对象"></a>注入对象</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明 ws 实例</span></span><br><span class="line">WebSettings ws = webView.getSetting();</span><br><span class="line"><span class="comment">// 开启执行 JavaScript 脚本</span></span><br><span class="line">ws.setJavaScriptEnabled(<span class="keyword">true</span>);</span><br><span class="line"><span class="comment">// 加载页面</span></span><br><span class="line">ws.loadUrl(<span class="string">"xxx"</span>);</span><br><span class="line"><span class="comment">// 注入全局对象</span></span><br><span class="line">ws.addJavascriptInterface(<span class="keyword">new</span> Object(), <span class="string">"native"</span>)</span><br></pre></td></tr></table></figure><h4 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">// 调用注入的 native 方法</span></span></span><br><span class="line">    native.method()</span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><h3 id="Native-到-Web-的调用"><a href="#Native-到-Web-的调用" class="headerlink" title="Native 到 Web 的调用"></a><code>Native</code> 到 <code>Web</code> 的调用</h3><ul><li>安卓：通过 <code>webView.loadUrl</code> 方法实现</li><li>iOS ：通过 <code>stringByEvaluatingJavaScriptFromString</code> 方法实现</li></ul><h4 id="html-定义方法"><a href="#html-定义方法" class="headerlink" title="html 定义方法"></a>html 定义方法</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">msg</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">      <span class="built_in">console</span>.log(msg)</span></span><br><span class="line">    &#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><h4 id="原生调用"><a href="#原生调用" class="headerlink" title="原生调用"></a>原生调用</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明 ws 实例</span></span><br><span class="line">WebSettings ws = webView.getSetting();</span><br><span class="line"><span class="comment">// 开启执行 JavaScript 脚本</span></span><br><span class="line">ws.setJavaScriptEnabled(<span class="keyword">true</span>);</span><br><span class="line"><span class="comment">// 加载页面</span></span><br><span class="line">ws.loadUrl(<span class="string">"xxx"</span>);</span><br><span class="line"><span class="comment">// 调用 js 方法</span></span><br><span class="line">webView.loadUr(<span class="string">"javascript: log('hello world')"</span>)</span><br></pre></td></tr></table></figure><h3 id="JSBridge"><a href="#JSBridge" class="headerlink" title="JSBridge"></a><code>JSBridge</code></h3><p>通信规则： <code>jsBridge://className:callbackMethod/methodName?jsonObj</code></p><h4 id="安卓实现"><a href="#安卓实现" class="headerlink" title="安卓实现"></a>安卓实现</h4><p>通过 <code>prompt</code> 方式调用。 <code>addJavascriptInterface</code> 存在安全漏洞，可以通过 <code>JavascriptInterface</code> 来解决，但是其存在兼容性问题。所以通过 <code>webView.setWebChromeClient</code> 来实现： <code>JavaScript</code> 在执行 <code>alert</code> 和 <code>prompt</code> 时， <code>Native</code> 端会自动触发 <code>onJsAlert</code> 和 <code>onJsPrompt</code> 的方法回调函数，由于 <code>alert</code> 比较常用，所以可以通过重写 <code>onJsPrompt</code> 的方法实现对 <code>Native</code> 端方法的调用</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置 prompt 监听</span></span><br><span class="line">webView.setWebChromeClient(<span class="keyword">new</span> WebChromeClient() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onJsPrompt</span><span class="params">(WebView wv, String url, String msg, String defaultValue, JsPromptResult res)</span> </span>&#123;</span><br><span class="line">        res.confirm(JSBridge.callJsPrompt(MainActivity.<span class="keyword">this</span>, wv, msg));</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><h4 id="iOS-实现"><a href="#iOS-实现" class="headerlink" title="iOS 实现"></a><code>iOS</code> 实现</h4><p>通过 <code>iframe</code> 的方式调用</p><h4 id="调用流程"><a href="#调用流程" class="headerlink" title="调用流程"></a>调用流程</h4><ol><li>安卓通过 <code>prompt(jsBridge://className:callbackMethod/methodName?jsonObj)</code> 调用，<code>iOS</code> 通过 <code>iframe</code> 方式调用</li><li><code>Native</code> 解析协议，调用对应的 <code>className</code> 对象中的 <code>methodName</code> 方法，并把对应的参数 <code>jsonObj</code> 序列化后作为方法的参数</li><li>执行完成后调用 <code>JavaScript</code> 回调函数返回结果</li></ol><p><img src="/images/jsbridge.svg" alt="调用流程"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;Hybird-App&quot;&gt;&lt;a href=&quot;#Hybird-App&quot; class=&quot;headerlink&quot; title=&quot;Hybird App&quot;&gt;&lt;/a&gt;&lt;code&gt;Hybird App&lt;/code&gt;&lt;/h3&gt;&lt;p&gt;在 &lt;code&gt;Native App&lt;/code&gt;
+      
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="other" scheme="http://yoursite.com/tags/other/"/>
+    
+  </entry>
   
   <entry>
     <title>实时协议</title>
@@ -270,7 +323,7 @@
     <link href="http://yoursite.com/2020/12/23/%E8%AE%B0%E4%B8%80%E6%AC%A1%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E4%BC%98%E5%8C%96/"/>
     <id>http://yoursite.com/2020/12/23/记一次项目打包优化/</id>
     <published>2020-12-22T19:19:21.000Z</published>
-    <updated>2020-12-22T12:46:35.011Z</updated>
+    <updated>2021-04-04T15:05:16.567Z</updated>
     
     <content type="html"><![CDATA[<p>由于项目功能越来复杂，打包发布的速度越来越慢，严重影响了开发速度，所以决定优化下打包发布速度</p><h2 id="分析打包流程及耗时"><a href="#分析打包流程及耗时" class="headerlink" title="分析打包流程及耗时"></a>分析打包流程及耗时</h2><h3 id="打包流程"><a href="#打包流程" class="headerlink" title="打包流程"></a>打包流程</h3><ul><li>代码 clone 到打包服务器上</li><li>编译代码，项目采用 nextjs 进行服务端渲染，所以编译编译时分为两个部分，分别为构建服务端 js 和客户端 js，每次编译都要先安装项目依赖，再执行打包构建命令</li><li>构建 docker 容器，项目运行在 docker 容器中，每次打包发布都是构建一个新的容器去替换对应环境的容器</li><li>部署静态资源，把客户端对应的 js 推送到 CDN 上</li><li>替换容器，用之前构建的容器去替换当前环境的容器</li></ul><h3 id="耗时分析"><a href="#耗时分析" class="headerlink" title="耗时分析"></a>耗时分析</h3><ul><li>clone 代码速度由网络和项目大小决定（网络无法控制，源代码不大，优化效果不明显）—— 通常在 10 秒左右</li><li>采用 webpack 进行编译，可以通过插件进行构建优化 —— 通常在 2.5 分钟左右</li><li>构建 docker 容器时会把 node_modules 下的依赖按照生产模式的方式放入容器中 —— 通常在 4.5 分钟左右</li><li>静态资源的上传由上传资源大小及网络决定，上传由基础组控制 —— 2 分钟左右</li><li>替换容器由集群控制，业务方无法控制 —— 通常在 1 分左右</li></ul><h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>通过上面的分析发现，制作 docker 容器和 打包过程最耗费时间，且这两块也在业务方控制之中，所以优化从这两方面着手</p><h3 id="docker-容器优化"><a href="#docker-容器优化" class="headerlink" title="docker 容器优化"></a>docker 容器优化</h3><p>通过查看打包日志发现制作 docker 容器时发现制作容器时发送的上下文达 1G 多，对比其它项目明显偏大</p><h4 id="优化方向分析"><a href="#优化方向分析" class="headerlink" title="优化方向分析"></a>优化方向分析</h4><ul><li>发送的上下文是在生产模式下安装的依赖，即只会安装 <code>dependencies</code> 下的依赖 —— 考虑把所有非服务端必须的依赖安装到 <code>devDependencies</code> 中以减小上下文大小</li><li>由于需要 SEO 优化，优化不能减少服务端渲染时的页面内容 —— 只能优化对页面内容没有影响但是需要客户端交互及样式操作相关的库</li></ul><h4 id="优化操作"><a href="#优化操作" class="headerlink" title="优化操作"></a>优化操作</h4><ul><li>通过 webpack 插件提取项目中使用的依赖，结合 package.json 的配置，筛选出项目中无用的依赖</li><li>筛选出 <code>dependencies</code> 中的依赖是否可以只在客户端渲染时引入，例如 <code>react-copy-to-clipboard</code> 只会在客户端执行复制操作就可以放入 <code>devDependencies</code> 中以便只在客户端引入</li></ul><h4 id="优化效果"><a href="#优化效果" class="headerlink" title="优化效果"></a>优化效果</h4><p>构建 docker 容器的时间从优化前的 4.5 分钟左右下降到 2.5 分钟左右，优化了 50%</p><h3 id="webpack-打包优化"><a href="#webpack-打包优化" class="headerlink" title="webpack 打包优化"></a>webpack 打包优化</h3><p>此项目是基于 webpack 4.x 进行打包的，可以通过插件和 webpack 配置及 loader 的形式进行打包优化</p><h4 id="webpack-4-使用-v8-引擎带来的优化"><a href="#webpack-4-使用-v8-引擎带来的优化" class="headerlink" title="webpack 4 使用 v8 引擎带来的优化"></a>webpack 4 使用 v8 引擎带来的优化</h4><ul><li>for of 替代 forEach</li><li>Map 和 Set 替代 Object</li><li>includes 替代 indexOf()</li><li>默认使用更快的 md4 hash 算法 替代 md5 算法，md4 较 md5 速度更快</li><li>webpack AST 可以直接从 loader 传递给 AST，从而减少解析时间</li><li>使用字符串方法替代正则表达式</li></ul><h4 id="优化方向分析-1"><a href="#优化方向分析-1" class="headerlink" title="优化方向分析"></a>优化方向分析</h4><p>通过 <a href="https://www.npmjs.com/package/speed-measure-webpack-plugin" target="_blank" rel="noopener">speed-measure-webpack-plugin</a> 插件进行打包耗时分析</p><ul><li>通过配置 <code>exclude / include</code> 和忽略第三方包指定目录及通过 externals 缩小打包文件范围</li><li>多进程并行打包和代码压缩</li><li>缓存编译结果</li><li>babel 配置的优化</li></ul><h4 id="优化操作-1"><a href="#优化操作-1" class="headerlink" title="优化操作"></a>优化操作</h4><p>通过研究框架 webpack 配置发现项目已经引入 <code>cache-loader</code>、<code>thread-loader</code> 等 <code>loader</code> 和插件及配置优化代码打包速度，所以未做 <code>webpack</code> 打包优化</p><ul><li>引入 <code>speed-measure-webpack-plugin</code> 查看打包耗时</li></ul><h3 id="相关知识点"><a href="#相关知识点" class="headerlink" title="相关知识点"></a>相关知识点</h3><ul><li><a href="https://www.webpackjs.com/concepts/" target="_blank" rel="noopener">webpack</a></li><li><a href="https://yeasy.gitbook.io/docker_practice/" target="_blank" rel="noopener">docker</a></li></ul>]]></content>
     
@@ -285,7 +338,11 @@
     </summary>
     
     
-      <category term="其它" scheme="http://yoursite.com/tags/other/"/>
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="node" scheme="http://yoursite.com/tags/node/"/>
+    
+      <category term="other" scheme="http://yoursite.com/tags/other/"/>
     
   </entry>
   
@@ -388,7 +445,7 @@
     <link href="http://yoursite.com/2020/09/21/antd%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>http://yoursite.com/2020/09/21/antd中遇到的问题（一）/</id>
     <published>2020-09-20T22:42:42.000Z</published>
-    <updated>2020-09-22T12:51:25.922Z</updated>
+    <updated>2021-04-04T15:05:16.559Z</updated>
     
     <content type="html"><![CDATA[<h3 id="antd-v4-版本中-Form-Item-子组件-value-不生效问题"><a href="#antd-v4-版本中-Form-Item-子组件-value-不生效问题" class="headerlink" title="antd v4 版本中 Form.Item 子组件 value 不生效问题"></a>antd v4 版本中 Form.Item 子组件 value 不生效问题</h3><h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>在 <code>Form.Item</code> 中使用 <code>Input</code> 输入框设置 <code>value</code> 时发现其不生效，查看使用文档也没有发现问题</p><h4 id="猜测"><a href="#猜测" class="headerlink" title="猜测"></a>猜测</h4><p><code>Form.Item</code> 对子组件的 <code>value</code> 属性做了劫持，导致手动设置的 <code>value</code> 被覆盖</p><h4 id="代码验证"><a href="#代码验证" class="headerlink" title="代码验证"></a>代码验证</h4><ol><li>通过查找 <code>return</code> 语句，发现执行了 <code>renderLayout</code> 这个方法</li><li>查看 <code>renderLayout</code> 的具体实现子组件实际渲染的是方法的实际参数 <code>baseChildren</code></li><li>查看 <code>renderLayout</code> 的调用发现在 <code>!hasName &amp;&amp; !isRenderProps &amp;&amp; !dependencies</code> 才会直接渲染子组件，其它情况会注入 <code>value</code> 等属性</li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 先执行</span><br><span class="line">if (!hasName &amp;&amp; !isRenderProps &amp;&amp; !dependencies) &#123;</span><br><span class="line">  return renderLayout(children)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 再执行</span><br><span class="line">if (React.isValidElement(children)) &#123;</span><br><span class="line">  childNode = (</span><br><span class="line">    &lt;MemoInput</span><br><span class="line">      value=&#123;mergedControl[props.valuePropName || &apos;value&apos;]&#125;</span><br><span class="line">      update=&#123;updateRef.current&#125;</span><br><span class="line">    &gt;</span><br><span class="line">      &#123;React.cloneElement(children, childProps)&#125;</span><br><span class="line">    &lt;/MemoInput&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h4><p>去除 <code>Form.Item</code> 中的 <code>name</code> 属性，验证 <code>value</code> 属性生效</p>]]></content>
     
@@ -403,8 +460,6 @@
     
     
       <category term="react" scheme="http://yoursite.com/tags/react/"/>
-    
-      <category term="antd" scheme="http://yoursite.com/tags/antd/"/>
     
   </entry>
   
@@ -442,7 +497,7 @@
     <link href="http://yoursite.com/2020/09/14/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>http://yoursite.com/2020/09/14/mysql数据库操作（一）/</id>
     <published>2020-09-13T22:21:24.000Z</published>
-    <updated>2020-09-13T14:49:30.815Z</updated>
+    <updated>2021-04-04T15:05:16.561Z</updated>
     
     <content type="html"><![CDATA[<h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><p><code>CREATE USER &#39;username&#39;@&#39;host&#39; IDENTIFIED BY &#39;password&#39;;</code></p><ul><li><code>host</code> 代表可以登录地址，<code>%</code> 表示任意地址</li><li>可选选项 <code>WITH mysql_native_password</code> 语句表示密码的存储方式</li></ul><h3 id="修改用户密码"><a href="#修改用户密码" class="headerlink" title="修改用户密码"></a>修改用户密码</h3><p><code>ALTER USER &#39;username&#39;@&#39;host&#39; IDENTIFIED WITH mysql_native_password BY &#39;password&#39;;</code></p><h3 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h3><p><code>grant 权限 privileges on dbName.数据表 to &#39;tools&#39;;</code></p><ul><li>权限包括增删查改，<code>all</code> 代表所有权限</li><li>数据库和数据表可以用 <code>*</code> 表示通配</li></ul><h3 id="刷新权限"><a href="#刷新权限" class="headerlink" title="刷新权限"></a>刷新权限</h3><p><code>FLUSH PRIVILEGES;</code></p><ul><li>数据权限并不会自动更新，需要手动执行命令才会刷新</li></ul><h3 id="查看列表数据库"><a href="#查看列表数据库" class="headerlink" title="查看列表数据库"></a>查看列表数据库</h3><p><code>show databases;</code></p><h3 id="查看数据表的结构"><a href="#查看数据表的结构" class="headerlink" title="查看数据表的结构"></a>查看数据表的结构</h3><p><code>desc 数据库.数据表;</code></p>]]></content>
     
@@ -456,57 +511,13 @@
     </summary>
     
     
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="node" scheme="http://yoursite.com/tags/node/"/>
+    
       <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
     
-  </entry>
-  
-  <entry>
-    <title>浏览器缓存</title>
-    <link href="http://yoursite.com/2020/08/31/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98/"/>
-    <id>http://yoursite.com/2020/08/31/浏览器缓存/</id>
-    <published>2020-08-30T21:35:19.000Z</published>
-    <updated>2020-09-13T14:19:41.464Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="缓存分类"><a href="#缓存分类" class="headerlink" title="缓存分类"></a>缓存分类</h3><ul><li>共享缓存：存储的响应能够被多个用户使用。</li><li>私有缓存：只能用于单独用户。</li></ul><h3 id="缓存方式"><a href="#缓存方式" class="headerlink" title="缓存方式"></a>缓存方式</h3><ul><li>浏览器与代理缓存</li><li>网关缓存</li><li>CDN</li><li>反向代理缓存和负载均衡器</li></ul><h3 id="操作的目标"><a href="#操作的目标" class="headerlink" title="操作的目标"></a>操作的目标</h3><p>常见的 HTTP 缓存只能存储 GET 响应，对于其他类型的响应则无能为力。缓存的关键主要包括 request method 和目标 URI（一般只有 GET 请求才会被缓存）。</p><h3 id="缓存控制"><a href="#缓存控制" class="headerlink" title="缓存控制"></a>缓存控制</h3><h4 id="没有缓存"><a href="#没有缓存" class="headerlink" title="没有缓存"></a>没有缓存</h4><p>缓存中不得存储任何关于客户端请求和服务端响应的内容。每次由客户端发起的请求都会下载完整的响应内容。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: no-store</span><br></pre></td></tr></table></figure><h4 id="缓存但重新验证"><a href="#缓存但重新验证" class="headerlink" title="缓存但重新验证"></a>缓存但重新验证</h4><p>每次有请求发出时，缓存会将此请求发到服务器，服务器端会验证请求中所描述的缓存是否过期，若未过期，则缓存才使用本地缓存副本。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: no-cache</span><br></pre></td></tr></table></figure><h4 id="私有和公共缓存"><a href="#私有和公共缓存" class="headerlink" title="私有和公共缓存"></a>私有和公共缓存</h4><ul><li>“public” 指令表示该响应可以被任何中间人（译者注：比如中间代理、CDN 等）缓存。</li><li>“private” 则表示该响应是专用于某单个用户的，中间人不能缓存此响应，该响应只能应用于浏览器私有缓存中。</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: private</span><br><span class="line">Cache-Control: public</span><br></pre></td></tr></table></figure><h4 id="过期"><a href="#过期" class="headerlink" title="过期"></a>过期</h4><p>过期机制中，最重要的指令是 “max-age=<seconds>“，表示资源能够被缓存（保持新鲜）的最大时间。相对 Expires 而言，max-age 是距离请求发起的时间的秒数。针对应用中那些不会改变的文件，通常可以手动设置一定的时长以保证缓存有效，例如图片、css、js 等静态资源。</seconds></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: max-age=31536000</span><br></pre></td></tr></table></figure><h4 id="验证方式"><a href="#验证方式" class="headerlink" title="验证方式"></a>验证方式</h4><p>当使用了 “must-revalidate” 指令，那就意味着缓存在考虑使用一个陈旧的资源时，必须先验证它的状态，已过期的缓存将不被使用。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: must-revalidate</span><br></pre></td></tr></table></figure><h3 id="Pragma-头"><a href="#Pragma-头" class="headerlink" title="Pragma 头"></a>Pragma 头</h3><p>Pragma 是 HTTP/1.0 标准中定义的一个 header 属性，请求中包含 Pragma 的效果跟在头信息中定义 Cache-Control: no-cache 相同，但是 HTTP 的响应头没有明确定义这个属性，所以它不能拿来完全替代 HTTP/1.1 中定义的 Cache-control 头。通常定义 Pragma 以向后兼容基于 HTTP/1.0 的客户端。</p><h3 id="新鲜度"><a href="#新鲜度" class="headerlink" title="新鲜度"></a>新鲜度</h3><p>理论上来讲，当一个资源被缓存存储后，该资源应该可以被永久存储在缓存中。</p><h4 id="缓存驱逐"><a href="#缓存驱逐" class="headerlink" title="缓存驱逐"></a>缓存驱逐</h4><p>由于缓存只有有限的空间用于存储资源副本，所以缓存会定期地将一些副本删除。当服务器上面的资源进行了更新，那么缓存中的对应资源也应该被更新，由于 HTTP 是 C/S 模式的协议，服务器更新一个资源时，不可能直接通知客户端更新缓存，所以双方必须为该资源约定一个过期时间，在该过期时间之前，该资源（缓存副本）就是新鲜的，当过了过期时间后，该资源（缓存副本）则变为陈旧的。驱逐算法用于将陈旧的资源（缓存副本）替换为新鲜的，注意，一个陈旧的资源（缓存副本）是不会直接被清除或忽略的，当客户端发起一个请求时，缓存检索到已有一个对应的陈旧资源（缓存副本），则缓存会先将此请求附加一个 If-None-Match 头，然后发给目标服务器，以此来检查该资源副本是否是依然还是算新鲜的，若服务器返回了 304 (Not Modified)（该响应不会有带有实体信息），则表示此资源副本是新鲜的，这样一来，可以节省一些带宽。若服务器通过 If-None-Match 或 If-Modified-Since 判断后发现已过期，那么会带有该资源的实体内容返回。<br><img src="/images/js/cache.png" alt="缓存驱逐过程"></p><h5 id="缓存的先后顺序"><a href="#缓存的先后顺序" class="headerlink" title="缓存的先后顺序"></a>缓存的先后顺序</h5><p>对于含有特定头信息的请求，会去计算缓存寿命。</p><ul><li>max-age：Cache-control: max-age=N 的头，相应的缓存的寿命就是 N。</li><li>expires：通过比较 Expires 的值和头里面 Date 属性的值来判断是否缓存还有效。</li><li>Last-Modified： 缓存的寿命就等于头里面 Date 的值减去 Last-Modified 的值除以 10（注：根据 rfc2626 其实也就是乘以 10%）</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expirationTime = responseTime + freshnessLifetime - currentAge</span><br></pre></td></tr></table></figure><h6 id="注：responseTime-表示浏览器接收到此响应的那个时间点。"><a href="#注：responseTime-表示浏览器接收到此响应的那个时间点。" class="headerlink" title="注：responseTime 表示浏览器接收到此响应的那个时间点。"></a>注：responseTime 表示浏览器接收到此响应的那个时间点。</h6><h3 id="缓存验证"><a href="#缓存验证" class="headerlink" title="缓存验证"></a>缓存验证</h3><p>用户点击刷新按钮时会开始缓存验证。</p><ul><li>如果缓存的响应头信息里含有”Cache-control: must-revalidate”的定义，在浏览的过程中也会触发缓存验证。</li><li>在浏览器偏好设置里设置 Advanced-&gt;Cache 为强制验证缓存也能达到相同的效果。</li></ul><p>当缓存的文档过期后，需要进行缓存验证或者重新获取资源。只有在服务器返回强校验器或者弱校验器时才会进行验证。</p><h4 id="ETags"><a href="#ETags" class="headerlink" title="ETags"></a>ETags</h4><ul><li>作为缓存的一种强校验器，ETag 响应头是一个对用户代理(User Agent, 下面简称 UA)不透明（译者注：UA 无需理解，只需要按规定使用即可）的值。对于像浏览器这样的 HTTP UA，不知道 ETag 代表什么，不能预测它的值是多少。如果资源请求的响应头里含有 ETag, 客户端可以在后续的请求的头中带上 If-None-Match 头来验证缓存。</li><li>Last-Modified 响应头可以作为一种弱校验器。说它弱是因为它只能精确到一秒。如果响应头里含有这个信息，客户端可以在后续的请求中带上 If-Modified-Since 来验证缓存。</li></ul><p>当向服务端发起缓存校验的请求时，服务端会返回 200 ok 表示返回正常的结果或者 304 Not Modified(不返回 body)表示浏览器可以使用本地缓存文件。304 的响应头也可以同时更新缓存文档的过期时间。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;缓存分类&quot;&gt;&lt;a href=&quot;#缓存分类&quot; class=&quot;headerlink&quot; title=&quot;缓存分类&quot;&gt;&lt;/a&gt;缓存分类&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;共享缓存：存储的响应能够被多个用户使用。&lt;/li&gt;
-&lt;li&gt;私有缓存：只能用于单独用户。&lt;/li&gt;
-&lt;/ul&gt;
-
-      
-    
-    </summary>
-    
-    
-      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>babel编译过程</title>
-    <link href="http://yoursite.com/2020/08/30/babel%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B/"/>
-    <id>http://yoursite.com/2020/08/30/babel编译过程/</id>
-    <published>2020-08-30T15:23:25.000Z</published>
-    <updated>2020-09-13T14:19:41.460Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="编译步骤"><a href="#编译步骤" class="headerlink" title="编译步骤"></a>编译步骤</h3><p>Babel 编译文件的主要处理步骤依次是：解析（parse）、转换（transform）、生成（generate）。</p><ul><li>解析：解析步骤主要是接受源代码并输出抽象语法树（AST）。此步骤主要由@babel/parser（原 Babylon）负责解析和理解 js 代码，输出对应的 AST。</li><li>转换：转换步骤主要是接受 AST，并对其进行遍历，在此过程中会进行分析和修改 AST，这也是 Babel 插件主要工作的地方。此步骤主要用到@babel/traverse 和@babel/types 两个包。</li><li>生成：生成步骤主要是将（经过一系列转换之后的）AST 再转换为正常的字符串代码。此步骤主要由@babel/generator 深度优先遍历整个 AST，然后构建可以表示转换后代码的字符串。</li></ul><h5 id="注：AST-其实是一个每个节点包含特定属性的对象树"><a href="#注：AST-其实是一个每个节点包含特定属性的对象树" class="headerlink" title="注：AST 其实是一个每个节点包含特定属性的对象树"></a>注：AST 其实是一个每个节点包含特定属性的对象树</h5><h3 id="实现-babel-的编译过程"><a href="#实现-babel-的编译过程" class="headerlink" title="实现 babel 的编译过程"></a>实现 babel 的编译过程</h3><ul><li>使用 <code>@babel/parser</code> 把代码格式化为 <code>AST</code> 树</li><li>使用 <code>@babel/traverse</code> 和 <code>@babel/types</code> 实现 <code>AST</code> 树的遍历及对树的特定节点的操作</li><li>使用 <code>@babel/generator</code> 生成目标代码</li></ul><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> parser = <span class="built_in">require</span>(<span class="string">'@babel/parser'</span>)</span><br><span class="line"><span class="keyword">const</span> traverse = <span class="built_in">require</span>(<span class="string">'@babel/traverse'</span>).default</span><br><span class="line"><span class="keyword">const</span> type = <span class="built_in">require</span>(<span class="string">'@babel/types'</span>)</span><br><span class="line"><span class="keyword">const</span> generate = <span class="built_in">require</span>(<span class="string">'@babel/generator'</span>).default</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> code = <span class="string">`</span></span><br><span class="line"><span class="string">function test(n)&#123;</span></span><br><span class="line"><span class="string">    return n + 1</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"><span class="keyword">const</span> ast = parser.parse(code, &#123; <span class="attr">sourceType</span>: <span class="string">'module'</span> &#125;) <span class="comment">// 把代码格式化为 AST 树</span></span><br><span class="line"></span><br><span class="line">traverse(ast, &#123;</span><br><span class="line">  <span class="comment">// 遍历 AST 树并进行操作</span></span><br><span class="line">  enter(path) &#123;</span><br><span class="line">    <span class="comment">// 从根节点到叶子节点遍历过程中</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'enter'</span>, path.node.name)</span><br><span class="line">    <span class="keyword">if</span> (type.isIdentifier(path.node, &#123; <span class="attr">name</span>: <span class="string">'n'</span> &#125;)) &#123;</span><br><span class="line">      <span class="comment">// 把参数 n 转化成 x</span></span><br><span class="line">      path.replaceWith(type.identifier(<span class="string">'x'</span>))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  exit(path) &#123;</span><br><span class="line">    <span class="comment">// 从叶子节点到根节点遍历过程中</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'exit'</span>, path.node.name)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> target = generate(ast) <span class="comment">// 生成代码</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(target.code)</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">function test(x) &#123;</span></span><br><span class="line"><span class="comment">  return x + 1;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul><li><a href="https://github.com/jamiebuilds/babel-handbook/blob/master/translations/zh-Hans/plugin-handbook.md#toc-writing-your-first-babel-plugin" target="_blank" rel="noopener">Babel 插件手册</a></li><li><a href="https://github.com/Liaoct/blog/issues/14" target="_blank" rel="noopener">Babel 7 插件开发指南</a></li><li><a href="https://github.com/JackXuyi/web-exercise/blob/master/babel/test.js" target="_blank" rel="noopener">示例代码</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;编译步骤&quot;&gt;&lt;a href=&quot;#编译步骤&quot; class=&quot;headerlink&quot; title=&quot;编译步骤&quot;&gt;&lt;/a&gt;编译步骤&lt;/h3&gt;&lt;p&gt;Babel 编译文件的主要处理步骤依次是：解析（parse）、转换（transform）、生成（generate）。&lt;/p&gt;
-      
-    
-    </summary>
-    
-    
-      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+      <category term="express" scheme="http://yoursite.com/tags/express/"/>
     
   </entry>
   

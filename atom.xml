@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-04-04T15:05:16.564Z</updated>
+  <updated>2021-05-30T06:44:31.767Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,56 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>react中的异步实现</title>
+    <link href="http://yoursite.com/2021/05/30/react%E4%B8%AD%E7%9A%84%E5%BC%82%E6%AD%A5%E5%AE%9E%E7%8E%B0/"/>
+    <id>http://yoursite.com/2021/05/30/react中的异步实现/</id>
+    <published>2021-05-30T13:37:54.000Z</published>
+    <updated>2021-05-30T06:44:31.767Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h3><p>由于 <code>JS</code> 是单线程非阻塞的，所有的任务都需要在这个线程中来处理。当需要执行异步任务时主线程会先挂起这个任务，当异步任务执行完毕之后主线程会根据规则执行回调。当任务处理完毕之后， <code>JS</code> 会将这个事件加入队列中，这个队列即被称为事件队列。</p><h4 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h4><ul><li>进程： <code>CPU</code> 在运行指令及加载和保存上下文所需的时间，放在应用上来说就代表了一个程序。</li><li>线程： 进程中的更小单位，描述了执行一段指令所需的时间。</li></ul><p>在浏览器中，当你打开一个 <code>Tab</code> 页时，其实就是创建了一个进程，一个进程中可以有多个线程，比如渲染线程、<code>JS</code> 引擎线程、<code>HTTP</code> 请求线程等等。当你发起一个请求时，其实就是创建了一个线程，当请求结束后，该线程可能就会被销毁。</p><p>在 <code>JS</code> 运行的时候会阻止 <code>UI</code> 渲染，这是因为 <code>JS</code> 可以修改 <code>DOM</code>，如果在 <code>JS</code> 执行的时候 <code>UI</code> 线程还在工作，就可能导致不能安全的渲染 <code>UI</code>。这其实也是一个单线程的好处，得益于 <code>JS</code> 是单线程运行的，可以达到节省内存，节约上下文切换时间，没有锁的问题的好处。</p><p>对于锁的问题，形象的来说就是当我读取一个数字 <code>15</code> 的时候，同时有两个操作对数字进行了加减，这时候结果就出现了错误。解决这个问题也不难，只需要在读取的时候加锁，直到读取完毕之前都不能进行写入操作。</p><h4 id="执行栈"><a href="#执行栈" class="headerlink" title="执行栈"></a>执行栈</h4><p>所有的 <code>JS</code> 代码在运行时都是在执行上下文中进行的。<code>JS</code> 中有三种执行上下文：</p><ul><li>全局执行上下文，默认的，浏览器中是 <code>window</code> 对象，<code>nodejs</code> 中是 <code>global</code>，并且 <code>this</code> 在非严格模式下指向它们。</li><li>函数执行上下文，<code>JS</code> 的函数每当被调用时会创建一个上下文。</li><li><code>Eval</code> 执行上下文，<code>eval</code> 函数会产生自己的上下文。</li></ul><p>栈是一种数据结构，具有先进后出的原则。<code>JS</code> 中的执行栈就具有这样的结构，当引擎第一次遇到 <code>JS</code> 代码时，会产生一个全局执行上下文并压入执行栈，每遇到一个函数调用，就会往栈中压入一个新的上下文。引擎执行栈顶的函数，执行完毕，弹出当前执行上下文。</p><h4 id="微任务和宏任务"><a href="#微任务和宏任务" class="headerlink" title="微任务和宏任务"></a>微任务和宏任务</h4><p>异步任务被分为两种类型，微任务和宏任务</p><h5 id="微任务"><a href="#微任务" class="headerlink" title="微任务"></a>微任务</h5><ul><li><code>Promise.then</code></li><li><code>MutationObserver</code></li><li><code>process.nextTick</code></li></ul><h5 id="宏任务"><a href="#宏任务" class="headerlink" title="宏任务"></a>宏任务</h5><ul><li><code>script</code>(整体代码)</li><li><code>setTimout</code></li><li><code>setInterval</code></li><li><code>setImmediate</code></li><li><code>MessageChannel</code></li><li><code>requestAnimationFrame</code></li><li><code>postMessage</code></li><li><code>I/O</code></li><li><code>UI</code> 交互事件</li></ul><h4 id="事件循环-1"><a href="#事件循环-1" class="headerlink" title="事件循环"></a>事件循环</h4><p><code>Event Loop</code>(事件循环)中，每一次循环称为 <code>tick</code>, 每一次 <code>tick</code> 的任务如下：</p><ol><li>执行栈选择最先进入队列的宏任务(通常是 <code>script</code> 整体代码)，如果有则执行</li><li>检查是否存在 <code>Microtask</code>，如果存在则不停的执行，直至清空 <code>microtask</code> 队列</li><li>更新 <code>render</code>(每一次事件循环，浏览器都可能会去更新渲染)</li><li>重复以上步骤</li></ol><p>宏任务 &gt; 所有微任务 &gt; 宏任务，如下图所示：</p><p><img src="/images/js/eventLoop.jpg" alt="新建工程"></p><ol><li>将所有任务看成两个队列：执行队列与事件队列。</li><li>执行队列是同步的，事件队列是异步的，宏任务放入事件列表，微任务放入执行队列之后，事件队列之前。</li><li>当执行完同步代码之后，就会执行位于执行列表之后的微任务，然后再执行事件列表中的宏任务</li></ol><h3 id="react-中的异步实现"><a href="#react-中的异步实现" class="headerlink" title="react 中的异步实现"></a>react 中的异步实现</h3><p><code>react</code> 中的异步是通过宏任务来实现的，优先使用 <code>setImmediate</code> ，然后使用 <code>MessageChannel</code>，若都不支持则使用 <code>setTimeout</code> 实现</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> schedulePerformWorkUntilDeadline</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> localSetImmediate === <span class="string">'function'</span>) &#123;</span><br><span class="line">  <span class="comment">// Node.js and old IE.</span></span><br><span class="line">  <span class="comment">// There's a few reasons for why we prefer setImmediate.</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// Unlike MessageChannel, it doesn't prevent a Node.js process from exiting.</span></span><br><span class="line">  <span class="comment">// (Even though this is a DOM fork of the Scheduler, you could get here</span></span><br><span class="line">  <span class="comment">// with a mix of Node.js 15+, which has a MessageChannel, and jsdom.)</span></span><br><span class="line">  <span class="comment">// https://github.com/facebook/react/issues/20756</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// But also, it runs earlier which is the semantic we want.</span></span><br><span class="line">  <span class="comment">// If other browsers ever implement it, it's better to use it.</span></span><br><span class="line">  <span class="comment">// Although both of these would be inferior to native scheduling.</span></span><br><span class="line">  schedulePerformWorkUntilDeadline = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    localSetImmediate(performWorkUntilDeadline)</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> MessageChannel !== <span class="string">'undefined'</span>) &#123;</span><br><span class="line">  <span class="comment">// DOM and Worker environments.</span></span><br><span class="line">  <span class="comment">// We prefer MessageChannel because of the 4ms setTimeout clamping.</span></span><br><span class="line">  <span class="keyword">const</span> channel = <span class="keyword">new</span> MessageChannel()</span><br><span class="line">  <span class="keyword">const</span> port = channel.port2</span><br><span class="line">  channel.port1.onmessage = performWorkUntilDeadline</span><br><span class="line">  schedulePerformWorkUntilDeadline = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    port.postMessage(<span class="literal">null</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// We should only fallback here in non-browser environments.</span></span><br><span class="line">  schedulePerformWorkUntilDeadline = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    localSetTimeout(performWorkUntilDeadline, <span class="number">0</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ol><li>判断是否存在 <code>setImmediate</code>，如果存在则使用 <code>setImmediate</code>，不存在下一步</li><li>判断是否支持 <code>MessageChannel</code>，如果支持则创建一个消息通道，通过消息通道实现宏任务，否则进行下一步</li><li>回落到 <code>setTimeout</code> 实现异步</li></ol><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul><li><a href="https://zhuanlan.zhihu.com/p/59784952" target="_blank" rel="noopener">深入理解 JavaScript 执行上下文和执行栈</a></li><li><a href="https://segmentfault.com/a/1190000015317434" target="_blank" rel="noopener">Js 的事件循环(Event Loop)机制以及实例讲解</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MessageChannel" target="_blank" rel="noopener">MessageChannel</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;事件循环&quot;&gt;&lt;a href=&quot;#事件循环&quot; class=&quot;headerlink&quot; title=&quot;事件循环&quot;&gt;&lt;/a&gt;事件循环&lt;/h3&gt;&lt;p&gt;由于 &lt;code&gt;JS&lt;/code&gt; 是单线程非阻塞的，所有的任务都需要在这个线程中来处理。当需要执行异步任务时主线程会先挂
+      
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="react" scheme="http://yoursite.com/tags/react/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>前端框架</title>
+    <link href="http://yoursite.com/2021/04/18/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/"/>
+    <id>http://yoursite.com/2021/04/18/前端框架/</id>
+    <published>2021-04-17T22:48:43.000Z</published>
+    <updated>2021-05-30T06:44:31.768Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="DOM-操作时代"><a href="#DOM-操作时代" class="headerlink" title="DOM 操作时代"></a>DOM 操作时代</h3><p>代表库 <a href="https://jquery.com/" target="_blank" rel="noopener"><code>jQuery</code></a> 和 <a href="https://zeptojs.com/" target="_blank" rel="noopener"><code>zepto</code></a></p><ul><li>简化选择器</li><li>简化 <code>DOM</code> 操作</li><li>简化 <code>AJAX</code> 操作</li><li>统一事件绑定</li><li>兼容性实现</li><li>延时对象（<code>$.Deferred</code>）</li></ul><h4 id="DOM-操作的一般流程"><a href="#DOM-操作的一般流程" class="headerlink" title="DOM 操作的一般流程"></a>DOM 操作的一般流程</h4><ol><li><code>DOM</code> 加载</li><li><code>js</code> 脚本加载</li><li><code>js</code>脚本执行，发送异步请求获取数据</li><li>操作 <code>DOM</code> 进行数据渲染</li><li>对 <code>DOM</code> 节点进行事件绑定</li></ol><p><img src="/images/domprocess.png" alt="DOM 操作流程"></p><h3 id="MV-交互模式"><a href="#MV-交互模式" class="headerlink" title="MV* 交互模式"></a>MV* 交互模式</h3><h4 id="MVC-模式"><a href="#MVC-模式" class="headerlink" title="MVC 模式"></a>MVC 模式</h4><p>将 <code>DOM</code> 交互部分的内容分为数据模型、视图和事件控制三部分</p><ul><li><code>Model</code>：存放请求的数据结果和数据对象</li><li><code>View</code>: 页面 <code>DOM</code> 的更新与修改</li><li><code>Controller</code>: 根据前端路由条件调用不同的 <code>Model</code> 和 <code>View</code>渲染不同的数据内容</li></ul><p>用户的操作直接通过 <code>Controller</code> 控制</p><h4 id="MVP-模式"><a href="#MVP-模式" class="headerlink" title="MVP 模式"></a>MVP 模式</h4><p><code>Model-View-Presenter</code>，将 <code>DOM</code> 交互部分的内容分为数据模型、视图和 <code>Presenter</code> 三部分</p><ul><li><code>Model</code>：存放请求的数据结果和数据对象（仅提供数据）</li><li><code>View</code>: 页面 <code>DOM</code> 的更新与修改（仅提供视图模板）</li><li><code>Presenter</code>: 根据前端路由条件调用不同的 <code>Model</code> 和 <code>View</code>渲染不同的数据内容（主要的逻辑处理）</li></ul><p><code>Presenter</code> 与 <code>View</code> 的绑定是双向的，<code>Presenter</code> 的改变会改变 <code>View</code>，<code>View</code> 的改变也会触发 <code>Presenter</code>，所有的逻辑调用数据和渲染视图 <code>View</code> 模板都在 <code>Presenter</code> 中完成，同时用户在 <code>View</code> 层操作的改变反馈到 <code>Presenter</code> 改变 <code>Model</code>并渲染新的 <code>View</code> 视图。</p><ul><li>优点：只需关注 <code>Presenter</code> 的逻辑</li><li>缺点：内容较重</li></ul><h4 id="MVVM-模式"><a href="#MVVM-模式" class="headerlink" title="MVVM 模式"></a>MVVM 模式</h4><p>自动化的 <code>MVP</code> 框架，用 <code>ViewModel</code> 代替 <code>Presenter</code>，<code>Model</code> 的调用和 <code>View</code> 由 <code>ViewModel</code> 自动触发完成<br>用户操作时， <code>ViewModel</code> 捕获数据变化，将变化反应到 <code>View</code> 上。 <code>ViewModel</code> 的数据操作最终在页面上以 <code>Directive</code> 的形式体现，通过对 <code>Directive</code> 的识别来渲染数据或绑定事件。</p><h5 id="通用基本设计"><a href="#通用基本设计" class="headerlink" title="通用基本设计"></a>通用基本设计</h5><ul><li><code>Directive</code>: 指令，即自定义执行函数</li><li><code>Filter</code>: 过滤器，对传入的初始数据信进行处理，然后把处理结果交给下一步（<code>Directive</code> 或 <code>Filter</code>）。</li><li>表达式：控制页面内容按照具体条件展示</li><li><code>ViewModel</code>: 实现传入的 <code>Model</code> 数据在内存中存放，也提供一些基本的读取或修改数据的 <code>API</code></li><li>数据变更检查： 即数据变化自动触发其它操作，通过手动触发、脏检测、对象劫持、<code>Proxy</code> 等</li></ul><h6 id="数据变更检查"><a href="#数据变更检查" class="headerlink" title="数据变更检查"></a>数据变更检查</h6><ul><li>手动触发: 通过在数据对象上定义 <code>get</code> 和 <code>set</code> 方法，调用时手动触发 <code>get</code> 和 <code>set</code> 来获取和修改数据，改变后主动触发 <code>get</code> 和 <code>set</code> 中 <code>View</code> 层的重新渲染功能</li><li>脏检测: 在 <code>ViewModel</code> 对象的某个属性值发生变化时找到与这个属性值相关的所有元素，然后比较数据变化，如果有变化则进行 <code>Directive</code> 指令调用，对这个元素进行重新扫描渲染</li><li>前端数据对象劫持： 使用 <code>Object.defineProperty</code> 和 <code>Object.defineProperties</code> 对 <code>ViewModel</code> 数据对象进行属性 <code>get</code> 和 <code>set</code> 的监听，当有数据读取和赋值时则扫描节点元素，运行指定对应节点的 <code>Directive</code> 指令。</li><li><code>ES6 Proxy</code>:类似与 <code>Object.defineProperty</code> 和 <code>Object.defineProperties</code></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;DOM-操作时代&quot;&gt;&lt;a href=&quot;#DOM-操作时代&quot; class=&quot;headerlink&quot; title=&quot;DOM 操作时代&quot;&gt;&lt;/a&gt;DOM 操作时代&lt;/h3&gt;&lt;p&gt;代表库 &lt;a href=&quot;https://jquery.com/&quot; target=&quot;_bla
+      
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="other" scheme="http://yoursite.com/tags/other/"/>
+    
+  </entry>
   
   <entry>
     <title>用Hexo搭建静态博客</title>
@@ -88,9 +138,9 @@
     </summary>
     
     
-      <category term="计算机网络" scheme="http://yoursite.com/tags/network/"/>
-    
       <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="计算机网络" scheme="http://yoursite.com/tags/network/"/>
     
       <category term="node" scheme="http://yoursite.com/tags/node/"/>
     
@@ -139,9 +189,9 @@
     </summary>
     
     
-      <category term="计算机网络" scheme="http://yoursite.com/tags/network/"/>
-    
       <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="计算机网络" scheme="http://yoursite.com/tags/network/"/>
     
   </entry>
   
@@ -310,9 +360,9 @@
     </summary>
     
     
-      <category term="计算机网络" scheme="http://yoursite.com/tags/network/"/>
-    
       <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
+    
+      <category term="计算机网络" scheme="http://yoursite.com/tags/network/"/>
     
       <category term="node" scheme="http://yoursite.com/tags/node/"/>
     
@@ -460,64 +510,6 @@
     
     
       <category term="react" scheme="http://yoursite.com/tags/react/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>mysql数据库操作（二）</title>
-    <link href="http://yoursite.com/2020/09/14/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
-    <id>http://yoursite.com/2020/09/14/mysql数据库操作（二）/</id>
-    <published>2020-09-13T22:50:06.000Z</published>
-    <updated>2020-09-22T12:51:25.923Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="express-中使用-TypeORM-连接-mysql-数据库"><a href="#express-中使用-TypeORM-连接-mysql-数据库" class="headerlink" title="express 中使用 TypeORM 连接 mysql 数据库"></a>express 中使用 TypeORM 连接 mysql 数据库</h3><h4 id="TypeORM-介绍"><a href="#TypeORM-介绍" class="headerlink" title="TypeORM 介绍"></a>TypeORM 介绍</h4><p>TypeORM 是一个采用 TypeScript 编写的用于 Node.js 的优秀 ORM 框架，支持使用 TypeScript 或 Javascript(ES5, ES6, ES7)开发。</p><ul><li><a href="https://cloud.tencent.com/developer/article/1012625" target="_blank" rel="noopener">Nodejs 最好的 ORM - TypeORM</a></li><li><a href="https://github.com/typeorm/typeorm" target="_blank" rel="noopener">github 链接</a></li></ul><h4 id="express-中使用"><a href="#express-中使用" class="headerlink" title="express 中使用"></a>express 中使用</h4><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><p><code>yarn add typeorm mysql</code></p><h5 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h5><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> express, &#123; Request, Response &#125; <span class="keyword">from</span> <span class="string">'express'</span></span><br><span class="line"><span class="keyword">import</span> &#123; createConnection &#125; <span class="keyword">from</span> <span class="string">'typeorm'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> createConnection(config.db)</span><br><span class="line">  .then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> app = express()</span><br><span class="line">    app.listen(port, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      info(</span><br><span class="line">        <span class="string">`the server is start at port <span class="subst">$&#123;port&#125;</span>, listening on http://localhost:<span class="subst">$&#123;port&#125;</span>`</span></span><br><span class="line">      )</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.error(<span class="string">'connection mysql error: '</span>, e.message)</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; getRepository &#125; <span class="keyword">from</span> <span class="string">'typeorm'</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getList</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [list, total] = <span class="keyword">await</span> getRepository(Entity).findAndCount()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;express-中使用-TypeORM-连接-mysql-数据库&quot;&gt;&lt;a href=&quot;#express-中使用-TypeORM-连接-mysql-数据库&quot; class=&quot;headerlink&quot; title=&quot;express 中使用 TypeORM 连接 mysql
-      
-    
-    </summary>
-    
-    
-      <category term="node" scheme="http://yoursite.com/tags/node/"/>
-    
-      <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
-    
-      <category term="express" scheme="http://yoursite.com/tags/express/"/>
-    
-      <category term="TypeORM" scheme="http://yoursite.com/tags/TypeORM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>mysql数据库操作</title>
-    <link href="http://yoursite.com/2020/09/14/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89/"/>
-    <id>http://yoursite.com/2020/09/14/mysql数据库操作（一）/</id>
-    <published>2020-09-13T22:21:24.000Z</published>
-    <updated>2021-04-04T15:05:16.561Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><p><code>CREATE USER &#39;username&#39;@&#39;host&#39; IDENTIFIED BY &#39;password&#39;;</code></p><ul><li><code>host</code> 代表可以登录地址，<code>%</code> 表示任意地址</li><li>可选选项 <code>WITH mysql_native_password</code> 语句表示密码的存储方式</li></ul><h3 id="修改用户密码"><a href="#修改用户密码" class="headerlink" title="修改用户密码"></a>修改用户密码</h3><p><code>ALTER USER &#39;username&#39;@&#39;host&#39; IDENTIFIED WITH mysql_native_password BY &#39;password&#39;;</code></p><h3 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h3><p><code>grant 权限 privileges on dbName.数据表 to &#39;tools&#39;;</code></p><ul><li>权限包括增删查改，<code>all</code> 代表所有权限</li><li>数据库和数据表可以用 <code>*</code> 表示通配</li></ul><h3 id="刷新权限"><a href="#刷新权限" class="headerlink" title="刷新权限"></a>刷新权限</h3><p><code>FLUSH PRIVILEGES;</code></p><ul><li>数据权限并不会自动更新，需要手动执行命令才会刷新</li></ul><h3 id="查看列表数据库"><a href="#查看列表数据库" class="headerlink" title="查看列表数据库"></a>查看列表数据库</h3><p><code>show databases;</code></p><h3 id="查看数据表的结构"><a href="#查看数据表的结构" class="headerlink" title="查看数据表的结构"></a>查看数据表的结构</h3><p><code>desc 数据库.数据表;</code></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;创建用户&quot;&gt;&lt;a href=&quot;#创建用户&quot; class=&quot;headerlink&quot; title=&quot;创建用户&quot;&gt;&lt;/a&gt;创建用户&lt;/h3&gt;&lt;p&gt;&lt;code&gt;CREATE USER &amp;#39;username&amp;#39;@&amp;#39;host&amp;#39; IDENTIFIED
-      
-    
-    </summary>
-    
-    
-      <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
-    
-      <category term="node" scheme="http://yoursite.com/tags/node/"/>
-    
-      <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
-    
-      <category term="express" scheme="http://yoursite.com/tags/express/"/>
     
   </entry>
   

@@ -66,6 +66,189 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-react中的异步实现" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/05/30/react中的异步实现/" class="article-date">
+  <time datetime="2021-05-30T13:37:54.000Z" itemprop="datePublished">2021-05-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/30/react中的异步实现/">react中的异步实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h3><p>由于 <code>JS</code> 是单线程非阻塞的，所有的任务都需要在这个线程中来处理。当需要执行异步任务时主线程会先挂起这个任务，当异步任务执行完毕之后主线程会根据规则执行回调。当任务处理完毕之后， <code>JS</code> 会将这个事件加入队列中，这个队列即被称为事件队列。</p>
+<h4 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h4><ul>
+<li>进程： <code>CPU</code> 在运行指令及加载和保存上下文所需的时间，放在应用上来说就代表了一个程序。</li>
+<li>线程： 进程中的更小单位，描述了执行一段指令所需的时间。</li>
+</ul>
+<p>在浏览器中，当你打开一个 <code>Tab</code> 页时，其实就是创建了一个进程，一个进程中可以有多个线程，比如渲染线程、<code>JS</code> 引擎线程、<code>HTTP</code> 请求线程等等。当你发起一个请求时，其实就是创建了一个线程，当请求结束后，该线程可能就会被销毁。</p>
+<p>在 <code>JS</code> 运行的时候会阻止 <code>UI</code> 渲染，这是因为 <code>JS</code> 可以修改 <code>DOM</code>，如果在 <code>JS</code> 执行的时候 <code>UI</code> 线程还在工作，就可能导致不能安全的渲染 <code>UI</code>。这其实也是一个单线程的好处，得益于 <code>JS</code> 是单线程运行的，可以达到节省内存，节约上下文切换时间，没有锁的问题的好处。</p>
+<p>对于锁的问题，形象的来说就是当我读取一个数字 <code>15</code> 的时候，同时有两个操作对数字进行了加减，这时候结果就出现了错误。解决这个问题也不难，只需要在读取的时候加锁，直到读取完毕之前都不能进行写入操作。</p>
+<h4 id="执行栈"><a href="#执行栈" class="headerlink" title="执行栈"></a>执行栈</h4><p>所有的 <code>JS</code> 代码在运行时都是在执行上下文中进行的。<code>JS</code> 中有三种执行上下文：</p>
+<ul>
+<li>全局执行上下文，默认的，浏览器中是 <code>window</code> 对象，<code>nodejs</code> 中是 <code>global</code>，并且 <code>this</code> 在非严格模式下指向它们。</li>
+<li>函数执行上下文，<code>JS</code> 的函数每当被调用时会创建一个上下文。</li>
+<li><code>Eval</code> 执行上下文，<code>eval</code> 函数会产生自己的上下文。</li>
+</ul>
+<p>栈是一种数据结构，具有先进后出的原则。<code>JS</code> 中的执行栈就具有这样的结构，当引擎第一次遇到 <code>JS</code> 代码时，会产生一个全局执行上下文并压入执行栈，每遇到一个函数调用，就会往栈中压入一个新的上下文。引擎执行栈顶的函数，执行完毕，弹出当前执行上下文。</p>
+<h4 id="微任务和宏任务"><a href="#微任务和宏任务" class="headerlink" title="微任务和宏任务"></a>微任务和宏任务</h4><p>异步任务被分为两种类型，微任务和宏任务</p>
+<h5 id="微任务"><a href="#微任务" class="headerlink" title="微任务"></a>微任务</h5><ul>
+<li><code>Promise.then</code></li>
+<li><code>MutationObserver</code></li>
+<li><code>process.nextTick</code></li>
+</ul>
+<h5 id="宏任务"><a href="#宏任务" class="headerlink" title="宏任务"></a>宏任务</h5><ul>
+<li><code>script</code>(整体代码)</li>
+<li><code>setTimout</code></li>
+<li><code>setInterval</code></li>
+<li><code>setImmediate</code></li>
+<li><code>MessageChannel</code></li>
+<li><code>requestAnimationFrame</code></li>
+<li><code>postMessage</code></li>
+<li><code>I/O</code></li>
+<li><code>UI</code> 交互事件</li>
+</ul>
+<h4 id="事件循环-1"><a href="#事件循环-1" class="headerlink" title="事件循环"></a>事件循环</h4><p><code>Event Loop</code>(事件循环)中，每一次循环称为 <code>tick</code>, 每一次 <code>tick</code> 的任务如下：</p>
+<ol>
+<li>执行栈选择最先进入队列的宏任务(通常是 <code>script</code> 整体代码)，如果有则执行</li>
+<li>检查是否存在 <code>Microtask</code>，如果存在则不停的执行，直至清空 <code>microtask</code> 队列</li>
+<li>更新 <code>render</code>(每一次事件循环，浏览器都可能会去更新渲染)</li>
+<li>重复以上步骤</li>
+</ol>
+<p>宏任务 &gt; 所有微任务 &gt; 宏任务，如下图所示：</p>
+<p><img src="/images/js/eventLoop.jpg" alt="新建工程"></p>
+<ol>
+<li>将所有任务看成两个队列：执行队列与事件队列。</li>
+<li>执行队列是同步的，事件队列是异步的，宏任务放入事件列表，微任务放入执行队列之后，事件队列之前。</li>
+<li>当执行完同步代码之后，就会执行位于执行列表之后的微任务，然后再执行事件列表中的宏任务</li>
+</ol>
+<h3 id="react-中的异步实现"><a href="#react-中的异步实现" class="headerlink" title="react 中的异步实现"></a>react 中的异步实现</h3><p><code>react</code> 中的异步是通过宏任务来实现的，优先使用 <code>setImmediate</code> ，然后使用 <code>MessageChannel</code>，若都不支持则使用 <code>setTimeout</code> 实现</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> schedulePerformWorkUntilDeadline</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> localSetImmediate === <span class="string">'function'</span>) &#123;</span><br><span class="line">  <span class="comment">// Node.js and old IE.</span></span><br><span class="line">  <span class="comment">// There's a few reasons for why we prefer setImmediate.</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// Unlike MessageChannel, it doesn't prevent a Node.js process from exiting.</span></span><br><span class="line">  <span class="comment">// (Even though this is a DOM fork of the Scheduler, you could get here</span></span><br><span class="line">  <span class="comment">// with a mix of Node.js 15+, which has a MessageChannel, and jsdom.)</span></span><br><span class="line">  <span class="comment">// https://github.com/facebook/react/issues/20756</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// But also, it runs earlier which is the semantic we want.</span></span><br><span class="line">  <span class="comment">// If other browsers ever implement it, it's better to use it.</span></span><br><span class="line">  <span class="comment">// Although both of these would be inferior to native scheduling.</span></span><br><span class="line">  schedulePerformWorkUntilDeadline = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    localSetImmediate(performWorkUntilDeadline)</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> MessageChannel !== <span class="string">'undefined'</span>) &#123;</span><br><span class="line">  <span class="comment">// DOM and Worker environments.</span></span><br><span class="line">  <span class="comment">// We prefer MessageChannel because of the 4ms setTimeout clamping.</span></span><br><span class="line">  <span class="keyword">const</span> channel = <span class="keyword">new</span> MessageChannel()</span><br><span class="line">  <span class="keyword">const</span> port = channel.port2</span><br><span class="line">  channel.port1.onmessage = performWorkUntilDeadline</span><br><span class="line">  schedulePerformWorkUntilDeadline = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    port.postMessage(<span class="literal">null</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// We should only fallback here in non-browser environments.</span></span><br><span class="line">  schedulePerformWorkUntilDeadline = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    localSetTimeout(performWorkUntilDeadline, <span class="number">0</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>判断是否存在 <code>setImmediate</code>，如果存在则使用 <code>setImmediate</code>，不存在下一步</li>
+<li>判断是否支持 <code>MessageChannel</code>，如果支持则创建一个消息通道，通过消息通道实现宏任务，否则进行下一步</li>
+<li>回落到 <code>setTimeout</code> 实现异步</li>
+</ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/59784952" target="_blank" rel="noopener">深入理解 JavaScript 执行上下文和执行栈</a></li>
+<li><a href="https://segmentfault.com/a/1190000015317434" target="_blank" rel="noopener">Js 的事件循环(Event Loop)机制以及实例讲解</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MessageChannel" target="_blank" rel="noopener">MessageChannel</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/05/30/react中的异步实现/" data-id="ckpatinnc002acfs6iilp0dwm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-前端框架" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/18/前端框架/" class="article-date">
+  <time datetime="2021-04-17T22:48:43.000Z" itemprop="datePublished">2021-04-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/18/前端框架/">前端框架</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="DOM-操作时代"><a href="#DOM-操作时代" class="headerlink" title="DOM 操作时代"></a>DOM 操作时代</h3><p>代表库 <a href="https://jquery.com/" target="_blank" rel="noopener"><code>jQuery</code></a> 和 <a href="https://zeptojs.com/" target="_blank" rel="noopener"><code>zepto</code></a></p>
+<ul>
+<li>简化选择器</li>
+<li>简化 <code>DOM</code> 操作</li>
+<li>简化 <code>AJAX</code> 操作</li>
+<li>统一事件绑定</li>
+<li>兼容性实现</li>
+<li>延时对象（<code>$.Deferred</code>）</li>
+</ul>
+<h4 id="DOM-操作的一般流程"><a href="#DOM-操作的一般流程" class="headerlink" title="DOM 操作的一般流程"></a>DOM 操作的一般流程</h4><ol>
+<li><code>DOM</code> 加载</li>
+<li><code>js</code> 脚本加载</li>
+<li><code>js</code>脚本执行，发送异步请求获取数据</li>
+<li>操作 <code>DOM</code> 进行数据渲染</li>
+<li>对 <code>DOM</code> 节点进行事件绑定</li>
+</ol>
+<p><img src="/images/domprocess.png" alt="DOM 操作流程"></p>
+<h3 id="MV-交互模式"><a href="#MV-交互模式" class="headerlink" title="MV* 交互模式"></a>MV* 交互模式</h3><h4 id="MVC-模式"><a href="#MVC-模式" class="headerlink" title="MVC 模式"></a>MVC 模式</h4><p>将 <code>DOM</code> 交互部分的内容分为数据模型、视图和事件控制三部分</p>
+<ul>
+<li><code>Model</code>：存放请求的数据结果和数据对象</li>
+<li><code>View</code>: 页面 <code>DOM</code> 的更新与修改</li>
+<li><code>Controller</code>: 根据前端路由条件调用不同的 <code>Model</code> 和 <code>View</code>渲染不同的数据内容</li>
+</ul>
+<p>用户的操作直接通过 <code>Controller</code> 控制</p>
+<h4 id="MVP-模式"><a href="#MVP-模式" class="headerlink" title="MVP 模式"></a>MVP 模式</h4><p><code>Model-View-Presenter</code>，将 <code>DOM</code> 交互部分的内容分为数据模型、视图和 <code>Presenter</code> 三部分</p>
+<ul>
+<li><code>Model</code>：存放请求的数据结果和数据对象（仅提供数据）</li>
+<li><code>View</code>: 页面 <code>DOM</code> 的更新与修改（仅提供视图模板）</li>
+<li><code>Presenter</code>: 根据前端路由条件调用不同的 <code>Model</code> 和 <code>View</code>渲染不同的数据内容（主要的逻辑处理）</li>
+</ul>
+<p><code>Presenter</code> 与 <code>View</code> 的绑定是双向的，<code>Presenter</code> 的改变会改变 <code>View</code>，<code>View</code> 的改变也会触发 <code>Presenter</code>，所有的逻辑调用数据和渲染视图 <code>View</code> 模板都在 <code>Presenter</code> 中完成，同时用户在 <code>View</code> 层操作的改变反馈到 <code>Presenter</code> 改变 <code>Model</code>并渲染新的 <code>View</code> 视图。</p>
+<ul>
+<li>优点：只需关注 <code>Presenter</code> 的逻辑</li>
+<li>缺点：内容较重</li>
+</ul>
+<h4 id="MVVM-模式"><a href="#MVVM-模式" class="headerlink" title="MVVM 模式"></a>MVVM 模式</h4><p>自动化的 <code>MVP</code> 框架，用 <code>ViewModel</code> 代替 <code>Presenter</code>，<code>Model</code> 的调用和 <code>View</code> 由 <code>ViewModel</code> 自动触发完成<br>用户操作时， <code>ViewModel</code> 捕获数据变化，将变化反应到 <code>View</code> 上。 <code>ViewModel</code> 的数据操作最终在页面上以 <code>Directive</code> 的形式体现，通过对 <code>Directive</code> 的识别来渲染数据或绑定事件。</p>
+<h5 id="通用基本设计"><a href="#通用基本设计" class="headerlink" title="通用基本设计"></a>通用基本设计</h5><ul>
+<li><code>Directive</code>: 指令，即自定义执行函数</li>
+<li><code>Filter</code>: 过滤器，对传入的初始数据信进行处理，然后把处理结果交给下一步（<code>Directive</code> 或 <code>Filter</code>）。</li>
+<li>表达式：控制页面内容按照具体条件展示</li>
+<li><code>ViewModel</code>: 实现传入的 <code>Model</code> 数据在内存中存放，也提供一些基本的读取或修改数据的 <code>API</code></li>
+<li>数据变更检查： 即数据变化自动触发其它操作，通过手动触发、脏检测、对象劫持、<code>Proxy</code> 等</li>
+</ul>
+<h6 id="数据变更检查"><a href="#数据变更检查" class="headerlink" title="数据变更检查"></a>数据变更检查</h6><ul>
+<li>手动触发: 通过在数据对象上定义 <code>get</code> 和 <code>set</code> 方法，调用时手动触发 <code>get</code> 和 <code>set</code> 来获取和修改数据，改变后主动触发 <code>get</code> 和 <code>set</code> 中 <code>View</code> 层的重新渲染功能</li>
+<li>脏检测: 在 <code>ViewModel</code> 对象的某个属性值发生变化时找到与这个属性值相关的所有元素，然后比较数据变化，如果有变化则进行 <code>Directive</code> 指令调用，对这个元素进行重新扫描渲染</li>
+<li>前端数据对象劫持： 使用 <code>Object.defineProperty</code> 和 <code>Object.defineProperties</code> 对 <code>ViewModel</code> 数据对象进行属性 <code>get</code> 和 <code>set</code> 的监听，当有数据读取和赋值时则扫描节点元素，运行指定对应节点的 <code>Directive</code> 指令。</li>
+<li><code>ES6 Proxy</code>:类似与 <code>Object.defineProperty</code> 和 <code>Object.defineProperties</code></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/04/18/前端框架/" data-id="ckpatinnt0035cfs6u1e0ibrc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-用Hexo搭建静态博客" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/04/04/用Hexo搭建静态博客/" class="article-date">
@@ -128,7 +311,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/04/04/用Hexo搭建静态博客/" data-id="cknd8ihlo003a11s6guf1x3g3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/04/04/用Hexo搭建静态博客/" data-id="ckpatinnx003dcfs6pvnkdbik" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
@@ -195,7 +378,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/04/04/与native交互/" data-id="cknd8ihlo003811s6vvw9q0y5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/04/04/与native交互/" data-id="ckpatinno002vcfs62zht3710" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
@@ -250,7 +433,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/04/02/实时协议/" data-id="cknd8ihln003611s6e8zysh9n" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/04/02/实时协议/" data-id="ckpatinnn002scfs6hqmdux56" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
@@ -303,7 +486,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/28/HTTPS/" data-id="cknd8ihjy000011s6gln30ee2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/28/HTTPS/" data-id="ckpatinlz0002cfs6kah848rr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
@@ -365,7 +548,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/28/网络安全/" data-id="cknd8ihlu003o11s6lr2sk4vc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/28/网络安全/" data-id="ckpatino0003lcfs6ju2i28ei" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
@@ -420,7 +603,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/22/http协议/" data-id="cknd8ihkp000w11s611ei8awp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/22/http协议/" data-id="ckpatinmk000qcfs6a6ljq952" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
@@ -506,7 +689,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/03/commonjs/" data-id="cknd8ihkm000o11s63jn3bds1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/03/commonjs/" data-id="ckpatinm70009cfs6t9s6ak9c" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -571,7 +754,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/02/浏览器基础/" data-id="cknd8ihlx003s11s6l0ymxo7y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/02/浏览器基础/" data-id="ckpatinnu0037cfs6g9h4b6d7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -662,7 +845,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/28/简单代码热更新/" data-id="cknd8ihls003i11s6d6efz5bi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/02/28/简单代码热更新/" data-id="ckpatinnz003jcfs6ctb00cq5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -726,7 +909,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/01/24/粘贴图片/" data-id="cknd8ihls003k11s691ubfd3x" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/01/24/粘贴图片/" data-id="ckpatinny003hcfs69xu1lw3v" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -803,7 +986,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/01/17/跨页面通信/" data-id="cknd8ihly003u11s6skjr0qpp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/01/17/跨页面通信/" data-id="ckpatino2003rcfs6swx6eyaa" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -873,7 +1056,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/01/06/nodejs中实现websocket服务/" data-id="cknd8ihl6002511s6euh5k7uw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/01/06/nodejs中实现websocket服务/" data-id="ckpatinn5001vcfs6l8m0h91u" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
@@ -961,7 +1144,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/12/23/记一次项目打包优化/" data-id="cknd8ihm0003y11s6vzm0r9p6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/12/23/记一次项目打包优化/" data-id="ckpatino1003ncfs6pnjl6pa0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
@@ -1022,7 +1205,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/12/14/ts之type、interface和class区别/" data-id="cknd8ihlh002t11s67po3m5rv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/12/14/ts之type、interface和class区别/" data-id="ckpatinnh002jcfs6copb1wqw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeScript/">TypeScript</a></li></ul>
@@ -1110,7 +1293,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/11/22/for-in和for-of的区别/" data-id="cknd8ihkk000j11s6zxzozdz8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/11/22/for-in和for-of的区别/" data-id="ckpatinmc000ecfs6oryn5sdl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1161,7 +1344,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/10/19/异步任务按顺序分组执行/" data-id="cknd8ihlj002x11s6gmc6eij8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/10/19/异步任务按顺序分组执行/" data-id="ckpatinnq002zcfs6pfoaqqgp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -1204,7 +1387,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/23/三数之和/" data-id="cknd8ihlf002o11s61g5khs3y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/09/23/三数之和/" data-id="ckpatinnm002qcfs6dmeftdon" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -1251,7 +1434,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/21/antd中遇到的问题（一）/" data-id="cknd8ihke000c11s67j4f4pmb" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/09/21/antd中遇到的问题（一）/" data-id="ckpatinm50006cfs6944hyd13" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -1297,7 +1480,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/14/mysql数据库操作（二）/" data-id="cknd8ihl8002a11s6xyg3n9xm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/09/14/mysql数据库操作（二）/" data-id="ckpatinn80022cfs6mph70cc2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeORM/">TypeORM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -1352,7 +1535,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/14/mysql数据库操作（一）/" data-id="cknd8ihl3001w11s62goorpl1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/09/14/mysql数据库操作（一）/" data-id="ckpatinn4001tcfs6htrh89uf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -1435,7 +1618,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/31/浏览器缓存/" data-id="cknd8ihlq003e11s6uv1clc9h" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/31/浏览器缓存/" data-id="ckpatinnv0039cfs6323j5ezo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1490,7 +1673,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/30/babel编译过程/" data-id="cknd8ihkg000e11s65jox1fh8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/30/babel编译过程/" data-id="ckpatinm9000acfs6upm2goei" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1550,7 +1733,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/27/ES6模块与CommonJS模块/" data-id="cknd8ihk3000211s6edmi2w0c" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/27/ES6模块与CommonJS模块/" data-id="ckpatinlv0001cfs62gqjcc99" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1595,7 +1778,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/17/除自身以外数组的乘积/" data-id="cknd8ihlz003w11s62geysvwx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/17/除自身以外数组的乘积/" data-id="ckpatino4003vcfs6nsm7kf0z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -1660,7 +1843,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/05/检测项目中的包版本变化/" data-id="cknd8ihlk003211s6mhfi20a0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/05/检测项目中的包版本变化/" data-id="ckpatinns0033cfs6nz4asiu7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -1714,7 +1897,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/03/react16中生命周期hooks/" data-id="cknd8ihl7002811s6mypfesho" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/03/react16中生命周期hooks/" data-id="ckpatinnd002ccfs613jr1kiw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -1758,7 +1941,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/27/排列/" data-id="cknd8ihlk003011s6rchle9of" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/27/排列/" data-id="ckpatinnp002xcfs61z4kow2l" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -1823,162 +2006,10 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/25/项目脚手架/" data-id="cknd8ihm2004011s62h3jz26w" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/25/项目脚手架/" data-id="ckpatino6003zcfs6hoi38wl9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-滚动加载更多" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/07/25/滚动加载更多/" class="article-date">
-  <time datetime="2020-07-25T15:29:30.000Z" itemprop="datePublished">2020-07-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/25/滚动加载更多/">滚动加载更多</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>当页面数据过多为了优化页面加载速度和避免页面的卡顿时使用滚动加载的方式实现数据的分页加载功能</p>
-<h3 id="加载更多方案"><a href="#加载更多方案" class="headerlink" title="加载更多方案"></a>加载更多方案</h3><h4 id="利用-scroll-事件实现"><a href="#利用-scroll-事件实现" class="headerlink" title="利用 scroll 事件实现"></a>利用 scroll 事件实现</h4><p>通过监听对应元素的滚动，不断计算元素相对窗口的位置判断元素是否滚动到底部，若滚动到底部就加载更多</p>
-<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><ul>
-<li><code>scroll</code> 事件不断触发需要做节流操作实现</li>
-<li>每次触发事件时都要计算元素的位置性能不好</li>
-</ul>
-<h5 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h5><ul>
-<li>兼容性好</li>
-<li>易于实现</li>
-</ul>
-<h4 id="利用-IntersectionObserver-实现"><a href="#利用-IntersectionObserver-实现" class="headerlink" title="利用 IntersectionObserver 实现"></a>利用 <code>IntersectionObserver</code> 实现</h4><p><code>IntersectionObserver</code>接口 (从属于<code>Intersection Observer API</code>) 提供了一种异步观察目标元素与其祖先元素或顶级文档视窗(<code>viewport</code>)交叉状态的方法。</p>
-<h5 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h5><ul>
-<li><code>IntersectionObserver</code> 是浏览器内部实现的方法，性能较高</li>
-<li>可以自定义视窗重叠的阈值</li>
-</ul>
-<h5 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h5><ul>
-<li>兼容性较差</li>
-</ul>
-<h3 id="使用-IntersectionObserver-的一般流程"><a href="#使用-IntersectionObserver-的一般流程" class="headerlink" title="使用 IntersectionObserver 的一般流程"></a>使用 <code>IntersectionObserver</code> 的一般流程</h3><h4 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h4><p>初始化 <code>IntersectionObserver</code>，构建 <code>IntersectionObserver</code> 实例，确定视窗窗口和触发阈值及回调函数</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ob = <span class="keyword">new</span> IntersectionObserver(callback, options)</span><br></pre></td></tr></table></figure>
-<h5 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h5><h6 id="callback"><a href="#callback" class="headerlink" title="callback"></a>callback</h6><p>当元素可见比例超过指定阈值后，会调用一个回调函数，此回调函数接受两个参数</p>
-<ul>
-<li>entries: 一个 IntersectionObserverEntry 对象的数组，每个被触发的阈值，都或多或少与指定阈值有偏差。</li>
-<li>observer: 被调用的 IntersectionObserver 实例。</li>
-</ul>
-<h6 id="options-可选"><a href="#options-可选" class="headerlink" title="options(可选)"></a>options(可选)</h6><p>一个可以用来配置 observer 实例的对象。如果 options 未指定，observer 实例默认使用文档视口作为 root，并且没有 margin，阈值为 0%（意味着即使一像素的改变都会触发回调函数）。你可以指定以下配置：</p>
-<ul>
-<li>root: 监听元素的祖先元素 Element 对象，其边界盒将被视作视口。目标在根的可见区域的的任何不可见部分都会被视为不可见。</li>
-<li>rootMargin: 一个在计算交叉值时添加至根的边界盒(bounding_box)中的一组偏移量，类型为字符串(string) ，可以有效的缩小或扩大根的判定范围从而满足计算需要。语法大致和 CSS 中的 margin 属性等同; 可以参考 The root element and root margin in Intersection Observer API 来深入了解 margin 的工作原理及其语法。默认值是”0px 0px 0px 0px”。</li>
-<li>threshold: 规定了一个监听目标与边界盒交叉区域的比例值，可以是一个具体的数值或是一组 0.0 到 1.0 之间的数组。若指定值为 0.0，则意味着监听元素即使与根有 1 像素交叉，此元素也会被视为可见. 若指定值为 1.0，则意味着整个元素都是可见的。阈值的默认值为 0.0。</li>
-</ul>
-<h4 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h4><p>调用 <code>observe</code> 观测元素，<code>targetElement</code> 即为观测的元素</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ob.observe(targetElement)</span><br></pre></td></tr></table></figure>
-<h4 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h4><p>调用 <code>unobserve</code> 取消对元素的观测，<code>target</code> 即为取消观测的对象</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ob.unobserve(target)</span><br></pre></td></tr></table></figure>
-<h4 id="第四步"><a href="#第四步" class="headerlink" title="第四步"></a>第四步</h4><p>调用 <code>disconnect</code> 终止对所有目标元素可见性变化的观察</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ob.disconnect()</span><br></pre></td></tr></table></figure>
-<h3 id="在-React-中的实现"><a href="#在-React-中的实现" class="headerlink" title="在 React 中的实现"></a>在 <code>React</code> 中的实现</h3><ul>
-<li>初始化 <code>IntersectionObserver</code>，确定视窗窗口和触发阈值及回调函数</li>
-<li>通过 <code>children</code> 属性获取子组件中的最后一个元素</li>
-<li>监听列表中的最后一个组件，当最后的组件触发事件时加载更多</li>
-<li>引入 <code>intersection-observer</code> 组件做兼容性处理</li>
-</ul>
-<h4 id="完整代码参考"><a href="#完整代码参考" class="headerlink" title="完整代码参考"></a>完整代码参考</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line">import React from &apos;react&apos;</span><br><span class="line">import &apos;intersection-observer&apos;</span><br><span class="line"></span><br><span class="line">interface IProps extends React.DOMAttributes&lt;HTMLDivElement&gt; &#123;</span><br><span class="line">  children: any</span><br><span class="line">  getRootElement?: (parent: Element) =&gt; Element</span><br><span class="line">  rootMargin?: string</span><br><span class="line">  observerCallback?: IntersectionObserverCallback</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class LoadMore extends React.PureComponent&lt;IProps&gt; &#123;</span><br><span class="line">  private ele: Element | null = null</span><br><span class="line">  private observer: IntersectionObserver | undefined</span><br><span class="line">  private observerElement: Element | null = null</span><br><span class="line">  private lastThreshold: number = 0</span><br><span class="line"></span><br><span class="line">  public componentDidMount() &#123;</span><br><span class="line">    const &#123; rootMargin &#125; = this.props</span><br><span class="line">    this.observer = new IntersectionObserver(this.observerCallback, &#123;</span><br><span class="line">      root: this.getRootElement(),</span><br><span class="line">      rootMargin,</span><br><span class="line">      threshold: [0, 0.01],</span><br><span class="line">    &#125;)</span><br><span class="line">    this.listenLastDom()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public componentDidUpdate(prevProps: IProps) &#123;</span><br><span class="line">    const &#123; children: oldChildren &#125; = prevProps</span><br><span class="line">    const &#123; children &#125; = this.props</span><br><span class="line">    const len = React.Children.toArray(children).length</span><br><span class="line">    if (len !== React.Children.toArray(oldChildren).length &amp;&amp; len) &#123;</span><br><span class="line">      this.listenLastDom()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public componentWillUnmount() &#123;</span><br><span class="line">    this.unobserve()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public render() &#123;</span><br><span class="line">    const &#123;</span><br><span class="line">      children,</span><br><span class="line">      getRootElement,</span><br><span class="line">      observerCallback,</span><br><span class="line">      rootMargin,</span><br><span class="line">      ...otherProps</span><br><span class="line">    &#125; = this.props</span><br><span class="line">    return (</span><br><span class="line">      &lt;div ref=&#123;this.getElement&#125; &#123;...otherProps&#125;&gt;</span><br><span class="line">        &#123;children&#125;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  private getRootElement = () =&gt; &#123;</span><br><span class="line">    const &#123; getRootElement &#125; = this.props</span><br><span class="line">    const ele = this.ele as Element</span><br><span class="line">    let parent = null</span><br><span class="line">    if (getRootElement) &#123;</span><br><span class="line">      parent = getRootElement(</span><br><span class="line">        ele &amp;&amp; ele.parentElement</span><br><span class="line">          ? ele.parentElement</span><br><span class="line">          : (document.body as Element),</span><br><span class="line">      )</span><br><span class="line">    &#125;</span><br><span class="line">    if (!parent &amp;&amp; ele &amp;&amp; ele.parentElement) &#123;</span><br><span class="line">      parent = ele.parentElement</span><br><span class="line">    &#125;</span><br><span class="line">    return parent</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  private getElement = (ele: Element | null) =&gt; &#123;</span><br><span class="line">    this.ele = ele</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 监听回调</span><br><span class="line">  private observerCallback = (</span><br><span class="line">    entries: IntersectionObserverEntry[],</span><br><span class="line">    observer: IntersectionObserver,</span><br><span class="line">  ) =&gt; &#123;</span><br><span class="line">    const [&#123; intersectionRatio = 0 &#125;] = entries</span><br><span class="line"></span><br><span class="line">    const &#123; observerCallback &#125; = this.props</span><br><span class="line">    if (intersectionRatio &gt; this.lastThreshold) &#123;</span><br><span class="line">      if (observerCallback) &#123;</span><br><span class="line">        observerCallback(entries, observer)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    this.lastThreshold = intersectionRatio</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 停止监听元素</span><br><span class="line">  private unobserve = () =&gt; &#123;</span><br><span class="line">    if (this.observerElement &amp;&amp; this.observer) &#123;</span><br><span class="line">      this.observer.unobserve(this.observerElement)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 监听元素</span><br><span class="line">  private listenLastDom = () =&gt; &#123;</span><br><span class="line">    if (this.ele &amp;&amp; this.ele.lastChild) &#123;</span><br><span class="line">      const dom: Element = this.ele.lastChild as Element</span><br><span class="line">      this.lastThreshold = 0</span><br><span class="line">      const observer = this.observer as IntersectionObserver</span><br><span class="line">      if (dom &amp;&amp; observer) &#123;</span><br><span class="line">        this.unobserve()</span><br><span class="line">        this.observerElement = dom</span><br><span class="line">        observer.observe(this.observerElement)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default LoadMore</span><br></pre></td></tr></table></figure>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/IntersectionObserver" target="_blank" rel="noopener">IntersectionObserver MDN 参考</a></li>
-<li><a href="https://www.npmjs.com/package/intersection-observer" target="_blank" rel="noopener">intersection-observer polyfill</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/25/滚动加载更多/" data-id="cknd8ihlp003c11s677u44pq2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mac下查询端口占用并杀掉node进程" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/07/13/mac下查询端口占用并杀掉node进程/" class="article-date">
-  <time datetime="2020-07-12T20:55:18.000Z" itemprop="datePublished">2020-07-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/13/mac下查询端口占用并杀掉node进程/">mac 下查询端口占用情况并杀掉对应 node 进程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="命令行下查询端口占用情况"><a href="#命令行下查询端口占用情况" class="headerlink" title="命令行下查询端口占用情况"></a>命令行下查询端口占用情况</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i tcp:8080</span><br></pre></td></tr></table></figure>
-<p>返回结果如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">COMMAND     PID USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME</span><br><span class="line">node      45971 xxxx   21u  IPv6 0xxxxxxxxxxxxxxxxx      0t0  TCP *:http-alt (LISTEN)</span><br></pre></td></tr></table></figure>
-<h3 id="mac-下杀掉进程的命令"><a href="#mac-下杀掉进程的命令" class="headerlink" title="mac 下杀掉进程的命令"></a>mac 下杀掉进程的命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill pid</span><br></pre></td></tr></table></figure>
-<h3 id="node-下执行命令"><a href="#node-下执行命令" class="headerlink" title="node 下执行命令"></a>node 下执行命令</h3><ul>
-<li>异步执行命令</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"child_process"</span>).exec(<span class="string">"cmd"</span>);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>promise 包裹后通过 async await 的方式来执行</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; stdout, stderr &#125; = <span class="built_in">require</span>(<span class="string">"util"</span>).promisify(</span><br><span class="line">  <span class="built_in">require</span>(<span class="string">"child_process"</span>).exec</span><br><span class="line">)(<span class="string">"cmd"</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><h3 id="提取对应占用对应端口的-node-pid"><a href="#提取对应占用对应端口的-node-pid" class="headerlink" title="提取对应占用对应端口的 node pid"></a>提取对应占用对应端口的 node pid</h3><ul>
-<li>通过命令行获取对应的端口占用情况</li>
-<li>获取到的字符串统一转为小写</li>
-<li>通过正则表达式匹配出想要筛选的 node 进程</li>
-<li>通过正则提取对应进程的 pid</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; stdout, stderr &#125; = <span class="keyword">await</span> <span class="built_in">require</span>(<span class="string">"util"</span>).promisify(</span><br><span class="line">  <span class="built_in">require</span>(<span class="string">"child_process"</span>).exec</span><br><span class="line">)(<span class="string">`lsof -i tcp:8080`</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> list = stdout</span><br><span class="line">  .toLowerCase()</span><br><span class="line">  .split(<span class="string">"\n"</span>)</span><br><span class="line">  .filter(<span class="built_in">Boolean</span>)</span><br><span class="line">  .filter(<span class="function">(<span class="params">str</span>) =&gt;</span> <span class="regexp">/^node/</span>.test(str))</span><br><span class="line">  .map(<span class="function">(<span class="params">str</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> reg = <span class="regexp">/^node\s+(\w+)\s+/</span>.exec(str);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Number</span>(reg[<span class="number">1</span>]);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="执行-kill-命令杀掉对应的-node-进程"><a href="#执行-kill-命令杀掉对应的-node-进程" class="headerlink" title="执行 kill 命令杀掉对应的 node 进程"></a>执行 kill 命令杀掉对应的 node 进程</h3><ul>
-<li>遍历进程数组执行命令杀掉对应进程</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; stdout, stderr &#125; = <span class="keyword">await</span> <span class="built_in">require</span>(<span class="string">"util"</span>).promisify(</span><br><span class="line">  <span class="built_in">require</span>(<span class="string">"child_process"</span>).exec</span><br><span class="line">)(<span class="string">`kill 45971`</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><ul>
-<li>可以通过构建 node cli 实现端口查杀对应占用进程的功能</li>
-</ul>
-<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><p>注：<code>utils</code> 文件主要是通过 <code>console</code> 实现的打印功能</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; exec &#125; = <span class="built_in">require</span>(<span class="string">"child_process"</span>);</span><br><span class="line"><span class="keyword">const</span> util = <span class="built_in">require</span>(<span class="string">"util"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; log, error, info &#125; = <span class="built_in">require</span>(<span class="string">"./utils"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> pExec = util.promisify(exec);</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getPid</span>(<span class="params">port</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; stdout, stderr &#125; = <span class="keyword">await</span> pExec(<span class="string">`lsof -i tcp:<span class="subst">$&#123;port&#125;</span>`</span>);</span><br><span class="line">    <span class="keyword">if</span> (stderr) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(stderr);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> list = stdout</span><br><span class="line">        .toLowerCase()</span><br><span class="line">        .split(<span class="string">"\n"</span>)</span><br><span class="line">        .filter(<span class="built_in">Boolean</span>)</span><br><span class="line">        .filter(<span class="function">(<span class="params">str</span>) =&gt;</span> <span class="regexp">/^node/</span>.test(str))</span><br><span class="line">        .map(<span class="function">(<span class="params">str</span>) =&gt;</span> &#123;</span><br><span class="line">          log(str);</span><br><span class="line">          <span class="keyword">const</span> reg = <span class="regexp">/^node\s+(\w+)\s+/</span>.exec(str);</span><br><span class="line">          <span class="keyword">return</span> <span class="built_in">Number</span>(reg[<span class="number">1</span>]);</span><br><span class="line">        &#125;);</span><br><span class="line">      <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    error(e);</span><br><span class="line">    <span class="keyword">return</span> [];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">kill</span>(<span class="params">pid</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; stdout, stderr &#125; = <span class="keyword">await</span> pExec(<span class="string">`kill <span class="subst">$&#123;pid&#125;</span>`</span>);</span><br><span class="line">    <span class="keyword">if</span> (stderr) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(stderr);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (stdout) &#123;</span><br><span class="line">        log(stdout);</span><br><span class="line">      &#125;</span><br><span class="line">      info(<span class="string">`kill pid <span class="subst">$&#123;pid&#125;</span> success`</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    error(e);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">init</span>(<span class="params">port</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> pids = <span class="keyword">await</span> getPid(port);</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> <span class="built_in">Promise</span>.all(pids.map(<span class="function">(<span class="params">pid</span>) =&gt;</span> kill(pid)));</span><br><span class="line">    process.exit(<span class="number">0</span>);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    error(e);</span><br><span class="line">    process.exit(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">init(<span class="number">8080</span>);</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/13/mac下查询端口占用并杀掉node进程/" data-id="cknd8ihl5002111s6e2jasfz0" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
 
     </footer>
   </div>
@@ -2003,7 +2034,7 @@ branch: master
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">38</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">40</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -2013,7 +2044,7 @@ branch: master
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/c-language/" style="font-size: 12.86px;">C/C++语言</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/TypeORM/" style="font-size: 10px;">TypeORM</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/express/" style="font-size: 11.43px;">express</a> <a href="/tags/mysql/" style="font-size: 11.43px;">mysql</a> <a href="/tags/node/" style="font-size: 18.57px;">node</a> <a href="/tags/other/" style="font-size: 15.71px;">other</a> <a href="/tags/react/" style="font-size: 15.71px;">react</a> <a href="/tags/solution/" style="font-size: 14.29px;">算法</a> <a href="/tags/network/" style="font-size: 17.14px;">计算机网络</a> <a href="/tags/source/" style="font-size: 11.43px;">资源</a>
+      <a href="/tags/c-language/" style="font-size: 13.33px;">C/C++语言</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/TypeORM/" style="font-size: 10px;">TypeORM</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/express/" style="font-size: 11.67px;">express</a> <a href="/tags/mysql/" style="font-size: 11.67px;">mysql</a> <a href="/tags/node/" style="font-size: 18.33px;">node</a> <a href="/tags/other/" style="font-size: 16.67px;">other</a> <a href="/tags/react/" style="font-size: 16.67px;">react</a> <a href="/tags/solution/" style="font-size: 15px;">算法</a> <a href="/tags/network/" style="font-size: 16.67px;">计算机网络</a> <a href="/tags/source/" style="font-size: 11.67px;">资源</a>
     </div>
   </div>
 
@@ -2022,7 +2053,7 @@ branch: master
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -2035,6 +2066,14 @@ branch: master
       <ul>
         
           <li>
+            <a href="/2021/05/30/react中的异步实现/">react中的异步实现</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/18/前端框架/">前端框架</a>
+          </li>
+        
+          <li>
             <a href="/2021/04/04/用Hexo搭建静态博客/">用Hexo搭建静态博客</a>
           </li>
         
@@ -2044,14 +2083,6 @@ branch: master
         
           <li>
             <a href="/2021/04/02/实时协议/">实时协议</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/28/HTTPS/">HTTPS</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/28/网络安全/">网络安全</a>
           </li>
         
       </ul>

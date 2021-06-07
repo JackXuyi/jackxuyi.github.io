@@ -3,20 +3,20 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>JavaScript的使用建议 | 奔跑的蜗牛</title>
+  <title>react中的jsx语法 | 奔跑的蜗牛</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="JavaScript的使用建议 使用===代替==，==和!=会强制转换类型。 避免使用eval，eval不仅降低脚本的性能，而且由于需要的权限比较高会造成安全风险。 不要省略{}，即使代码快只有一行也不可以，便于以后的阅读和修改。 使用JSLint检查代码是否存在错误。 把js脚本嵌在文件的底部。 避免在for语句中声明变量。 使用数组或者对象构建字符串时使用join方法。 脚本中减少全局变量的">
-<meta name="keywords" content="JavaScript">
+  <meta name="description" content="JSXJSX 是一种嵌入式的类似 XML 的语法。 它可以被转换成合法的 JavaScript，尽管转换的语义是依据不同的实现而定的。 JSX 因 React 框架而流行，但也存在其它的实现。 React 中的 JSXJSX 为我们提供了创建 React 元素方法（React.createElement(component, props, ...children)）的语法糖（syntactic s">
+<meta name="keywords" content="JavaScript,react">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaScript的使用建议">
-<meta property="og:url" content="http://yoursite.com/2017/09/25/JavaScript的使用建议/index.html">
+<meta property="og:title" content="react中的jsx语法">
+<meta property="og:url" content="http://yoursite.com/2021/06/06/react中的jsx语法/index.html">
 <meta property="og:site_name" content="奔跑的蜗牛">
-<meta property="og:description" content="JavaScript的使用建议 使用===代替==，==和!=会强制转换类型。 避免使用eval，eval不仅降低脚本的性能，而且由于需要的权限比较高会造成安全风险。 不要省略{}，即使代码快只有一行也不可以，便于以后的阅读和修改。 使用JSLint检查代码是否存在错误。 把js脚本嵌在文件的底部。 避免在for语句中声明变量。 使用数组或者对象构建字符串时使用join方法。 脚本中减少全局变量的">
+<meta property="og:description" content="JSXJSX 是一种嵌入式的类似 XML 的语法。 它可以被转换成合法的 JavaScript，尽管转换的语义是依据不同的实现而定的。 JSX 因 React 框架而流行，但也存在其它的实现。 React 中的 JSXJSX 为我们提供了创建 React 元素方法（React.createElement(component, props, ...children)）的语法糖（syntactic s">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:updated_time" content="2020-04-09T14:58:42.407Z">
+<meta property="og:updated_time" content="2021-06-07T06:46:15.309Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaScript的使用建议">
-<meta name="twitter:description" content="JavaScript的使用建议 使用===代替==，==和!=会强制转换类型。 避免使用eval，eval不仅降低脚本的性能，而且由于需要的权限比较高会造成安全风险。 不要省略{}，即使代码快只有一行也不可以，便于以后的阅读和修改。 使用JSLint检查代码是否存在错误。 把js脚本嵌在文件的底部。 避免在for语句中声明变量。 使用数组或者对象构建字符串时使用join方法。 脚本中减少全局变量的">
+<meta name="twitter:title" content="react中的jsx语法">
+<meta name="twitter:description" content="JSXJSX 是一种嵌入式的类似 XML 的语法。 它可以被转换成合法的 JavaScript，尽管转换的语义是依据不同的实现而定的。 JSX 因 React 框架而流行，但也存在其它的实现。 React 中的 JSXJSX 为我们提供了创建 React 元素方法（React.createElement(component, props, ...children)）的语法糖（syntactic s">
   
   
     <link rel="icon" href="0001.jpg#/favicon.png">
@@ -65,10 +65,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-JavaScript的使用建议" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-react中的jsx语法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/09/25/JavaScript的使用建议/" class="article-date">
-  <time datetime="2017-09-24T17:23:03.000Z" itemprop="datePublished">2017-09-24</time>
+    <a href="/2021/06/06/react中的jsx语法/" class="article-date">
+  <time datetime="2021-06-06T14:30:07.000Z" itemprop="datePublished">2021-06-06</time>
 </a>
     
   </div>
@@ -79,7 +79,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      JavaScript的使用建议
+      react中的jsx语法
     </h1>
   
 
@@ -87,37 +87,59 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="JavaScript的使用建议"><a href="#JavaScript的使用建议" class="headerlink" title="JavaScript的使用建议"></a>JavaScript的使用建议</h2><ol>
-<li>使用<code>===</code>代替<code>==</code>，<code>==</code>和<code>!=</code>会强制转换类型。</li>
-<li>避免使用<code>eval</code>，<code>eval</code>不仅降低脚本的性能，而且由于需要的权限比较高会造成安全风险。</li>
-<li>不要省略<code>{}</code>，即使代码快只有一行也不可以，便于以后的阅读和修改。</li>
-<li>使用<code>JSLint</code>检查代码是否存在错误。</li>
-<li>把js脚本嵌在文件的底部。</li>
-<li>避免在<code>for</code>语句中声明变量。</li>
-<li>使用数组或者对象构建字符串时使用<code>join</code>方法。</li>
-<li>脚本中减少全局变量的使用，建议用对象把方法和属性包裹起来。</li>
-<li>给代码添加注释。</li>
-<li>在没有启用<code>js</code>的情况下逐步增强网站效果。</li>
-<li><code>setInterval</code>和<code>setTimeout</code>不要传递字符串参数而是使用函数名称。</li>
-<li>不要使用<code>with</code>语句。</li>
-<li>使用<code>{}</code>代替<code>new Object()</code>。</li>
-<li>使用<code>[]</code>代替<code>new Array()</code>。</li>
-<li>定义多个变量时，省略关键字<code>let</code>、<code>var</code>等，用逗号代替。</li>
-<li>不要省略分号。</li>
-<li><code>for in</code>使用判断条件过滤信息避免多余的循环次数以提高性能。</li>
-<li>通过计算运行时间优化代码。</li>
-<li>多阅读。</li>
-<li>自执行函数，用<code>(函数实现)(函数参数);</code>实现自执行函数。</li>
-<li>移除<code>script</code>标签中的<code>language</code>属性。</li>
-</ol>
+        <h2 id="JSX"><a href="#JSX" class="headerlink" title="JSX"></a><code>JSX</code></h2><p><code>JSX</code> 是一种嵌入式的类似 <code>XML</code> 的语法。 它可以被转换成合法的 <code>JavaScript</code>，尽管转换的语义是依据不同的实现而定的。 <code>JSX</code> 因 <code>React</code> 框架而流行，但也存在其它的实现。</p>
+<h3 id="React-中的-JSX"><a href="#React-中的-JSX" class="headerlink" title="React 中的 JSX"></a><code>React</code> 中的 <code>JSX</code></h3><p><code>JSX</code> 为我们提供了创建 <code>React</code> 元素方法（<code>React.createElement(component, props, ...children)</code>）的语法糖（<code>syntactic sugar</code>）</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> element = &lt;div&gt;Hello, world!&lt;/div&gt;</span><br><span class="line"><span class="comment">// 编译后会被转化为</span></span><br><span class="line"><span class="keyword">var</span> element = React.createElement(<span class="string">'div'</span>, <span class="literal">null</span>, <span class="string">'Hello, world!'</span>) <span class="comment">// 返回一个对象</span></span><br></pre></td></tr></table></figure>
+<h4 id="JSX-代表-JS-对象"><a href="#JSX-代表-JS-对象" class="headerlink" title="JSX 代表 JS 对象"></a><code>JSX</code> 代表 <code>JS</code> 对象</h4><p><code>JSX</code> 本身也是一个表达式，在编译后，<code>JSX</code> 表达式会变成普通的 <code>JavaScript</code> 对象。执行 <code>React.createElement</code> 之后最终会执行一下代码生成一个普通的 <code>JavaScript</code> 对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ReactElement = <span class="function"><span class="keyword">function</span> (<span class="params">type, key, ref, self, source, owner, props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> element = &#123;</span><br><span class="line">    <span class="comment">// This tag allows us to uniquely identify this as a React Element</span></span><br><span class="line">    $$<span class="keyword">typeof</span>: REACT_ELEMENT_TYPE,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Built-in properties that belong on the element</span></span><br><span class="line">    type: type,</span><br><span class="line">    key: key,</span><br><span class="line">    ref: ref,</span><br><span class="line">    props: props,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Record the component responsible for creating this element.</span></span><br><span class="line">    _owner: owner,</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> element</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由上可以看出，执行 <code>React.createElement</code> 时只支持表达式，同时可以在以下情况中使用</p>
+<ul>
+<li>可以在 <code>if</code> 语句或 <code>for</code> 循环中使用 <code>JSX</code></li>
+<li>可以将它赋值给变量</li>
+<li>可以将它作为参数接收</li>
+<li>可以在函数中返回 <code>JSX</code>。</li>
+</ul>
+<h5 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h5><p>在 <code>JavaScript</code> 中，表达式就是一个短语，<code>Javascript</code> 解释器会将其计算出一个结果，常量就是最简单的一类表达式。常用的表达式有：</p>
+<ul>
+<li>变量名</li>
+<li>函数定义表达式</li>
+<li>属性访问表达式</li>
+<li>函数调用表达式</li>
+<li>算数表达式</li>
+<li>关系表达式</li>
+<li>逻辑表达式</li>
+</ul>
+<p>注意: <code>if</code> 语句以及 <code>for</code> 循环不是 <code>JavaScript</code> 表达式</p>
+<h4 id="JSX-可自动防范注入攻击"><a href="#JSX-可自动防范注入攻击" class="headerlink" title="JSX 可自动防范注入攻击"></a><code>JSX</code> 可自动防范注入攻击</h4><p>在默认情况下，React DOM 会将所有嵌入 JSX 的值进行编码，利用 <code>createTextNode</code> 进行 <code>HTML</code> 转义</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createTextNode</span>(<span class="params">text, rootContainerElement</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> getOwnerDocumentFromRootContainer(rootContainerElement).createTextNode(</span><br><span class="line">    text</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>若希望直接将字符串不经转义编码直接插入到 <code>HTML</code> 文档流，可以使用 <code>dangerouslySetInnerHTML</code> 属性，这是一个 <code>React</code> 版的 <code>innerHTML</code>，该属性接收一个 <code>key</code> 为 <code>__html</code> 的对象</p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><ul>
+<li><code>JSX</code> 会自动删除一行中开头和结尾处的空白符；</li>
+<li><code>JSX</code> 会自动删除空行；</li>
+<li><code>JSX</code> 会删除紧邻标签的换行；</li>
+<li><code>JSX</code> 会删除字符串中的换行；</li>
+<li>字符串中的换行会被转换成一个空格。</li>
+</ul>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>允许使用熟悉的语法来定义 <code>HTML</code> 元素树</li>
+<li>提供了更加语义化且易懂的标签</li>
+<li>程序结构更容易被直观化</li>
+<li>抽象了 <code>React Element</code> 的创建过程</li>
+<li>可以随时掌控 <code>HTML</code> 标签以及生成这些标签的代码</li>
+<li>原生 <code>Javascript</code></li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://www.tslang.cn/docs/handbook/jsx.html" target="_blank" rel="noopener">JSX</a></li>
+<li><a href="https://www.cnblogs.com/candlia/p/11920070.html" target="_blank" rel="noopener">JSX 语法使用详解</a></li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/25/JavaScript的使用建议/" data-id="ckpm93m040002gms66gr5gmca" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/06/06/react中的jsx语法/" data-id="ckpm93m1j002ggms6ys8j6eic" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
 
     </footer>
   </div>
@@ -125,19 +147,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/03/16/npm和webpack搭建react开发环境/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          npm和webpack搭建react开发环境
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/09/23/js学习（一）/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/05/30/react中的异步实现/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">js学习（一）</div>
+      <div class="article-nav-title">react中的异步实现</div>
     </a>
   
 </nav>

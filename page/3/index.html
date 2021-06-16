@@ -6,7 +6,7 @@
   <title>奔跑的蜗牛</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前端开发工程师">
-<meta name="keywords" content="React、node、css3、html5">
+<meta name="keywords" content="React、node、webpack">
 <meta property="og:type" content="website">
 <meta property="og:title" content="奔跑的蜗牛">
 <meta property="og:url" content="http://yoursite.com/page/3/index.html">
@@ -66,6 +66,262 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-react16新生命周期" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/29/react16新生命周期/" class="article-date">
+  <time datetime="2018-07-29T15:38:21.000Z" itemprop="datePublished">2018-07-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/29/react16新生命周期/">react16新生命周期</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="新生命周期"><a href="#新生命周期" class="headerlink" title="新生命周期"></a>新生命周期</h2><h3 id="创建组件时的生命周期"><a href="#创建组件时的生命周期" class="headerlink" title="创建组件时的生命周期"></a>创建组件时的生命周期</h3><p><img src="/images/react-life-cycle.jpg" alt="新版react生命周期"></p>
+<h4 id="创建过程"><a href="#创建过程" class="headerlink" title="创建过程"></a>创建过程</h4><ul>
+<li>parent constructor</li>
+<li>parent getDerivedStateFromProps</li>
+<li>parent render</li>
+<li>Child constructor</li>
+<li>Child getDerivedStateFromProps</li>
+<li>Child render</li>
+<li>Child componentDidMount</li>
+<li>parent componentDidMount</li>
+</ul>
+<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><ul>
+<li><code>getDerivedStateFromProps</code>的参数为<code>nextProps, prevState</code></li>
+<li>这个方法将会在组件实例化和接收到新的<code>props</code>的时候被调用. 而<code>componentWillReceiveProps</code>只会在接收到新的props的时候才会调用</li>
+<li>当组件实例化的时候，这个方法替代了<code>componentWillMount()</code>，而当接收到新的<code>props</code>时，该方法替代了<code>componentWillReceiveProps()</code>和<code>componentWillUpdate()</code></li>
+<li>这个方法是个<code>static</code>的方法，因此使用<code>this</code>在这个方法中并不指代本实例组件，如果打印出来会发现这个this在这个方法中是<code>null</code>. 而且这个方法会返回值. 当需要更新状态时，需要返回一个<code>object</code>，如果不需要任何更新，则返回null即可</li>
+<li>如果由于父组件的原因导致该组件重新渲染，这个方法也会被调用,如果只想要处理更新的话，最好加上判断条件<code>if (nextProp !== prevProp)</code>.另外，虽然<code>this.setState()</code>也会导致组件重新渲染，但并不会导致这个方法的重新调用.</li>
+</ul>
+<h2 id="正式版的context-API"><a href="#正式版的context-API" class="headerlink" title="正式版的context API"></a>正式版的context API</h2><ul>
+<li><p>使用context</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; createContext &#125; from &apos;react&apos;;</span><br><span class="line"></span><br><span class="line">const ctx = createContext(&#123;</span><br><span class="line">    msg: &apos;hello world!&apos;,</span><br><span class="line">&#125;);</span><br><span class="line">const &#123; Provider, Consumer &#125; = ctx;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Provider组件用于将context数据传给该组件树下的所有组件value属性是context的内容</p>
+</li>
+<li><p>要使用context的数据，我们需要使用Consumer组件</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">  // 数据提供者</span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;Provider value=&#123;&#123; msg: &apos;hello react!&apos; &#125;&#125;&gt;</span><br><span class="line">          &lt;ChildComponent1 /&gt;</span><br><span class="line">          &lt;ChildComponent2 /&gt;</span><br><span class="line">        &lt;/Provider&gt;</span><br><span class="line">        &lt;ChildComponent3 /&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 数据消费者</span><br><span class="line">// 函数式</span><br><span class="line">const ChildComponent1 = () =&gt; (</span><br><span class="line">  &lt;Consumer&gt;</span><br><span class="line">    &#123;context =&gt; &lt;p&gt;&#123;context.msg&#125;&lt;/p&gt;&#125;</span><br><span class="line">  &lt;/Consumer&gt;</span><br><span class="line">);</span><br><span class="line">// 类</span><br><span class="line">class ChildComponent2 extends React.Component &#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;Consumer&gt;</span><br><span class="line">        &#123;context =&gt; &lt;p&gt;&#123;context.msg&#125;&lt;/p&gt;&#125;</span><br><span class="line">      &lt;/Consumer&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 类</span><br><span class="line">class ChildComponent3 extends React.Component &#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;Consumer&gt;</span><br><span class="line">        &#123;context =&gt; &lt;p&gt;&#123;context.msg&#125;&lt;/p&gt;&#125;</span><br><span class="line">      &lt;/Consumer&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">Consumer下不能写其它的东西，比如&lt;Consumer&gt;Message:&#123;context =&gt; &lt;p&gt;&#123;context.msg&#125;&lt;/p&gt;&#125;&lt;/Consumer&gt;  只能是一个函数 返回需要渲染的组件</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>既然context的内容是写在Provider的value中，如果没有将Consumer作为Provider的子组件, 如上面的ChildComponent3，那么Consumer将使用创建context时的参数作为context</p>
+</li>
+<li>Provider 和 Consumer 必须来自同一次 React.createContext 调用。也就是说 NameContext.Provider 和 AgeContext.Consumer 是无法搭配使用的。</li>
+<li>React.createContext 方法接收一个默认值作为参数。当 Consumer 外层没有对应的 Provider 时就会使用该默认值。</li>
+<li>Provider 组件的 value prop 值发生变更时，其内部组件树中对应的 Consumer 组件会接收到新值并重新执行 children 函数。此过程不受 shouldComponentUpdete 方法的影响。</li>
+<li>Provider 组件利用 Object.is 检测 value prop 的值是否有更新。注意 Object.is 和 === 的行为不完全相同。</li>
+<li>Consumer 组件接收一个函数作为 children prop 并利用该函数的返回值生成组件树的模式被称为 Render Props 模式。</li>
+</ul>
+<h4 id="参考：React生命周期简单分析"><a href="#参考：React生命周期简单分析" class="headerlink" title="参考：React生命周期简单分析"></a>参考：<a href="http://www.imweb.io/topic/5b14d5ded4c96b9b1b4c4eaa" target="_blank" rel="noopener">React生命周期简单分析</a></h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/29/react16新生命周期/" data-id="ckpz9u9xs002u0us6zd974bd1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-js和react学习（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/29/js和react学习（一）/" class="article-date">
+  <time datetime="2018-07-29T15:34:45.000Z" itemprop="datePublished">2018-07-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/29/js和react学习（一）/">js和react学习（一）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="import和link的区别"><a href="#import和link的区别" class="headerlink" title="import和link的区别"></a>import和link的区别</h2><ul>
+<li>link属于XHTML标签，而@import完全是CSS提供的一种方式。link标签除了可以加载CSS外，还可以做很多其它的事情，比如定义RSS，定义rel连接属性等，@import就只能加载CSS了。此处注意浏览器的link的src为空时候时会导致页面加载次数增多。</li>
+<li>当一个页面被加载的时候（就是被浏览者浏览的时候），link引用的CSS会同时被加载，而@import引用的CSS 会等到页面全部被下载完再被加载。</li>
+<li>由于@import是CSS2.1提出的所以老的浏览器不支持，@import只有在IE5以上的才能识别，而link标签无此问题。</li>
+<li>当使用javascript控制dom去改变样式的时候，只能使用link标签，因为@import不是dom可以控制的。</li>
+</ul>
+<h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><p>再用到的内存，没有及时释放，就叫做内存泄漏（memory leak）。</p>
+<ul>
+<li>意外的全局变量，使用一个未定义的变量隐式把其设置为了全局变量</li>
+<li>被遗忘的计时器或回调函数，在定时器或者回调函数中使用条件语句由于条件变化导致的语句不可达，进而造成数据使用的内存无法释放</li>
+<li>脱离 DOM 的引用，对dom树节点的变量引用导致移出dom节点后仍然有变量引用节点造成无法回收占用的内存</li>
+<li>闭包，匿名函数可以访问父级作用域的变量导致父级作用域的变量无法释放造成内存泄漏</li>
+</ul>
+<h2 id="函数柯里化"><a href="#函数柯里化" class="headerlink" title="函数柯里化"></a>函数柯里化</h2><p>只传递给函数一部分参数来调用它，让它返回一个函数去处理剩下的参数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const addpp = (...argsa) =&gt; &#123;</span><br><span class="line">	let sum = 0;</span><br><span class="line">	argsa.forEach(item =&gt; sum += item);</span><br><span class="line">	const temp = (...args) =&gt; &#123;</span><br><span class="line">		args.forEach(item =&gt; sum += item);</span><br><span class="line">		return temp;</span><br><span class="line">    &#125;</span><br><span class="line">	temp.toString = temp.valueOf = () =&gt; &#123;</span><br><span class="line">        return sum; </span><br><span class="line">    &#125;</span><br><span class="line">	return temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="webpack核心"><a href="#webpack核心" class="headerlink" title="webpack核心"></a>webpack核心</h2><ul>
+<li>入口(entry)：指示 webpack应该使用哪个模块，来作为构建其内部依赖图的开始。进入入口起点后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的。</li>
+<li>输出(output)：告诉 webpack 在哪里输出它所创建的bundles，以及如何命名这些文件，默认值为 ./dist。</li>
+<li>loader：让 webpack 能够去处理那些非 JavaScript 文件（webpack 自身只理解 JavaScript）。loader 可以将所有类型的文件转换为 webpack能够处理的有效模块，然后你就可以利用 webpack 的打包能力，对它们进行处理。</li>
+<li>插件(plugins)：打包优化和压缩，一直到重新定义环境中的变量。</li>
+</ul>
+<h2 id="MVC模式"><a href="#MVC模式" class="headerlink" title="MVC模式"></a>MVC模式</h2><ul>
+<li>M：核心的”数据层”（Model），也就是程序需要操作的数据或信息。</li>
+<li>V：直接面向最终用户的”视图层”（View）。它是提供给用户的操作界面，是程序的外壳。</li>
+<li>C：”控制层”（Controller），它负责根据用户从”视图层”输入的指令，选取”数据层”中的数据，然后对其进行相应的操作，产生最终结果。</li>
+</ul>
+<h2 id="Flux"><a href="#Flux" class="headerlink" title="Flux"></a>Flux</h2><h5 id="Flux将一个应用分成四个部分"><a href="#Flux将一个应用分成四个部分" class="headerlink" title="Flux将一个应用分成四个部分"></a>Flux将一个应用分成四个部分</h5><ul>
+<li>View： 视图层</li>
+<li>Action（动作）：视图层发出的消息（比如mouseClick）</li>
+<li>Dispatcher（派发器）：用来接收Actions、执行回调函数</li>
+<li>Store（数据层）：用来存放应用的状态，一旦发生变动，就提醒Views要更新页面</li>
+</ul>
+<h5 id="Flux数据的”单向流动”"><a href="#Flux数据的”单向流动”" class="headerlink" title="Flux数据的”单向流动”"></a>Flux数据的”单向流动”</h5><ul>
+<li>用户访问 View</li>
+<li>View 发出用户的 Action</li>
+<li>Dispatcher 收到 Action，要求 Store 进行相应的更新</li>
+<li>Store 更新后，发出一个”change”事件</li>
+<li>View 收到”change”事件后，更新页面</li>
+</ul>
+<h2 id="堆栈的区别"><a href="#堆栈的区别" class="headerlink" title="堆栈的区别"></a>堆栈的区别</h2><ul>
+<li>栈：后进先出，元素大小固定，保存js中的基本数据类型，Undefined、Null、Boolean、Number、String</li>
+<li>堆：内存中的一块区域，随机分配，保存大小不固定的数据类型，array、Object，但是在栈中保存存储地址</li>
+</ul>
+<h2 id="new操作符做的事情"><a href="#new操作符做的事情" class="headerlink" title="new操作符做的事情"></a>new操作符做的事情</h2><ul>
+<li>创建空对象</li>
+<li>设置原型链</li>
+<li>让function的this指向obj，并执行fn的函数体</li>
+<li>判断fn的返回值类型，如果是值类型，返回obj。如果是引用类型，就返回这个引用类型的对象。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/29/js和react学习（一）/" data-id="ckpz9u9wl00120us66uob72nc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-react中配置eslint和flow" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/react中配置eslint和flow/" class="article-date">
+  <time datetime="2018-07-21T17:00:45.000Z" itemprop="datePublished">2018-07-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/react中配置eslint和flow/">react中配置eslint和flow</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="react-中配置-eslint-和-flow"><a href="#react-中配置-eslint-和-flow" class="headerlink" title="react 中配置 eslint 和 flow"></a>react 中配置 eslint 和 flow</h2><h3 id="react-中配置-flow"><a href="#react-中配置-flow" class="headerlink" title="react 中配置 flow"></a>react 中配置 flow</h3><ul>
+<li>用<code>npm install -g flow-bin flow-scripts</code>全局安装<code>flow</code></li>
+<li>用<code>npm install babel-preset-flow flow-bin flow-scripts</code>安装<code>babel-preset-flow flow-bin flow-scripts</code>相关包</li>
+<li>在根目录下的<code>.babelrc</code>文件中做<code>flow</code>相关的配置，配置文件如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;presets&quot;: [</span><br><span class="line">  &quot;react&quot;,</span><br><span class="line">  &quot;es2015&quot;,</span><br><span class="line">  &quot;flow&quot;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在工程根目录下运行<code>flow init</code>初始化<code>flow</code>，产生一个<code>.flowconfig</code>文件，加入相关配置后的文件具体内容如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[ignore]</span><br><span class="line">.*/node_modules/.*</span><br><span class="line">[include]</span><br><span class="line">./src/**/*.js</span><br><span class="line">[libs]</span><br><span class="line">./node_modules/.*</span><br><span class="line">[lints]</span><br><span class="line"></span><br><span class="line">[options]</span><br><span class="line"></span><br><span class="line">[strict]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在需要引入<code>flow</code>检查的文件的头部加入<code>//@flow</code>或者<code>/*@flow*/</code>对文件进行<code>flow</code>检查</li>
+<li>具体用法参考<a href="https://flow.org" target="_blank" rel="noopener">flow</a></li>
+</ul>
+<h3 id="react-中配置-eslint"><a href="#react-中配置-eslint" class="headerlink" title="react 中配置 eslint"></a>react 中配置 eslint</h3><ul>
+<li>用<code>npm install -g eslint</code>命令全局安装<code>eslint</code></li>
+<li>用<code>npm install babel-eslint eslint-plugin-jsx-a11y eslint-plugin-react</code>安装<code>eslint</code>的<code>react</code>插件</li>
+<li>用 <code>eslint --init</code>初始化工程项目，按照提示给出答案，在项目根目录下产生<code>.eslintrc.js</code>文件</li>
+<li>在根目录下新建<code>.eslintignore</code>文件，在文件中添加需要忽略的文件和文件夹</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/22/react中配置eslint和flow/" data-id="ckpz9u9xx00320us60qpohdvw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-html的一些知识" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/17/html的一些知识/" class="article-date">
+  <time datetime="2018-04-16T21:32:35.000Z" itemprop="datePublished">2018-04-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/17/html的一些知识/">html的一些知识</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Web-Worker"><a href="#Web-Worker" class="headerlink" title="Web Worker"></a>Web Worker</h3><p>web worker 是运行在后台的 JavaScript，独立于其他脚本，不会影响页面的性能</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/17/html的一些知识/" data-id="ckpz9u9wg000s0us67x3yy09z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTML/">HTML</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-js中的概念" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/04/13/js中的概念/" class="article-date">
@@ -94,7 +350,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/13/js中的概念/" data-id="ckpm93m0p000wgms6yiq8qqyz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/13/js中的概念/" data-id="ckpz9u9wi000v0us62f5x1z9g" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -140,7 +396,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/12/js继承/" data-id="ckpm93m16001qgms6dzoijoja" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/12/js继承/" data-id="ckpz9u9wx001s0us6673gbmyp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -193,7 +449,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/21/deploy与github帐户关联/" data-id="ckpm93m0i000igms66p2bfen1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/21/deploy与github帐户关联/" data-id="ckpz9u9wa000g0us6tvnnps0q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/source/">资源</a></li></ul>
@@ -291,7 +547,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/16/npm和webpack搭建react开发环境/" data-id="ckpm93m1e0026gms629b0u3r4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/16/npm和webpack搭建react开发环境/" data-id="ckpz9u9x500280us6nxmrgeu3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -352,7 +608,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/25/JavaScript的使用建议/" data-id="ckpm93m040002gms66gr5gmca" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/25/JavaScript的使用建议/" data-id="ckpz9u9vy00030us6kbzpxtz5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -406,7 +662,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/23/js学习（一）/" data-id="ckpm93m13001kgms694oyq35r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/23/js学习（一）/" data-id="ckpz9u9wu001m0us6jz8n7lcg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -512,7 +768,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/03/19/运算符重载/" data-id="ckpm93m2t004wgms6nppdkdzx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/03/19/运算符重载/" data-id="ckpz9u9yv004o0us6fsbjd9k7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c-language/">C/C++语言</a></li></ul>
@@ -573,7 +829,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/29/memcpy函数的实现/" data-id="ckpm93m19001ugms6e8owqk9l" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/11/29/memcpy函数的实现/" data-id="ckpz9u9wz001w0us696waat1j" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c-language/">C/C++语言</a></li></ul>
@@ -633,7 +889,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/29/strcpy的实现/" data-id="ckpm93m1m002ngms6pijd4n15" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/11/29/strcpy的实现/" data-id="ckpz9u9xy00340us6e9lb46ei" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c-language/">C/C++语言</a></li></ul>
@@ -689,7 +945,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/28/TCP链接的建立与释放/" data-id="ckpm93m0b0009gms6e8s8r30y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/11/28/TCP链接的建立与释放/" data-id="ckpz9u9y000390us6oer853hz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
@@ -731,7 +987,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/05/资源/" data-id="ckpm93m2c003wgms6zxrgosw1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/11/05/资源/" data-id="ckpz9u9yr004i0us68en5lnj7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/source/">资源</a></li></ul>
@@ -759,7 +1015,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">41</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">45</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -769,7 +1025,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/c-language/" style="font-size: 12.86px;">C/C++语言</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/TypeORM/" style="font-size: 10px;">TypeORM</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/express/" style="font-size: 11.43px;">express</a> <a href="/tags/mysql/" style="font-size: 11.43px;">mysql</a> <a href="/tags/node/" style="font-size: 18.57px;">node</a> <a href="/tags/other/" style="font-size: 15.71px;">other</a> <a href="/tags/react/" style="font-size: 17.14px;">react</a> <a href="/tags/solution/" style="font-size: 14.29px;">算法</a> <a href="/tags/network/" style="font-size: 15.71px;">计算机网络</a> <a href="/tags/source/" style="font-size: 11.43px;">资源</a>
+      <a href="/tags/c-language/" style="font-size: 12.86px;">C/C++语言</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/TypeORM/" style="font-size: 10px;">TypeORM</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/express/" style="font-size: 11.43px;">express</a> <a href="/tags/mysql/" style="font-size: 11.43px;">mysql</a> <a href="/tags/node/" style="font-size: 18.57px;">node</a> <a href="/tags/other/" style="font-size: 15.71px;">other</a> <a href="/tags/react/" style="font-size: 17.14px;">react</a> <a href="/tags/webpack/" style="font-size: 11.43px;">webpack</a> <a href="/tags/solution/" style="font-size: 14.29px;">算法</a> <a href="/tags/network/" style="font-size: 15.71px;">计算机网络</a> <a href="/tags/source/" style="font-size: 11.43px;">资源</a>
     </div>
   </div>
 
@@ -778,7 +1034,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -791,23 +1047,23 @@
       <ul>
         
           <li>
+            <a href="/2021/06/15/webpack源码阅读（一）/">webpack源码阅读（一）</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/15/Performance/">Performance</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/14/react的同步更新/">react的同步更新</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/12/react中的事件/">react中的事件</a>
+          </li>
+        
+          <li>
             <a href="/2021/06/06/react中的jsx语法/">react中的jsx语法</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/30/react中的异步实现/">react中的异步实现</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/18/前端框架/">前端框架</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/04/用Hexo搭建静态博客/">用Hexo搭建静态博客</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/04/与native交互/">与native交互</a>
           </li>
         
       </ul>

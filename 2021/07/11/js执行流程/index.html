@@ -13,13 +13,13 @@
 <meta property="og:site_name" content="奔跑的蜗牛">
 <meta property="og:description" content="js 引擎   浏览器 JavaScript 引擎     chrome V8   safari JavaScriptCore   Firefox SpiderMonkey   Edge Chakra    js 执行过程 对源码进行词法分析 进行语法分析 生成抽象语法树 生成可执行代码（可能有优化过程，此处代码可能是字节码或者机器码） 执行  词法分析将程序源代码分解成对编程语言来说有意义的代码">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/images/brower/js_v8.png">
-<meta property="og:image" content="http://yoursite.com/images/brower/js_v8_optimize.png">
-<meta property="og:updated_time" content="2021-07-10T15:44:14.577Z">
+<meta property="og:image" content="http://yoursite.com/images/brower/js_v8.jpg">
+<meta property="og:image" content="http://yoursite.com/images/brower/js_v8_optimize.jpg">
+<meta property="og:updated_time" content="2021-07-10T16:25:47.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js执行流程">
 <meta name="twitter:description" content="js 引擎   浏览器 JavaScript 引擎     chrome V8   safari JavaScriptCore   Firefox SpiderMonkey   Edge Chakra    js 执行过程 对源码进行词法分析 进行语法分析 生成抽象语法树 生成可执行代码（可能有优化过程，此处代码可能是字节码或者机器码） 执行  词法分析将程序源代码分解成对编程语言来说有意义的代码">
-<meta name="twitter:image" content="http://yoursite.com/images/brower/js_v8.png">
+<meta name="twitter:image" content="http://yoursite.com/images/brower/js_v8.jpg">
   
   
     <link rel="icon" href="0001.jpg#/favicon.png">
@@ -139,10 +139,10 @@
 <li><code>Ignition</code> 解释器将 <code>AST</code> 转换为字节码，并解释执行</li>
 <li><code>TurboFan</code> 编译器负责将热点函数优化编译为机器指令执行</li>
 </ol>
-<p><img src="/images/brower/js_v8.png" alt="执行过程"></p>
+<p><img src="/images/brower/js_v8.jpg" alt="执行过程"></p>
 <h5 id="优化及优化导致的问题修复"><a href="#优化及优化导致的问题修复" class="headerlink" title="优化及优化导致的问题修复"></a>优化及优化导致的问题修复</h5><p>当 <code>Ignition</code> 开始执行 <code>JavaScript</code> 代码后，<code>V8</code> 会一直观察 <code>JavaScript</code> 代码的执行情况，并记录执行信息，如每个函数的执行次数、每次调用函数时，传递的参数类型等。</p>
 <p>如果一个函数被调用的次数超过了内设的阈值，监视器就会将当前函数标记为热点函数（<code>Hot Function</code>），并将该函数的字节码以及执行的相关信息发送给 <code>TurboFan</code>。<code>TurboFan</code> 会根据执行信息做出一些进一步优化此代码的假设，在假设的基础上将字节码编译为优化的机器代码。如果假设成立，那么当下一次调用该函数时，就会执行优化编译后的机器代码，以提高代码的执行性能；如果假设不成立，不知道你们有没有注意到上图中有一条由 <code>optimized code</code> 指向 <code>bytecode</code> 的红色指向线。此过程叫做 <code>deoptimize</code>（优化回退），将优化编译后的机器代码还原为字节码。</p>
-<p><img src="/images/brower/js_v8_optimize.png" alt="优化过程"></p>
+<p><img src="/images/brower/js_v8_optimize.jpg" alt="优化过程"></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
 <li><a href="https://www.bilibili.com/video/BV1zV411z7RX" target="_blank" rel="noopener">8 分钟带你了解 V8 引擎是如何运行 JS</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/73768338" target="_blank" rel="noopener">JavaScript 深入浅出第 4 课：V8 引擎是如何工作的？</a></li>
@@ -154,7 +154,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/07/11/js执行流程/" data-id="ckqxxuwf0001scks6ibkui85k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/07/11/js执行流程/" data-id="ckqxzcbr3001ls9s676j67urt" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>

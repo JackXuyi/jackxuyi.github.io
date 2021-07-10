@@ -137,10 +137,10 @@
 <li><code>Ignition</code> 解释器将 <code>AST</code> 转换为字节码，并解释执行</li>
 <li><code>TurboFan</code> 编译器负责将热点函数优化编译为机器指令执行</li>
 </ol>
-<p><img src="/images/brower/js_v8.png" alt="执行过程"></p>
+<p><img src="/images/brower/js_v8.jpg" alt="执行过程"></p>
 <h5 id="优化及优化导致的问题修复"><a href="#优化及优化导致的问题修复" class="headerlink" title="优化及优化导致的问题修复"></a>优化及优化导致的问题修复</h5><p>当 <code>Ignition</code> 开始执行 <code>JavaScript</code> 代码后，<code>V8</code> 会一直观察 <code>JavaScript</code> 代码的执行情况，并记录执行信息，如每个函数的执行次数、每次调用函数时，传递的参数类型等。</p>
 <p>如果一个函数被调用的次数超过了内设的阈值，监视器就会将当前函数标记为热点函数（<code>Hot Function</code>），并将该函数的字节码以及执行的相关信息发送给 <code>TurboFan</code>。<code>TurboFan</code> 会根据执行信息做出一些进一步优化此代码的假设，在假设的基础上将字节码编译为优化的机器代码。如果假设成立，那么当下一次调用该函数时，就会执行优化编译后的机器代码，以提高代码的执行性能；如果假设不成立，不知道你们有没有注意到上图中有一条由 <code>optimized code</code> 指向 <code>bytecode</code> 的红色指向线。此过程叫做 <code>deoptimize</code>（优化回退），将优化编译后的机器代码还原为字节码。</p>
-<p><img src="/images/brower/js_v8_optimize.png" alt="优化过程"></p>
+<p><img src="/images/brower/js_v8_optimize.jpg" alt="优化过程"></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
 <li><a href="https://www.bilibili.com/video/BV1zV411z7RX" target="_blank" rel="noopener">8 分钟带你了解 V8 引擎是如何运行 JS</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/73768338" target="_blank" rel="noopener">JavaScript 深入浅出第 4 课：V8 引擎是如何工作的？</a></li>
@@ -152,7 +152,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/07/11/js执行流程/" data-id="ckqxxuwf0001scks6ibkui85k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/07/11/js执行流程/" data-id="ckqxzcbr3001ls9s676j67urt" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -196,7 +196,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/28/react中hooks实现原理/" data-id="ckqxxuwfe002lcks67u95w32c" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/06/28/react中hooks实现原理/" data-id="ckqxzcbru002ts9s6ezr95qcn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -277,7 +277,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/20/react从dom-render到初次组件渲染完成/" data-id="ckqxxuwfj002vcks6fypkzybm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/06/20/react从dom-render到初次组件渲染完成/" data-id="ckqxzcbrv002vs9s6u2nqsw7x" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -395,7 +395,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/17/webpack源码阅读（二）/" data-id="ckqxxuwfs003ecks62j1hn85i" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/06/17/webpack源码阅读（二）/" data-id="ckqxzcbs4003bs9s6qe3kocs1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
@@ -473,7 +473,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/15/webpack源码阅读（一）/" data-id="ckqxxuwfw003ncks6mk9rm1j9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/06/15/webpack源码阅读（一）/" data-id="ckqxzcbs10036s9s6fmst97sd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
@@ -534,7 +534,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/15/Performance/" data-id="ckqxxuwe20005cks6pb9cl45r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/06/15/Performance/" data-id="ckqxzcbpx000as9s6ivnhsuwa" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -607,7 +607,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/14/react的同步更新/" data-id="ckqxxuwgr005ocks6x7au1vy0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/06/14/react的同步更新/" data-id="ckqxzcbth005os9s66i2t2rfj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -668,7 +668,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/12/react中的事件/" data-id="ckqxxuwfi002tcks6jozcebwr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/06/12/react中的事件/" data-id="ckqxzcbrq002ls9s6r5y5rmxk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -751,7 +751,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/06/react中的jsx语法/" data-id="ckqxxuwfg002qcks62k5dkafm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/06/06/react中的jsx语法/" data-id="ckqxzcbro002gs9s61un7j1f0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -847,7 +847,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/05/30/react中的异步实现/" data-id="ckqxxuwfk002ycks6kfslj34q" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/05/30/react中的异步实现/" data-id="ckqxzcbrs002os9s61kbr2ix6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -934,7 +934,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/04/18/前端框架/" data-id="ckqxxuwfu003icks61x5at2cv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/04/18/前端框架/" data-id="ckqxzcbs5003ds9s6s7up4qit" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
@@ -1008,7 +1008,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/04/04/用Hexo搭建静态博客/" data-id="ckqxxuwg40041cks6kmgfmi9x" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/04/04/用Hexo搭建静态博客/" data-id="ckqxzcbsp0044s9s6f15rp2zc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
@@ -1075,7 +1075,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/04/04/与native交互/" data-id="ckqxxuwfq003bcks6pau28g5y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/04/04/与native交互/" data-id="ckqxzcbs6003gs9s6wskrq0ou" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
@@ -1130,7 +1130,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/04/02/实时协议/" data-id="ckqxxuwfv003lcks6hjhmqw2k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/04/02/实时协议/" data-id="ckqxzcbs7003is9s6nvmxbr5t" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
@@ -1183,7 +1183,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/28/HTTPS/" data-id="ckqxxuwdw0002cks6kegjf3xn" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/28/HTTPS/" data-id="ckqxzcbps0004s9s6nwke2lgu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
@@ -1245,7 +1245,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/28/网络安全/" data-id="ckqxxuwg9004dcks6inebpqsy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/28/网络安全/" data-id="ckqxzcbsy004cs9s6kwocsnrk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
@@ -1317,7 +1317,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/22/http协议/" data-id="ckqxxuwei000ucks63dobf24e" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/22/http协议/" data-id="ckqxzcbqe000vs9s67uby7xol" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
@@ -1403,7 +1403,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/03/commonjs/" data-id="ckqxxuweg000ncks66mrwanoq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/03/commonjs/" data-id="ckqxzcbqa000ts9s6o0nf6678" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -1468,7 +1468,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/02/浏览器基础/" data-id="ckqxxuwg0003tcks6bw9cbyn8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/02/浏览器基础/" data-id="ckqxzcbsk003us9s6jtyazomb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1559,7 +1559,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/28/简单代码热更新/" data-id="ckqxxuwg70049cks6vioqh5mm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/02/28/简单代码热更新/" data-id="ckqxzcbsn0040s9s6qm98iqry" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -1623,7 +1623,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/01/24/粘贴图片/" data-id="ckqxxuwg60047cks6pthpt9zv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/01/24/粘贴图片/" data-id="ckqxzcbsv0048s9s6kse0sw2f" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1700,7 +1700,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/01/17/跨页面通信/" data-id="ckqxxuwgc004jcks65peimhfp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/01/17/跨页面通信/" data-id="ckqxzcbt0004gs9s6t5g7ufwo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1770,7 +1770,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/01/06/nodejs中实现websocket服务/" data-id="ckqxxuwfb002ecks6vm4upc9k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/01/06/nodejs中实现websocket服务/" data-id="ckqxzcbrp002js9s6hyb4c99v" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">计算机网络</a></li></ul>
@@ -1858,7 +1858,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/12/23/记一次项目打包优化/" data-id="ckqxxuwg8004bcks6hq197gzy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/12/23/记一次项目打包优化/" data-id="ckqxzcbsu0046s9s6yk9rh2hb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
@@ -1919,7 +1919,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/12/14/ts之type、interface和class区别/" data-id="ckqxxuwfp0039cks6qi0x1jgu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/12/14/ts之type、interface和class区别/" data-id="ckqxzcbs10034s9s6k4cmxj8x" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeScript/">TypeScript</a></li></ul>
@@ -2007,7 +2007,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/11/22/for-in和for-of的区别/" data-id="ckqxxuweh000qcks6nkc2195y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/11/22/for-in和for-of的区别/" data-id="ckqxzcbq9000rs9s6zglr8wdq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -2058,7 +2058,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/10/19/异步任务按顺序分组执行/" data-id="ckqxxuwfx003pcks6j7ofmrm6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/10/19/异步任务按顺序分组执行/" data-id="ckqxzcbsg003qs9s6fy8bv6ib" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -2101,7 +2101,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/23/三数之和/" data-id="ckqxxuwft003gcks63sukmtdx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/09/23/三数之和/" data-id="ckqxzcbs30039s9s68nnb2cfb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -2148,7 +2148,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/21/antd中遇到的问题（一）/" data-id="ckqxxuweb000jcks640todv3g" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/09/21/antd中遇到的问题（一）/" data-id="ckqxzcbq0000fs9s6fkcvj8ru" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -2194,7 +2194,7 @@ branch: master
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/14/mysql数据库操作（二）/" data-id="ckqxxuwf70027cks64ph9duup" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/09/14/mysql数据库操作（二）/" data-id="ckqxzcbri0024s9s6u50z6mui" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeORM/">TypeORM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>

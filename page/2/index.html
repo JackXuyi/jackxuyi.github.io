@@ -66,6 +66,259 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-mysql数据库操作（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/14/mysql数据库操作（一）/" class="article-date">
+  <time datetime="2020-09-13T22:21:24.000Z" itemprop="datePublished">2020-09-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/14/mysql数据库操作（一）/">mysql数据库操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><p><code>CREATE USER &#39;username&#39;@&#39;host&#39; IDENTIFIED BY &#39;password&#39;;</code></p>
+<ul>
+<li><code>host</code> 代表可以登录地址，<code>%</code> 表示任意地址</li>
+<li>可选选项 <code>WITH mysql_native_password</code> 语句表示密码的存储方式</li>
+</ul>
+<h3 id="修改用户密码"><a href="#修改用户密码" class="headerlink" title="修改用户密码"></a>修改用户密码</h3><p><code>ALTER USER &#39;username&#39;@&#39;host&#39; IDENTIFIED WITH mysql_native_password BY &#39;password&#39;;</code></p>
+<h3 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h3><p><code>grant 权限 privileges on dbName.数据表 to &#39;tools&#39;;</code></p>
+<ul>
+<li>权限包括增删查改，<code>all</code> 代表所有权限</li>
+<li>数据库和数据表可以用 <code>*</code> 表示通配</li>
+</ul>
+<h3 id="刷新权限"><a href="#刷新权限" class="headerlink" title="刷新权限"></a>刷新权限</h3><p><code>FLUSH PRIVILEGES;</code></p>
+<ul>
+<li>数据权限并不会自动更新，需要手动执行命令才会刷新</li>
+</ul>
+<h3 id="查看列表数据库"><a href="#查看列表数据库" class="headerlink" title="查看列表数据库"></a>查看列表数据库</h3><p><code>show databases;</code></p>
+<h3 id="查看数据表的结构"><a href="#查看数据表的结构" class="headerlink" title="查看数据表的结构"></a>查看数据表的结构</h3><p><code>desc 数据库.数据表;</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/09/14/mysql数据库操作（一）/" data-id="ckqxxuwf60024cks67t5uc8dy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-浏览器缓存" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/31/浏览器缓存/" class="article-date">
+  <time datetime="2020-08-30T21:35:19.000Z" itemprop="datePublished">2020-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/31/浏览器缓存/">浏览器缓存</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="缓存分类"><a href="#缓存分类" class="headerlink" title="缓存分类"></a>缓存分类</h3><ul>
+<li>共享缓存：存储的响应能够被多个用户使用。</li>
+<li>私有缓存：只能用于单独用户。</li>
+</ul>
+<h3 id="缓存方式"><a href="#缓存方式" class="headerlink" title="缓存方式"></a>缓存方式</h3><ul>
+<li>浏览器与代理缓存</li>
+<li>网关缓存</li>
+<li>CDN</li>
+<li>反向代理缓存和负载均衡器</li>
+</ul>
+<h3 id="操作的目标"><a href="#操作的目标" class="headerlink" title="操作的目标"></a>操作的目标</h3><p>常见的 HTTP 缓存只能存储 GET 响应，对于其他类型的响应则无能为力。缓存的关键主要包括 request method 和目标 URI（一般只有 GET 请求才会被缓存）。</p>
+<h3 id="缓存控制"><a href="#缓存控制" class="headerlink" title="缓存控制"></a>缓存控制</h3><h4 id="没有缓存"><a href="#没有缓存" class="headerlink" title="没有缓存"></a>没有缓存</h4><p>缓存中不得存储任何关于客户端请求和服务端响应的内容。每次由客户端发起的请求都会下载完整的响应内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: no-store</span><br></pre></td></tr></table></figure>
+<h4 id="缓存但重新验证"><a href="#缓存但重新验证" class="headerlink" title="缓存但重新验证"></a>缓存但重新验证</h4><p>每次有请求发出时，缓存会将此请求发到服务器，服务器端会验证请求中所描述的缓存是否过期，若未过期，则缓存才使用本地缓存副本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: no-cache</span><br></pre></td></tr></table></figure>
+<h4 id="私有和公共缓存"><a href="#私有和公共缓存" class="headerlink" title="私有和公共缓存"></a>私有和公共缓存</h4><ul>
+<li>“public” 指令表示该响应可以被任何中间人（译者注：比如中间代理、CDN 等）缓存。</li>
+<li>“private” 则表示该响应是专用于某单个用户的，中间人不能缓存此响应，该响应只能应用于浏览器私有缓存中。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: private</span><br><span class="line">Cache-Control: public</span><br></pre></td></tr></table></figure>
+<h4 id="过期"><a href="#过期" class="headerlink" title="过期"></a>过期</h4><p>过期机制中，最重要的指令是 “max-age=<seconds>“，表示资源能够被缓存（保持新鲜）的最大时间。相对 Expires 而言，max-age 是距离请求发起的时间的秒数。针对应用中那些不会改变的文件，通常可以手动设置一定的时长以保证缓存有效，例如图片、css、js 等静态资源。</seconds></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: max-age=31536000</span><br></pre></td></tr></table></figure>
+<h4 id="验证方式"><a href="#验证方式" class="headerlink" title="验证方式"></a>验证方式</h4><p>当使用了 “must-revalidate” 指令，那就意味着缓存在考虑使用一个陈旧的资源时，必须先验证它的状态，已过期的缓存将不被使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: must-revalidate</span><br></pre></td></tr></table></figure>
+<h3 id="Pragma-头"><a href="#Pragma-头" class="headerlink" title="Pragma 头"></a>Pragma 头</h3><p>Pragma 是 HTTP/1.0 标准中定义的一个 header 属性，请求中包含 Pragma 的效果跟在头信息中定义 Cache-Control: no-cache 相同，但是 HTTP 的响应头没有明确定义这个属性，所以它不能拿来完全替代 HTTP/1.1 中定义的 Cache-control 头。通常定义 Pragma 以向后兼容基于 HTTP/1.0 的客户端。</p>
+<h3 id="新鲜度"><a href="#新鲜度" class="headerlink" title="新鲜度"></a>新鲜度</h3><p>理论上来讲，当一个资源被缓存存储后，该资源应该可以被永久存储在缓存中。</p>
+<h4 id="缓存驱逐"><a href="#缓存驱逐" class="headerlink" title="缓存驱逐"></a>缓存驱逐</h4><p>由于缓存只有有限的空间用于存储资源副本，所以缓存会定期地将一些副本删除。当服务器上面的资源进行了更新，那么缓存中的对应资源也应该被更新，由于 HTTP 是 C/S 模式的协议，服务器更新一个资源时，不可能直接通知客户端更新缓存，所以双方必须为该资源约定一个过期时间，在该过期时间之前，该资源（缓存副本）就是新鲜的，当过了过期时间后，该资源（缓存副本）则变为陈旧的。驱逐算法用于将陈旧的资源（缓存副本）替换为新鲜的，注意，一个陈旧的资源（缓存副本）是不会直接被清除或忽略的，当客户端发起一个请求时，缓存检索到已有一个对应的陈旧资源（缓存副本），则缓存会先将此请求附加一个 If-None-Match 头，然后发给目标服务器，以此来检查该资源副本是否是依然还是算新鲜的，若服务器返回了 304 (Not Modified)（该响应不会有带有实体信息），则表示此资源副本是新鲜的，这样一来，可以节省一些带宽。若服务器通过 If-None-Match 或 If-Modified-Since 判断后发现已过期，那么会带有该资源的实体内容返回。<br><img src="/images/js/cache.png" alt="缓存驱逐过程"></p>
+<h5 id="缓存的先后顺序"><a href="#缓存的先后顺序" class="headerlink" title="缓存的先后顺序"></a>缓存的先后顺序</h5><p>对于含有特定头信息的请求，会去计算缓存寿命。</p>
+<ul>
+<li>max-age：Cache-control: max-age=N 的头，相应的缓存的寿命就是 N。</li>
+<li>expires：通过比较 Expires 的值和头里面 Date 属性的值来判断是否缓存还有效。</li>
+<li>Last-Modified： 缓存的寿命就等于头里面 Date 的值减去 Last-Modified 的值除以 10（注：根据 rfc2626 其实也就是乘以 10%）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expirationTime = responseTime + freshnessLifetime - currentAge</span><br></pre></td></tr></table></figure>
+<h6 id="注：responseTime-表示浏览器接收到此响应的那个时间点。"><a href="#注：responseTime-表示浏览器接收到此响应的那个时间点。" class="headerlink" title="注：responseTime 表示浏览器接收到此响应的那个时间点。"></a>注：responseTime 表示浏览器接收到此响应的那个时间点。</h6><h3 id="缓存验证"><a href="#缓存验证" class="headerlink" title="缓存验证"></a>缓存验证</h3><p>用户点击刷新按钮时会开始缓存验证。</p>
+<ul>
+<li>如果缓存的响应头信息里含有”Cache-control: must-revalidate”的定义，在浏览的过程中也会触发缓存验证。</li>
+<li>在浏览器偏好设置里设置 Advanced-&gt;Cache 为强制验证缓存也能达到相同的效果。</li>
+</ul>
+<p>当缓存的文档过期后，需要进行缓存验证或者重新获取资源。只有在服务器返回强校验器或者弱校验器时才会进行验证。</p>
+<h4 id="ETags"><a href="#ETags" class="headerlink" title="ETags"></a>ETags</h4><ul>
+<li>作为缓存的一种强校验器，ETag 响应头是一个对用户代理(User Agent, 下面简称 UA)不透明（译者注：UA 无需理解，只需要按规定使用即可）的值。对于像浏览器这样的 HTTP UA，不知道 ETag 代表什么，不能预测它的值是多少。如果资源请求的响应头里含有 ETag, 客户端可以在后续的请求的头中带上 If-None-Match 头来验证缓存。</li>
+<li>Last-Modified 响应头可以作为一种弱校验器。说它弱是因为它只能精确到一秒。如果响应头里含有这个信息，客户端可以在后续的请求中带上 If-Modified-Since 来验证缓存。</li>
+</ul>
+<p>当向服务端发起缓存校验的请求时，服务端会返回 200 ok 表示返回正常的结果或者 304 Not Modified(不返回 body)表示浏览器可以使用本地缓存文件。304 的响应头也可以同时更新缓存文档的过期时间。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/08/31/浏览器缓存/" data-id="ckqxxuwg3003zcks6gbwqut4o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-babel编译过程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/30/babel编译过程/" class="article-date">
+  <time datetime="2020-08-30T15:23:25.000Z" itemprop="datePublished">2020-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/30/babel编译过程/">babel编译过程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="编译步骤"><a href="#编译步骤" class="headerlink" title="编译步骤"></a>编译步骤</h3><p>Babel 编译文件的主要处理步骤依次是：解析（parse）、转换（transform）、生成（generate）。</p>
+<ul>
+<li>解析：解析步骤主要是接受源代码并输出抽象语法树（AST）。此步骤主要由@babel/parser（原 Babylon）负责解析和理解 js 代码，输出对应的 AST。</li>
+<li>转换：转换步骤主要是接受 AST，并对其进行遍历，在此过程中会进行分析和修改 AST，这也是 Babel 插件主要工作的地方。此步骤主要用到@babel/traverse 和@babel/types 两个包。</li>
+<li>生成：生成步骤主要是将（经过一系列转换之后的）AST 再转换为正常的字符串代码。此步骤主要由@babel/generator 深度优先遍历整个 AST，然后构建可以表示转换后代码的字符串。</li>
+</ul>
+<h5 id="注：AST-其实是一个每个节点包含特定属性的对象树"><a href="#注：AST-其实是一个每个节点包含特定属性的对象树" class="headerlink" title="注：AST 其实是一个每个节点包含特定属性的对象树"></a>注：AST 其实是一个每个节点包含特定属性的对象树</h5><h3 id="实现-babel-的编译过程"><a href="#实现-babel-的编译过程" class="headerlink" title="实现 babel 的编译过程"></a>实现 babel 的编译过程</h3><ul>
+<li>使用 <code>@babel/parser</code> 把代码格式化为 <code>AST</code> 树</li>
+<li>使用 <code>@babel/traverse</code> 和 <code>@babel/types</code> 实现 <code>AST</code> 树的遍历及对树的特定节点的操作</li>
+<li>使用 <code>@babel/generator</code> 生成目标代码</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> parser = <span class="built_in">require</span>(<span class="string">'@babel/parser'</span>)</span><br><span class="line"><span class="keyword">const</span> traverse = <span class="built_in">require</span>(<span class="string">'@babel/traverse'</span>).default</span><br><span class="line"><span class="keyword">const</span> type = <span class="built_in">require</span>(<span class="string">'@babel/types'</span>)</span><br><span class="line"><span class="keyword">const</span> generate = <span class="built_in">require</span>(<span class="string">'@babel/generator'</span>).default</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> code = <span class="string">`</span></span><br><span class="line"><span class="string">function test(n)&#123;</span></span><br><span class="line"><span class="string">    return n + 1</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"><span class="keyword">const</span> ast = parser.parse(code, &#123; <span class="attr">sourceType</span>: <span class="string">'module'</span> &#125;) <span class="comment">// 把代码格式化为 AST 树</span></span><br><span class="line"></span><br><span class="line">traverse(ast, &#123;</span><br><span class="line">  <span class="comment">// 遍历 AST 树并进行操作</span></span><br><span class="line">  enter(path) &#123;</span><br><span class="line">    <span class="comment">// 从根节点到叶子节点遍历过程中</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'enter'</span>, path.node.name)</span><br><span class="line">    <span class="keyword">if</span> (type.isIdentifier(path.node, &#123; <span class="attr">name</span>: <span class="string">'n'</span> &#125;)) &#123;</span><br><span class="line">      <span class="comment">// 把参数 n 转化成 x</span></span><br><span class="line">      path.replaceWith(type.identifier(<span class="string">'x'</span>))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  exit(path) &#123;</span><br><span class="line">    <span class="comment">// 从叶子节点到根节点遍历过程中</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'exit'</span>, path.node.name)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> target = generate(ast) <span class="comment">// 生成代码</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(target.code)</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">function test(x) &#123;</span></span><br><span class="line"><span class="comment">  return x + 1;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://github.com/jamiebuilds/babel-handbook/blob/master/translations/zh-Hans/plugin-handbook.md#toc-writing-your-first-babel-plugin" target="_blank" rel="noopener">Babel 插件手册</a></li>
+<li><a href="https://github.com/Liaoct/blog/issues/14" target="_blank" rel="noopener">Babel 7 插件开发指南</a></li>
+<li><a href="https://github.com/JackXuyi/web-exercise/blob/master/babel/test.js" target="_blank" rel="noopener">示例代码</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/08/30/babel编译过程/" data-id="ckqxxuwe5000bcks6xa491uoj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ES6模块与CommonJS模块" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/27/ES6模块与CommonJS模块/" class="article-date">
+  <time datetime="2020-08-26T21:09:40.000Z" itemprop="datePublished">2020-08-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/27/ES6模块与CommonJS模块/">ES6模块与CommonJS模块</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="ES6-模块与-CommonJS-模块的区别"><a href="#ES6-模块与-CommonJS-模块的区别" class="headerlink" title="ES6 模块与 CommonJS 模块的区别"></a>ES6 模块与 CommonJS 模块的区别</h3><ul>
+<li>CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。</li>
+<li>CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。（因为 CommonJS 加载的是一个对象（即 module.exports 属性），该对象只有在脚本运行完才会生成。而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。）</li>
+<li>CommonJS 模块的 require()是同步加载模块，ES6 模块的 import 命令是异步加载，有一个独立模块依赖的解析阶段。</li>
+</ul>
+<h4 id="ES6-模块输出的是值的引用"><a href="#ES6-模块输出的是值的引用" class="headerlink" title="ES6 模块输出的是值的引用"></a>ES6 模块输出的是值的引用</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lib.mjs</span></span><br><span class="line"><span class="keyword">let</span> count = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  count = count + <span class="number">1</span></span><br><span class="line">&#125;, <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> &#123; count &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// index.mjs</span></span><br><span class="line"><span class="keyword">import</span> &#123; count &#125; <span class="keyword">from</span> <span class="string">'./lib.mjs'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'count'</span>, count) <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'timeout count'</span>, count) <span class="comment">// 2</span></span><br><span class="line">&#125;, <span class="number">1100</span>)</span><br><span class="line"></span><br><span class="line">count = <span class="number">1000</span> <span class="comment">// TypeError: Assignment to constant variable.</span></span><br></pre></td></tr></table></figure>
+<h4 id="CommonJS-模块输出的是一个值的拷贝"><a href="#CommonJS-模块输出的是一个值的拷贝" class="headerlink" title="CommonJS 模块输出的是一个值的拷贝"></a>CommonJS 模块输出的是一个值的拷贝</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lib.cjs</span></span><br><span class="line"><span class="keyword">let</span> count = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  count = count + <span class="number">1</span></span><br><span class="line">&#125;, <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123; count &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// index.cjs</span></span><br><span class="line"><span class="keyword">let</span> &#123; count &#125; = <span class="built_in">require</span>(<span class="string">'./lib.cjs'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'count'</span>, count) <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'timeout count'</span>, count) <span class="comment">// 1000</span></span><br><span class="line">&#125;, <span class="number">1100</span>)</span><br><span class="line"></span><br><span class="line">count = <span class="number">1000</span></span><br></pre></td></tr></table></figure>
+<h5 id="注"><a href="#注" class="headerlink" title="注"></a>注</h5><ul>
+<li>从 Node.js v13.2 版本开始，Node.js 已经默认打开了 ES6 模块支持</li>
+<li>Node.js 要求 ES6 模块采用.mjs 后缀文件名</li>
+<li>commonjs 模块采用.cjs 后缀文件名</li>
+</ul>
+<h3 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h3><p>“循环加载”（circular dependency）指的是，a 脚本的执行依赖 b 脚本，而 b 脚本的执行又依赖 a 脚本。</p>
+<h4 id="CommonJS-模块的循环加载"><a href="#CommonJS-模块的循环加载" class="headerlink" title="CommonJS 模块的循环加载"></a>CommonJS 模块的循环加载</h4><p>CommonJS 模块的脚本代码在 require 的时候，就会全部执行，一旦出现某个模块被”循环加载”，就只输出已经执行的部分，还未执行的部分不会输出。</p>
+<h4 id="ES6-模块的循环加载"><a href="#ES6-模块的循环加载" class="headerlink" title="ES6 模块的循环加载"></a>ES6 模块的循环加载</h4><p>ES6 模块遇到模块加载命令 import 时，不会去执行模块，而是只生成一个引用。等到真的需要用到时，再到模块里面去取值，不存在缓存值的问题，而且模块里面的变量，绑定其所在的模块。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://es6.ruanyifeng.com/#docs/module-loader#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8A%A0%E8%BD%BD" target="_blank" rel="noopener">ES6 模块与 CommonJS 模块的差异</a></li>
+<li><a href="https://juejin.cn/post/6844903747290660878" target="_blank" rel="noopener">CommonJS 和 ES6 模块循环加载处理的区别</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2015/11/circular-dependency.html" target="_blank" rel="noopener">JavaScript 模块的循环加载</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/322529692" target="_blank" rel="noopener">JavaScript 模块加载与循环引用</a></li>
+<li><a href="https://github.com/JackXuyi/web-exercise/tree/master/verification" target="_blank" rel="noopener">测试代码链接</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/08/27/ES6模块与CommonJS模块/" data-id="ckqxxuwds0001cks6kdx5qb37" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-除自身以外数组的乘积" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/08/17/除自身以外数组的乘积/" class="article-date">
@@ -99,7 +352,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/17/除自身以外数组的乘积/" data-id="ckpz9u9yw004q0us621k222io" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/17/除自身以外数组的乘积/" data-id="ckqxxuwge004ncks6j9dn42ry" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -164,7 +417,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/05/检测项目中的包版本变化/" data-id="ckpz9u9yd003y0us6vvexvts5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/05/检测项目中的包版本变化/" data-id="ckqxxuwg2003xcks6g8mup6c0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -218,7 +471,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/03/react16中生命周期hooks/" data-id="ckpz9u9xq002s0us6rrrjqj1f" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/03/react16中生命周期hooks/" data-id="ckqxxuwfb002gcks6m31zzteq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -262,7 +515,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/27/排列/" data-id="ckpz9u9y8003r0us6odlks468" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/27/排列/" data-id="ckqxxuwfy003rcks6peoi3ng7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solution/">算法</a></li></ul>
@@ -327,7 +580,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/25/项目脚手架/" data-id="ckpz9u9yx004s0us6ro9ri0qu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/25/项目脚手架/" data-id="ckqxxuwgd004lcks63tv0o3v3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -413,7 +666,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/25/滚动加载更多/" data-id="ckpz9u9yj00460us6ap9zgefp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/25/滚动加载更多/" data-id="ckqxxuwg50043cks6wzbvb3xh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -479,7 +732,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/13/mac下查询端口占用并杀掉node进程/" data-id="ckpz9u9wy001u0us68d01ppka" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/13/mac下查询端口占用并杀掉node进程/" data-id="ckqxxuwf50020cks6urglsu9q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -569,7 +822,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/05/用ts搭建express项目/" data-id="ckpz9u9yh00440us6cytqxcl2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/07/05/用ts搭建express项目/" data-id="ckqxxuwg50045cks61p6wefwy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -787,7 +1040,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/29/js基础知识系列（九）/" data-id="ckpz9u9wn00170us6yizxsu6z" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/29/js基础知识系列（九）/" data-id="ckqxxuwev001icks6cyscm7k8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -920,7 +1173,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/08/js基础知识系列（八）/" data-id="ckpz9u9wr001h0us6fxsfncnj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/08/js基础知识系列（八）/" data-id="ckqxxuwew001kcks6nmuwwh03" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -986,7 +1239,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/01/js基础知识系列（七）/" data-id="ckpz9u9wm00150us6k88xoxhu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/01/js基础知识系列（七）/" data-id="ckqxxuweo0017cks60jfjye2n" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1094,7 +1347,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/01/js基础知识系列（六）/" data-id="ckpz9u9ws001j0us6n54o4fs2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/01/js基础知识系列（六）/" data-id="ckqxxuwf2001ucks6vukr160q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1352,7 +1605,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/24/js基础知识系列（五）/" data-id="ckpz9u9wq001e0us6z9wmtr6t" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/05/24/js基础知识系列（五）/" data-id="ckqxxuwer001ecks68eteqrcp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1464,7 +1717,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/07/js基础知识系列（四）/" data-id="ckpz9u9x0001y0us6txcxc3h2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/05/07/js基础知识系列（四）/" data-id="ckqxxuwex001mcks6jk8tzibj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1520,7 +1773,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/27/typedoc源码阅读系列（二）/" data-id="ckpz9u9y2003e0us6d89b84d0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/27/typedoc源码阅读系列（二）/" data-id="ckqxxuwfp0037cks6jw0fdvbd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1588,7 +1841,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/20/typedoc源码阅读系列（一）/" data-id="ckpz9u9y0003b0us6cp23n7v6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/20/typedoc源码阅读系列（一）/" data-id="ckqxxuwfo0034cks6kzkh1mtv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1648,7 +1901,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/15/gulp打包/" data-id="ckpz9u9wd000l0us6k4vb8yme" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/15/gulp打包/" data-id="ckqxxuwei000scks6wqm5c9sn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -1748,7 +2001,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/10/iOS模拟器/" data-id="ckpz9u9wj000x0us61z4tre8m" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/10/iOS模拟器/" data-id="ckqxxuwej000xcks63lnyxgvr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
@@ -1812,7 +2065,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/06/npm包/" data-id="ckpz9u9x400250us65c3qqtoi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/06/npm包/" data-id="ckqxxuwf9002bcks63gdvbyqx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -1863,7 +2116,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/13/React学习系列（三）/" data-id="ckpz9u9w200080us6bfmjcl6f" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/13/React学习系列（三）/" data-id="ckqxxuwe40009cks62cf47we0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -1917,7 +2170,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/12/js基础知识系列（三）/" data-id="ckpz9u9wp001c0us6z9nftpy7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/12/js基础知识系列（三）/" data-id="ckqxxuwep0019cks654v9sw03" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -1968,7 +2221,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/07/React学习系列（二）/" data-id="ckpz9u9w4000a0us6cdyg2eeg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/07/React学习系列（二）/" data-id="ckqxxuwe8000ecks6q0ujfh7z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -2018,7 +2271,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/05/React学习系列（一）/" data-id="ckpz9u9w000050us62lieblgn" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/05/React学习系列（一）/" data-id="ckqxxuwe00004cks625q34w5b" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
@@ -2110,7 +2363,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/29/js基础知识系列（二）/" data-id="ckpz9u9wo00190us6g6zj4ir6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/29/js基础知识系列（二）/" data-id="ckqxxuweu001gcks6uzm53y6r" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -2297,7 +2550,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/21/js基础知识系列（一）/" data-id="ckpz9u9wk00100us619olzi9z" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/21/js基础知识系列（一）/" data-id="ckqxxuwem0012cks619wwwsrx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -2364,589 +2617,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/20/日志记录和日志分割/" data-id="ckpz9u9yb003v0us6ebdz14j2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/20/日志记录和日志分割/" data-id="ckqxxuwg1003vcks6gthrdqy8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-react-webpack项目中的babel配置" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/09/06/react-webpack项目中的babel配置/" class="article-date">
-  <time datetime="2018-09-05T21:25:42.000Z" itemprop="datePublished">2018-09-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/06/react-webpack项目中的babel配置/">react+webpack项目中的babel配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="babel配置位置"><a href="#babel配置位置" class="headerlink" title="babel配置位置"></a>babel配置位置</h2><ul>
-<li><p>项目根目录<code>.babelrc</code>中配置，<code>json</code>格式</p>
-  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"presets"</span>: [<span class="string">"预设条件"</span>],</span><br><span class="line">    <span class="attr">"plugins"</span>: [<span class="string">"插件"</span>],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在<code>package.json</code>文件中配置</p>
-  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"project"</span>,</span><br><span class="line">    <span class="string">"version"</span>: <span class="string">"0.0.1"</span>,</span><br><span class="line">    <span class="string">"babel"</span>: &#123;</span><br><span class="line">        <span class="comment">// babel配置</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="react中的babel配置"><a href="#react中的babel配置" class="headerlink" title="react中的babel配置"></a><code>react</code>中的<code>babel</code>配置</h2><ul>
-<li><code>react</code>解析<code>jsx</code>语法，<code>npm install babel-preset-react</code>安装相关依赖</li>
-<li><code>es2015</code>解析<code>es6</code>语法，<code>npm install babel-preset-es2015</code>安装相关依赖</li>
-<li><p><code>es</code>提案各个阶段的语法支持插件，<code>npm install babel-preset-stage-0 babel-preset-stage-1 babel-preset-stage-2 babel-preset-stage-3</code>安装相关依赖</p>
-  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"presets"</span>: [<span class="string">"react"</span>, <span class="string">"es2015"</span>],</span><br><span class="line">    <span class="attr">"plugins"</span>: [<span class="string">"插件"</span>],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="配置示例"><a href="#配置示例" class="headerlink" title="配置示例"></a>配置示例</h2><ul>
-<li><p>无参数</p>
-  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"presets"</span>: [</span><br><span class="line">        <span class="string">"react"</span>,</span><br><span class="line">        <span class="string">"es2015"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"plugins"</span>: [</span><br><span class="line">        <span class="string">"transform-es2015-arrow-functions"</span>, <span class="comment">//转译箭头函数</span></span><br><span class="line">        <span class="string">"transform-es2015-classes"</span>, <span class="comment">//转译class语法</span></span><br><span class="line">        <span class="string">"transform-es2015-spread"</span>, <span class="comment">//转译数组解构</span></span><br><span class="line">        <span class="string">"transform-es2015-for-of"</span> <span class="comment">//转译for-of</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>有参数</p>
-  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"presets"</span>: [</span><br><span class="line">        <span class="string">"react"</span>,</span><br><span class="line">        <span class="string">"es2015"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"plugins"</span>: [</span><br><span class="line">        <span class="comment">//改为数组，第二个元素为配置项</span></span><br><span class="line">        [<span class="string">"transform-es2015-arrow-functions"</span>, &#123; <span class="attr">"spec"</span>: <span class="literal">true</span> &#125;]</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul>
-<li>官方推荐<code>babel-preset-env</code>，上面的插件已经不推荐，参考链接<a href="https://www.babeljs.cn/docs/plugins/preset-env/" target="_blank" rel="noopener">官方babel-preset-env配置参考</a></li>
-</ul>
-<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
-<li><a href="https://babeljs.io/docs/en/plugins/" target="_blank" rel="noopener">babel插件列表</a></li>
-<li><a href="https://babeljs.io/docs/en/plugins/#presets" target="_blank" rel="noopener">babel预设条件插件列表</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/09/06/react-webpack项目中的babel配置/" data-id="ckpz9u9x5002a0us6uygzsatp" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-js学习（三）" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/13/js学习（三）/" class="article-date">
-  <time datetime="2018-08-12T19:13:51.000Z" itemprop="datePublished">2018-08-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/13/js学习（三）/">js学习（三）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="DOM和事件对象"><a href="#DOM和事件对象" class="headerlink" title="DOM和事件对象"></a>DOM和事件对象</h2><ul>
-<li>事件冒泡：事件由目标元素逐渐向上传递到document</li>
-<li>事件捕获：事件有document逐渐向下传递逐渐追溯到目标元素</li>
-</ul>
-<h3 id="Event事件对象的通用属性"><a href="#Event事件对象的通用属性" class="headerlink" title="Event事件对象的通用属性"></a>Event事件对象的通用属性</h3><table>
-<thead>
-<tr>
-<th style="text-align:left">名称</th>
-<th style="text-align:left">说明</th>
-<th style="text-align:left">返回值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">type</td>
-<td style="text-align:left">事件名称</td>
-<td style="text-align:left">字符串（如mouseover）</td>
-</tr>
-<tr>
-<td style="text-align:left">target</td>
-<td style="text-align:left">事件指向的目标元素</td>
-<td style="text-align:left">HTMLElement</td>
-</tr>
-<tr>
-<td style="text-align:left">currentTarget</td>
-<td style="text-align:left">带有当前被触发事件监听器的元素</td>
-<td style="text-align:left">HTMLElement</td>
-</tr>
-<tr>
-<td style="text-align:left">eventPhase</td>
-<td style="text-align:left">事件生命周期阶段</td>
-<td style="text-align:left">数值</td>
-</tr>
-<tr>
-<td style="text-align:left">bubbles</td>
-<td style="text-align:left">如果事件可以在文档中冒泡返回true，否则返回false</td>
-<td style="text-align:left">boolean</td>
-</tr>
-<tr>
-<td style="text-align:left">cancelable</td>
-<td style="text-align:left">如果事件有可以撤销的默认行为返回true，否则返回false</td>
-<td style="text-align:left">boolean</td>
-</tr>
-<tr>
-<td style="text-align:left">timeStamp</td>
-<td style="text-align:left">事件创建的时间，时间不可用就返回0</td>
-<td style="text-align:left">字符串</td>
-</tr>
-<tr>
-<td style="text-align:left">stopPropagation()</td>
-<td style="text-align:left">在当前事件监听器触发后，阻止其在元素中的流动，包括冒泡和捕获</td>
-<td style="text-align:left">void</td>
-</tr>
-<tr>
-<td style="text-align:left">stopImmediatePropagation()</td>
-<td style="text-align:left">立即终止事件在在元素中的流动，当前元素上未被触发的事件监听器会被忽略</td>
-<td style="text-align:left">void</td>
-</tr>
-<tr>
-<td style="text-align:left">preventDefault()</td>
-<td style="text-align:left">阻止浏览器执行与事件关联的默认操作</td>
-<td style="text-align:left">void</td>
-</tr>
-<tr>
-<td style="text-align:left">defaultPrevented</td>
-<td style="text-align:left">如果调用了preventDefault()返回true</td>
-<td style="text-align:left">boolean</td>
-</tr>
-</tbody>
-</table>
-<h5 id="eventPhase值"><a href="#eventPhase值" class="headerlink" title="eventPhase值"></a>eventPhase值</h5><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Event.CAPTURING_PHASE</td>
-<td>捕获阶段</td>
-</tr>
-<tr>
-<td>Event.AT_TARGET</td>
-<td>目标阶段</td>
-</tr>
-<tr>
-<td>Event.BUBBLING_PHASE</td>
-<td>冒泡阶段</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Document对象事件"><a href="#Document对象事件" class="headerlink" title="Document对象事件"></a>Document对象事件</h3><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>readystatechange</td>
-<td>在readystate属性发生变化时触发</td>
-</tr>
-</tbody>
-</table>
-<h3 id="window事件对象"><a href="#window事件对象" class="headerlink" title="window事件对象"></a>window事件对象</h3><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>onabort</td>
-<td>在文档或者资源加载过程被终止时触发</td>
-</tr>
-<tr>
-<td>onbeforeprint</td>
-<td>在用户调用window.print()方法，但尚未给用户提供打印时触发</td>
-</tr>
-<tr>
-<td>onafterprint</td>
-<td>在用户完成打印之后触发</td>
-</tr>
-<tr>
-<td>onerror</td>
-<td>在文档或者资源加载发生错误时触发</td>
-</tr>
-<tr>
-<td>onhashchange</td>
-<td>在锚部分发生变化时触发</td>
-</tr>
-<tr>
-<td>onload</td>
-<td>在文档或者资源加载完成时触发</td>
-</tr>
-<tr>
-<td>onpopstate</td>
-<td>触发后提供一个关联浏览器的状态对象</td>
-</tr>
-<tr>
-<td>onresize</td>
-<td>在窗口缩放时触发</td>
-</tr>
-<tr>
-<td>onunload</td>
-<td>在文档从或者浏览器中卸载时触发</td>
-</tr>
-</tbody>
-</table>
-<h3 id="鼠标事件"><a href="#鼠标事件" class="headerlink" title="鼠标事件"></a>鼠标事件</h3><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>click</td>
-<td>点击鼠标并释放鼠标键时触发</td>
-</tr>
-<tr>
-<td>dblclick</td>
-<td>在两次点击并释放鼠标键时触发</td>
-</tr>
-<tr>
-<td>mousedown</td>
-<td>在鼠标左键按下时触发</td>
-</tr>
-<tr>
-<td>mouseenter</td>
-<td>在光标移入元素或者其后代元素区域时触发</td>
-</tr>
-<tr>
-<td>mouseleave</td>
-<td>在光标移出元素及所有后代元素区域时触发</td>
-</tr>
-<tr>
-<td>mousemove</td>
-<td>在光标在元素上移动时触发</td>
-</tr>
-<tr>
-<td>mouseout</td>
-<td>指针移出元素，或者移到它的子元素上</td>
-</tr>
-<tr>
-<td>mouserover</td>
-<td>指针移到有事件监听的元素或者它的子元素内</td>
-</tr>
-<tr>
-<td>mouseup</td>
-<td>释放鼠标时触发</td>
-</tr>
-</tbody>
-</table>
-<h5 id="事件特有属性"><a href="#事件特有属性" class="headerlink" title="事件特有属性"></a>事件特有属性</h5><table>
-<thead>
-<tr>
-<th style="text-align:left">名称</th>
-<th style="text-align:left">说明</th>
-<th style="text-align:left">返回值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">button</td>
-<td style="text-align:left">点击的键，0左（主）键，1中键，2右（次）键</td>
-<td style="text-align:left">数值</td>
-</tr>
-<tr>
-<td style="text-align:left">altkey</td>
-<td style="text-align:left">是否按下alt/option键</td>
-<td style="text-align:left">boolean</td>
-</tr>
-<tr>
-<td style="text-align:left">clientX</td>
-<td style="text-align:left">相对于目标元素的x轴坐标</td>
-<td style="text-align:left">number</td>
-</tr>
-<tr>
-<td style="text-align:left">clientY</td>
-<td style="text-align:left">相对于目标元素的y轴坐标</td>
-<td style="text-align:left">number</td>
-</tr>
-<tr>
-<td style="text-align:left">screenX</td>
-<td style="text-align:left">相对于窗口的x轴坐标</td>
-<td style="text-align:left">number</td>
-</tr>
-<tr>
-<td style="text-align:left">screenY</td>
-<td style="text-align:left">相对于窗口的y轴坐标</td>
-<td style="text-align:left">number</td>
-</tr>
-<tr>
-<td style="text-align:left">shiftkey</td>
-<td style="text-align:left">是否按下shift键</td>
-<td style="text-align:left">boolean</td>
-</tr>
-<tr>
-<td style="text-align:left">ctrlkey</td>
-<td style="text-align:left">是否按下ctrl键</td>
-<td style="text-align:left">boolean</td>
-</tr>
-</tbody>
-</table>
-<h3 id="键盘焦点事件"><a href="#键盘焦点事件" class="headerlink" title="键盘焦点事件"></a>键盘焦点事件</h3><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>blur</td>
-<td>失去焦点</td>
-</tr>
-<tr>
-<td>focus</td>
-<td>获得焦点</td>
-</tr>
-<tr>
-<td>focusin</td>
-<td>即将获得焦点</td>
-</tr>
-<tr>
-<td>focusout</td>
-<td>即将失去焦点</td>
-</tr>
-</tbody>
-</table>
-<h3 id="键盘事件"><a href="#键盘事件" class="headerlink" title="键盘事件"></a>键盘事件</h3><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>keydown</td>
-<td>按键被按下时</td>
-</tr>
-<tr>
-<td>keypress</td>
-<td>按键被按下并被释放时</td>
-</tr>
-<tr>
-<td>keyup</td>
-<td>按键被释放时</td>
-</tr>
-</tbody>
-</table>
-<h5 id="事件特有属性-1"><a href="#事件特有属性-1" class="headerlink" title="事件特有属性"></a>事件特有属性</h5><table>
-<thead>
-<tr>
-<th style="text-align:left">名称</th>
-<th style="text-align:left">说明</th>
-<th style="text-align:left">返回值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">char</td>
-<td style="text-align:left">按键代表的字符</td>
-<td style="text-align:left">字符串</td>
-</tr>
-<tr>
-<td style="text-align:left">key</td>
-<td style="text-align:left">所按的键</td>
-<td style="text-align:left">字符串</td>
-</tr>
-<tr>
-<td style="text-align:left">altkey</td>
-<td style="text-align:left">是否按下alt/option键</td>
-<td style="text-align:left">boolean</td>
-</tr>
-<tr>
-<td style="text-align:left">shiftkey</td>
-<td style="text-align:left">是否按下shift键</td>
-<td style="text-align:left">boolean</td>
-</tr>
-<tr>
-<td style="text-align:left">ctrlkey</td>
-<td style="text-align:left">是否按下ctrl键</td>
-<td style="text-align:left">boolean</td>
-</tr>
-<tr>
-<td style="text-align:left">repeat</td>
-<td style="text-align:left">该建是否一直处于被按下的状态</td>
-<td style="text-align:left">boolean</td>
-</tr>
-</tbody>
-</table>
-<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/Events" target="_blank" rel="noopener">事件参考</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/13/js学习（三）/" data-id="ckpz9u9wv001o0us6oahua8so" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-设计模式" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/08/设计模式/" class="article-date">
-  <time datetime="2018-08-08T09:31:17.000Z" itemprop="datePublished">2018-08-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/08/设计模式/">设计模式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="设计模式的六大原则"><a href="#设计模式的六大原则" class="headerlink" title="设计模式的六大原则"></a>设计模式的六大原则</h2><ol>
-<li><p>开闭原则（Open Close Principle）</p>
-<p>开闭原则的意思是：对扩展开放，对修改关闭。在程序需要进行拓展的时候，不能去修改原有的代码，实现一个热插拔的效果。简言之，是为了使程序的扩展性好，易于维护和升级。想要达到这样的效果，我们需要使用接口和抽象类，后面的具体设计中我们会提到这点。</p>
-</li>
-<li><p>里氏代换原则（Liskov Substitution Principle）</p>
-<p>里氏代换原则是面向对象设计的基本原则之一。 里氏代换原则中说，任何基类可以出现的地方，子类一定可以出现。LSP 是继承复用的基石，只有当派生类可以替换掉基类，且软件单位的功能不受到影响时，基类才能真正被复用，而派生类也能够在基类的基础上增加新的行为。里氏代换原则是对开闭原则的补充。实现开闭原则的关键步骤就是抽象化，而基类与子类的继承关系就是抽象化的具体实现，所以里氏代换原则是对实现抽象化的具体步骤的规范。</p>
-</li>
-<li><p>依赖倒转原则（Dependence Inversion Principle）</p>
-<p>这个原则是开闭原则的基础，具体内容：针对接口编程，依赖于抽象而不依赖于具体。</p>
-</li>
-<li><p>接口隔离原则（Interface Segregation Principle）</p>
-<p>这个原则的意思是：使用多个隔离的接口，比使用单个接口要好。它还有另外一个意思是：降低类之间的耦合度。由此可见，其实设计模式就是从大型软件架构出发、便于升级和维护的软件设计思想，它强调降低依赖，降低耦合。</p>
-</li>
-<li><p>迪米特法则，又称最少知道原则（Demeter Principle）</p>
-<p>最少知道原则是指：一个实体应当尽量少地与其他实体之间发生相互作用，使得系统功能模块相对独立。</p>
-</li>
-<li><p>合成复用原则（Composite Reuse Principle）</p>
-<p>合成复用原则是指：尽量使用合成/聚合的方式，而不是使用继承。</p>
-</li>
-</ol>
-<h2 id="控制反转"><a href="#控制反转" class="headerlink" title="控制反转"></a>控制反转</h2><p>控制反转（Inversion of Control，缩写为IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。其中最常见的方式叫做依赖注入（Dependency Injection，简称DI），还有一种方式叫“依赖查找”（Dependency Lookup）。通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体，将其所依赖的对象的引用传递给它。</p>
-<p>Class A中用到了Class B的对象b，一般情况下，需要在A的代码中显示的new一个B的对象。</p>
-<p>采用依赖注入技术之后，A的代码只需要定义一个私有的B对象，不需要直接new来获得这个对象，而是通过相关的容器控制程序来将B对象在外部new出来并注入到A类里的引用中。而具体获取的方法、对象被获取时的状态由配置文件（如XML）来指定。</p>
-<ul>
-<li><p>依赖倒置原则：实体必须依靠抽象而不是具体实现。它表示高层次的模块不应该依赖于低层次的模块，它们都应该依赖于抽象。在传统软件设计中，我们一般都是上层代码依赖下层代码，当下层代码变动时，我们上层代码要跟着变动，维护成本比较高。这时我们可以上层定义接口，下层来实现这个接口，从而使得下层依赖于上层，降低耦合度。</p>
-</li>
-<li><p>依赖注入：核心思想是把类中所依赖单元的实例化过程放到类外面中去实现，然后把依赖注入进来。常用的依赖注入方式有属性注入和构造函数注入。</p>
-<ul>
-<li>基于接口。实现特定接口以供外部容器注入所依赖类型的对象。</li>
-<li>基于 set 方法。实现特定属性的public set方法，来让外部容器调用传入所依赖类型的对象。</li>
-<li>基于构造函数。实现特定参数的构造函数，在新建对象时传入所依赖类型的对象。</li>
-<li>基于注解。基于Java的注解功能，在私有变量前加“@Autowired”等注解，不需要显式的定义以上三种代码，便可以让外部容器传入对应的对象。该方案相当于定义了public的set方法，但是因为没有真正的set方法，从而不会为了实现依赖注入导致暴露了不该暴露的接口（因为set方法只想让容器访问来注入而并不希望其他依赖此类的对象访问）。</li>
-</ul>
-</li>
-<li><p>依赖查找: 依赖查找更加主动，在需要的时候通过调用框架提供的方法来获取对象，获取时需要提供相关的配置文件路径、key等信息来确定获取对象的状态</p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/08/设计模式/" data-id="ckpz9u9yp004g0us65dxh6rt7" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-js学习（二）" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/05/js学习（二）/" class="article-date">
-  <time datetime="2018-08-04T20:54:32.000Z" itemprop="datePublished">2018-08-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/05/js学习（二）/">js学习（二）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="web存储"><a href="#web存储" class="headerlink" title="web存储"></a>web存储</h2><p>通过监听onstorage事件监听web存储事件</p>
-<h4 id="本地存储"><a href="#本地存储" class="headerlink" title="本地存储"></a>本地存储</h4><ul>
-<li>全局属性localStorage访问，返回storage对象，用键值对形式存储数据</li>
-<li>通过清除浏览器数据清除本地存储中的数据，即存储时间为永久</li>
-</ul>
-<h4 id="会话存储"><a href="#会话存储" class="headerlink" title="会话存储"></a>会话存储</h4><ul>
-<li>全局属性sessionStorage访问，返回storage对象，用键值对形式存储数据</li>
-<li>生命周期为窗口的存活周期</li>
-</ul>
-<h2 id="获取地理位置"><a href="#获取地理位置" class="headerlink" title="获取地理位置"></a>获取地理位置</h2><h4 id="navigator-geolocation-getCurrentPosition获取浏览器当前的位置"><a href="#navigator-geolocation-getCurrentPosition获取浏览器当前的位置" class="headerlink" title="navigator.geolocation.getCurrentPosition获取浏览器当前的位置"></a><code>navigator.geolocation.getCurrentPosition</code>获取浏览器当前的位置</h4><ul>
-<li>第一个参数是获取地理位置成功的回调函数（唯一一个参数为坐标和更新时间对象）</li>
-<li>第二个参数是获取地理位置失败的回调函数（唯一一个参数是返回的错误码和错误原因的对象）</li>
-<li>第三个参数为请求地理位置的参数</li>
-</ul>
-<h3 id="navigator-geolocation-watchPosition监控浏览器位置"><a href="#navigator-geolocation-watchPosition监控浏览器位置" class="headerlink" title="navigator.geolocation.watchPosition监控浏览器位置"></a><code>navigator.geolocation.watchPosition</code>监控浏览器位置</h3><ul>
-<li>返回监视器的id，通过调用<code>navigator.geolocation.clearWatch</code>清除监视器</li>
-<li>第一个参数是获取地理位置成功的回调函数（唯一一个参数为坐标和更新时间对象）</li>
-<li>第二个参数是获取地理位置失败的回调函数（唯一一个参数是返回的错误码和错误原因的对象）</li>
-<li>第三个参数为请求地理位置的参数</li>
-</ul>
-<p>参考文档：<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Geolocation/Using_geolocation" target="_blank" rel="noopener">使用地理位置定位</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/05/js学习（二）/" data-id="ckpz9u9wv001q0us6exb1o0wl" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
 
     </footer>
   </div>
@@ -2971,7 +2645,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">45</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-language/">C/C++语言</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeORM/">TypeORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solution/">算法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">计算机网络</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source/">资源</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -2981,7 +2655,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/c-language/" style="font-size: 12.86px;">C/C++语言</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/TypeORM/" style="font-size: 10px;">TypeORM</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/express/" style="font-size: 11.43px;">express</a> <a href="/tags/mysql/" style="font-size: 11.43px;">mysql</a> <a href="/tags/node/" style="font-size: 18.57px;">node</a> <a href="/tags/other/" style="font-size: 15.71px;">other</a> <a href="/tags/react/" style="font-size: 17.14px;">react</a> <a href="/tags/webpack/" style="font-size: 11.43px;">webpack</a> <a href="/tags/solution/" style="font-size: 14.29px;">算法</a> <a href="/tags/network/" style="font-size: 15.71px;">计算机网络</a> <a href="/tags/source/" style="font-size: 11.43px;">资源</a>
+      <a href="/tags/c-language/" style="font-size: 12.86px;">C/C++语言</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/TypeORM/" style="font-size: 10px;">TypeORM</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/express/" style="font-size: 11.43px;">express</a> <a href="/tags/mysql/" style="font-size: 11.43px;">mysql</a> <a href="/tags/node/" style="font-size: 18.57px;">node</a> <a href="/tags/other/" style="font-size: 15.71px;">other</a> <a href="/tags/react/" style="font-size: 17.14px;">react</a> <a href="/tags/webpack/" style="font-size: 12.86px;">webpack</a> <a href="/tags/solution/" style="font-size: 14.29px;">算法</a> <a href="/tags/network/" style="font-size: 15.71px;">计算机网络</a> <a href="/tags/source/" style="font-size: 11.43px;">资源</a>
     </div>
   </div>
 
@@ -2990,7 +2664,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -3003,23 +2677,23 @@
       <ul>
         
           <li>
+            <a href="/2021/07/11/js执行流程/">js执行流程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/28/react中hooks实现原理/">react中hooks实现原理</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/react从dom-render到初次组件渲染完成/">react从dom.render到初次组件渲染完成</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/17/webpack源码阅读（二）/">webpack源码阅读（二）</a>
+          </li>
+        
+          <li>
             <a href="/2021/06/15/webpack源码阅读（一）/">webpack源码阅读（一）</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/15/Performance/">Performance</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/14/react的同步更新/">react的同步更新</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/12/react中的事件/">react中的事件</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/06/react中的jsx语法/">react中的jsx语法</a>
           </li>
         
       </ul>

@@ -3,20 +3,20 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>Performance | 奔跑的蜗牛</title>
+  <title>浏览器渲染过程详解 | 奔跑的蜗牛</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Performance属性navigation只读属性 Performance.navigation 会返回一个 PerformanceNavigation 对象。  type: 一个无符号短整型，表示是如何导航到这个页面的。 TYPE_NAVIGATE (0): 当前页面是通过点击链接，书签和表单提交，或者脚本操作，或者在 url 中直接输入地址; TYPE_RELOAD (1): 点击刷新页面">
+  <meta name="description" content="渲染流程 浏览器通过网络请求后获取 html 数据，通过 tcp 传给浏览器进程，然后浏览器进程再传递给渲染器进程 DOM - DOM 结构： 主线程将 html 解析构造 DOM 树 style - 样式： 主线程解析页面的 CSS 从而确定每个 DOM 节点的计算样式（computed style）。 layoutTree - 布局树： dom+style 根据 dom 树和样式生成 layo">
 <meta name="keywords" content="JavaScript">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Performance">
-<meta property="og:url" content="http://yoursite.com/2021/06/15/Performance/index.html">
+<meta property="og:title" content="浏览器渲染过程详解">
+<meta property="og:url" content="http://yoursite.com/2021/07/12/浏览器渲染过程详解/index.html">
 <meta property="og:site_name" content="奔跑的蜗牛">
-<meta property="og:description" content="Performance属性navigation只读属性 Performance.navigation 会返回一个 PerformanceNavigation 对象。  type: 一个无符号短整型，表示是如何导航到这个页面的。 TYPE_NAVIGATE (0): 当前页面是通过点击链接，书签和表单提交，或者脚本操作，或者在 url 中直接输入地址; TYPE_RELOAD (1): 点击刷新页面">
+<meta property="og:description" content="渲染流程 浏览器通过网络请求后获取 html 数据，通过 tcp 传给浏览器进程，然后浏览器进程再传递给渲染器进程 DOM - DOM 结构： 主线程将 html 解析构造 DOM 树 style - 样式： 主线程解析页面的 CSS 从而确定每个 DOM 节点的计算样式（computed style）。 layoutTree - 布局树： dom+style 根据 dom 树和样式生成 layo">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:updated_time" content="2021-06-15T04:48:12.875Z">
+<meta property="og:updated_time" content="2021-07-11T14:14:35.207Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Performance">
-<meta name="twitter:description" content="Performance属性navigation只读属性 Performance.navigation 会返回一个 PerformanceNavigation 对象。  type: 一个无符号短整型，表示是如何导航到这个页面的。 TYPE_NAVIGATE (0): 当前页面是通过点击链接，书签和表单提交，或者脚本操作，或者在 url 中直接输入地址; TYPE_RELOAD (1): 点击刷新页面">
+<meta name="twitter:title" content="浏览器渲染过程详解">
+<meta name="twitter:description" content="渲染流程 浏览器通过网络请求后获取 html 数据，通过 tcp 传给浏览器进程，然后浏览器进程再传递给渲染器进程 DOM - DOM 结构： 主线程将 html 解析构造 DOM 树 style - 样式： 主线程解析页面的 CSS 从而确定每个 DOM 节点的计算样式（computed style）。 layoutTree - 布局树： dom+style 根据 dom 树和样式生成 layo">
   
   
     <link rel="icon" href="0001.jpg#/favicon.png">
@@ -65,10 +65,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Performance" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-浏览器渲染过程详解" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/06/15/Performance/" class="article-date">
-  <time datetime="2021-06-14T22:48:44.000Z" itemprop="datePublished">2021-06-14</time>
+    <a href="/2021/07/12/浏览器渲染过程详解/" class="article-date">
+  <time datetime="2021-07-11T16:03:29.000Z" itemprop="datePublished">2021-07-11</time>
 </a>
     
   </div>
@@ -79,7 +79,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Performance
+      浏览器渲染过程详解
     </h1>
   
 
@@ -87,34 +87,38 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h3><h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><h5 id="navigation"><a href="#navigation" class="headerlink" title="navigation"></a><code>navigation</code></h5><p>只读属性 Performance.navigation 会返回一个 PerformanceNavigation 对象。</p>
-<ul>
-<li>type: 一个无符号短整型，表示是如何导航到这个页面的。<ul>
-<li>TYPE_NAVIGATE (0): 当前页面是通过点击链接，书签和表单提交，或者脚本操作，或者在 url 中直接输入地址;</li>
-<li>TYPE_RELOAD (1): 点击刷新页面按钮或者通过 Location.reload()方法显示的页面;</li>
-<li>TYPE_BACK_FORWARD (2): 页面通过历史记录和前进后退访问时;</li>
-<li>TYPE_RESERVED (255): 任何其他方式。</li>
+        <h3 id="渲染流程"><a href="#渲染流程" class="headerlink" title="渲染流程"></a>渲染流程</h3><ol>
+<li>浏览器通过网络请求后获取 <code>html</code> 数据，通过 <code>tcp</code> 传给浏览器进程，然后浏览器进程再传递给渲染器进程</li>
+<li><code>DOM</code> - <code>DOM</code> 结构： 主线程将 <code>html</code> 解析构造 <code>DOM</code> 树</li>
+<li><code>style</code> - 样式： 主线程解析页面的 <code>CSS</code> 从而确定每个 <code>DOM</code> 节点的计算样式（<code>computed style</code>）。</li>
+<li><code>layoutTree</code> - 布局树： <code>dom</code>+<code>style</code> 根据 <code>dom</code> 树和样式生成 <code>layoutTree</code></li>
+<li><code>paint</code> - 绘制： 通过遍历 <code>Layout Tree</code> 生成绘制顺序表</li>
+<li><code>laryer</code> - 布局： 主线程将 <code>layoutTree</code> 和绘制信息表传给合成器线程</li>
+<li>合成器线程： 将得到的信息分图层分成更小的图块</li>
+<li>栅格线程： 将更小的图块进行栅格化 <code>raster</code>，返还给合成器线程 <code>draw quads</code> 图块信息，存储在 <code>GPU</code> 中</li>
+<li>合成线程会收集图块上面叫做绘画四边形（<code>draw quads</code>）的信息来构建一个合成帧（<code>compositor frame</code>）。</li>
+<li>合成线程就会通过 <code>IPC</code> 向浏览器进程（<code>browser process</code>）提交（<code>commit</code>）一个渲染帧。</li>
+<li>浏览器进程收到一帧的图像后传给 <code>GPU</code> 进行渲染</li>
+</ol>
+<h4 id="非快速滚动区域-non-fast-scrollable-region"><a href="#非快速滚动区域-non-fast-scrollable-region" class="headerlink" title="非快速滚动区域 - non-fast scrollable region"></a>非快速滚动区域 - non-fast scrollable region</h4><p>当一个页面被合成的时候，合成线程会将页面那些注册了事件监听器的区域标记为“非快速滚动区域”（<code>Non-fast Scrollable Region</code>）。当用户事件发生在这些区域时，合成线程会将输入事件发送给主线程来处理。如果输入事件不是发生在非快速滚动区域，合成线程就无须主线程的参与来合成一个新的帧。</p>
+<h5 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h5><p><code>body</code> 元素绑定了事件监听器后其实是将整个页面都标记为一个非快速滚动区域，这就意味着即使你页面的某些区域压根就不在乎是不是有用户输入，当用户输入事件发生时，合成线程每次都会告知主线程并且会等待主线程处理完它才干活。因此这种情况下合成线程就丧失提供流畅用户体验的能力了（<code>smooth scrolling ability</code>）。</p>
+<h5 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h5><p>可以为事件监听器传递 <code>passive：true</code> 选项。 这个选项会告诉浏览器您仍要在主线程中侦听事件，可是合成线程也可以继续合成新的帧。</p>
+<h4 id="查找事件的目标对象（event-target）"><a href="#查找事件的目标对象（event-target）" class="headerlink" title="查找事件的目标对象（event target）"></a>查找事件的目标对象（event target）</h4><p>当合成线程向主线程发送输入事件时，主线程要做的第一件事是通过命中测试（<code>hit test</code>）去找到事件的目标对象（<code>target</code>）。具体的命中测试流程是遍历在渲染流水线中生成的绘画记录（<code>paint records</code>）来找到输入事件出现的 <code>x</code>, <code>y</code> 坐标上面描绘的对象是哪个。</p>
+<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><h5 id="DOM-对象"><a href="#DOM-对象" class="headerlink" title="DOM 对象"></a>DOM 对象</h5><p>既是浏览器对当前页面的内部表示，也是 <code>Web</code> 开发人员通过 <code>JavaScript</code> 与网页进行交互的数据结构以及 <code>API</code>。</p>
+<h5 id="光栅化（rasterizing）"><a href="#光栅化（rasterizing）" class="headerlink" title="光栅化（rasterizing）"></a>光栅化（rasterizing）</h5><p>将以上文档结构，元素的样式，元素的几何信息以及它们的绘画顺序转化为显示器的像素的过程</p>
+<h5 id="绘画四边形"><a href="#绘画四边形" class="headerlink" title="绘画四边形"></a>绘画四边形</h5><p>包含图块在内存的位置以及图层合成后图块在页面的位置之类的信息。</p>
+<h5 id="合成帧"><a href="#合成帧" class="headerlink" title="合成帧"></a>合成帧</h5><p>代表页面一个帧的内容的绘制四边形集合。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/102149546" target="_blank" rel="noopener">一文看懂 Chrome 浏览器运行机制</a></li>
+<li><a href="https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/#Resources" target="_blank" rel="noopener">浏览器的工作原理：新式网络浏览器幕后揭秘</a></li>
+<li><a href="https://www.html5rocks.com/zh/tutorials/speed/high-performance-animations/" target="_blank" rel="noopener">High Performance Animations</a></li>
+<li><a href="https://www.bilibili.com/video/BV1x54y1B7RE" target="_blank" rel="noopener">【干货】浏览器是如何运作的？</a></li>
 </ul>
-</li>
-<li>redirectCount: 无符号短整型，表示在到达这个页面之前重定向了多少次。</li>
-</ul>
-<h5 id="timing"><a href="#timing" class="headerlink" title="timing"></a><code>timing</code></h5><p>只读属性返回一个 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceTiming" target="_blank" rel="noopener">PerformanceTiming</a> 对象，这个对象包括了页面相关的性能信息。</p>
-<h5 id="timeOrigin"><a href="#timeOrigin" class="headerlink" title="timeOrigin"></a><code>timeOrigin</code></h5><p>只读属性 timeOrigin 返回一个表示 the performance measurement 开始时间的高精度 timestamp</p>
-<h5 id="onresourcetimingbufferfull"><a href="#onresourcetimingbufferfull" class="headerlink" title="onresourcetimingbufferfull"></a><code>onresourcetimingbufferfull</code></h5><p>在 resourcetimingbufferfull 事件触发时会被调用的事件处理器，参考<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/onresourcetimingbufferfull" target="_blank" rel="noopener">Performance.onresourcetimingbufferfull</a></p>
-<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><h5 id="Performance-now"><a href="#Performance-now" class="headerlink" title="Performance.now()"></a><code>Performance.now()</code></h5><p>方法返回一个精确到毫秒的事件戳 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/DOMHighResTimeStamp" target="_blank" rel="noopener">DOMHighResTimeStamp</a></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">performance.now() <span class="comment">// 38544.5</span></span><br><span class="line"><span class="built_in">Date</span>.now() <span class="comment">// 1623685111685</span></span><br></pre></td></tr></table></figure>
-<h6 id="tips：-测量程序性能时可以使用"><a href="#tips：-测量程序性能时可以使用" class="headerlink" title="tips： 测量程序性能时可以使用"></a>tips： 测量程序性能时可以使用</h6><h5 id="performance-setResourceTimingBufferSize"><a href="#performance-setResourceTimingBufferSize" class="headerlink" title="performance.setResourceTimingBufferSize()"></a><a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance/setResourceTimingBufferSize" target="_blank" rel="noopener"><code>performance.setResourceTimingBufferSize()</code></a></h5><p>设置浏览器记录资源加载情况的缓冲区大小，单位是对象个数，最小为 150</p>
-<h5 id="Performance-mark"><a href="#Performance-mark" class="headerlink" title="Performance.mark()"></a><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/mark" target="_blank" rel="noopener"><code>Performance.mark()</code></a></h5><p>在浏览器的性能缓冲区中使用给定名称添加一个 timestamp</p>
-<h5 id="Performance-measure"><a href="#Performance-measure" class="headerlink" title="Performance.measure()"></a><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/measure" target="_blank" rel="noopener"><code>Performance.measure()</code></a></h5><p>在浏览器性能记录缓存中创建了一个名为时间戳的记录来记录两个特殊标志位（通常称为开始标志和结束标志）。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">performance.mark(<span class="string">'test1'</span>)</span><br><span class="line">performance.mark(<span class="string">'test2'</span>)</span><br><span class="line">performance.measure(<span class="string">'test'</span>, <span class="string">'test1'</span>, <span class="string">'test2'</span>) <span class="comment">// &#123; detail: null, duration: 0.09999999403953552, entryType: "measure", name: "test", startTime: 33062.60000000894 &#125;</span></span><br></pre></td></tr></table></figure>
-<h6 id="tips：-与-Performance-mark-结合可以测量指定项目的时间"><a href="#tips：-与-Performance-mark-结合可以测量指定项目的时间" class="headerlink" title="tips： 与 Performance.mark() 结合可以测量指定项目的时间"></a>tips： 与 <code>Performance.mark()</code> 结合可以测量指定项目的时间</h6><h5 id="Performance-clearResourceTimings"><a href="#Performance-clearResourceTimings" class="headerlink" title="Performance.clearResourceTimings()"></a><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/clearResourceTimings" target="_blank" rel="noopener"><code>Performance.clearResourceTimings()</code></a></h5><p>移除所有的记录</p>
-<h5 id="Performance-clearMarks"><a href="#Performance-clearMarks" class="headerlink" title="Performance.clearMarks()"></a><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/clearMarks" target="_blank" rel="noopener"><code>Performance.clearMarks()</code></a></h5><p>从浏览器的 performance entry 缓存中移除声明的标记。</p>
-<h5 id="Performance-clearMeasures"><a href="#Performance-clearMeasures" class="headerlink" title="Performance.clearMeasures()"></a><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/clearMeasures" target="_blank" rel="noopener"><code>Performance.clearMeasures()</code></a></h5><p>从浏览器的性能入口缓存区中移除声明的度量衡。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/15/Performance/" data-id="ckqza38hi0004yys66ru1d2f1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/07/12/浏览器渲染过程详解/" data-id="ckqza38k5004eyys6oq4ws6wd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
@@ -125,19 +129,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2021/06/15/webpack源码阅读（一）/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          webpack源码阅读（一）
-        
-      </div>
-    </a>
   
-  
-    <a href="/2021/06/14/react的同步更新/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/07/11/js执行流程/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">react的同步更新</div>
+      <div class="article-nav-title">js执行流程</div>
     </a>
   
 </nav>
